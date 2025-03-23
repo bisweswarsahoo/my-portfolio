@@ -18,3 +18,69 @@ body {
 	min-width: 370px;
 	min-height: 100vh;
 }
+
+.project-card {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.project-card:hover {
+	transform: translateY(-8px) !important;
+	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.projects-container {
+	cursor: grab;
+	overflow: hidden;
+	width: 100%;
+	margin: 20px -20px;
+}
+
+.projects-inner {
+	display: flex;
+	gap: 24px;
+	padding: 24px;
+	min-width: min-content;
+	margin: 0 auto;
+}
+
+.project-card-container {
+	flex: 0 0 400px; /* Fixed width */
+	height: 500px; /* Fixed height */
+	padding: 10px 0;
+}
+
+.project-card.dark {
+	background: #1a1f2c;
+	border: 1px solid #e7dfdd30;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.project-card.dark:hover {
+	transform: translateY(-8px) !important;
+	box-shadow: 0 12px 24px rgba(231, 223, 221, 0.1);
+}
+
+.project-card.dark .ant-card-body {
+	padding: 24px;
+}
+
+/* Override ant-design card styles */
+.ant-card.project-card.dark {
+	background-color: #1a1f2c;
+}
+
+.ant-typography {
+	color: #e7dfdd !important;
+}
+
+.ant-btn-primary.ant-btn-background-ghost {
+	border-color: #e7dfdd;
+	color: #e7dfdd;
+}
+
+.ant-btn-primary.ant-btn-background-ghost:hover {
+	border-color: #e7dfdd99;
+	color: #e7dfdd99;
+}
