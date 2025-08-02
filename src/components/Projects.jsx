@@ -1,7 +1,6 @@
-import React from "react";
-import { GithubOutlined, GlobalOutlined } from "@ant-design/icons";
-import { Card, Typography, Button, Space } from "antd";
+import { Typography } from "antd";
 import { motion } from "framer-motion";
+import "../styles/Card.css";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -36,7 +35,6 @@ const projects = [
 const Projects = () => {
 	const cardWidth = 300;
 	const cardHeight = "auto";
-	const containerWidth = projects.length * cardWidth;
 
 	return (
 		<>
@@ -53,104 +51,51 @@ const Projects = () => {
 				Some Projects that have been keeping me busy...
 			</Title>
 			<div
-				style={{ padding: "20px", display: "flex", justifyContent: "center" }}
+				style={{
+					padding: "20px",
+					display: "flex",
+					justifyContent: "center",
+					gap: "60px",
+				}}
 			>
-				<motion.div
-					className="projects-container"
-					whileTap={{ cursor: "grabbing" }}
-					style={{ display: "flex", justifyContent: "center", width: "100%" }}
-				>
+				{projects.map((project, index) => (
 					<motion.div
-						className="projects-inner"
+						key={index}
+						className="project-card-container"
+						initial={{ opacity: 0, x: 50 }}
+						animate={{ opacity: 1, x: 0 }}
+						transition={{ duration: 0.5, delay: index * 0.2 }}
 						style={{
-							display: "flex",
-							justifyContent: "center",
-							width: containerWidth,
+							width: cardWidth,
+							height: cardHeight,
 						}}
 					>
-						{projects.map((project, index) => (
-							<motion.div
-								key={index}
-								className="project-card-container"
-								initial={{ opacity: 0, x: 50 }}
-								animate={{ opacity: 1, x: 0 }}
-								transition={{ duration: 0.5, delay: index * 0.2 }}
-								style={{
-									width: cardWidth,
-									height: cardHeight,
-									margin: "0 10px",
-								}}
-							>
-								<Card
-									hoverable
-									className="project-card dark"
-									style={{ height: "100%" }}
+						<div className="card">
+							<div className="mac-header">
+								<span className="red"></span>
+								<span className="yellow"></span>
+								<span className="green"></span>
+							</div>
+							<span className="card-title">{project.name}</span>
+							<p className="card-description">
+								{project.description.join(". ")}
+							</p>
+							{project.techStack.split(", ").map((tech, techIndex) => (
+								<span
+									key={techIndex}
+									className="card-tag"
 								>
-									<Title
-										level={3}
-										style={{ color: "#e7dfdd", marginBottom: "24px" }}
-									>
-										{project.name}
-									</Title>
-									<Text
-										style={{
-											display: "block",
-											marginBottom: "24px",
-											fontSize: "16px",
-											color: "#e7dfdd99",
-										}}
-									>
-										{project.techStack}
-									</Text>
-									<ul
-										style={{
-											paddingLeft: "20px",
-											marginBottom: "24px",
-											fontSize: "16px",
-											color: "#e7dfdd",
-										}}
-									>
-										{project.description.map((point, idx) => (
-											<li
-												key={idx}
-												style={{ marginBottom: "12px" }}
-											>
-												<Paragraph style={{ color: "#e7dfdd" }}>
-													{point}
-												</Paragraph>
-											</li>
-										))}
-									</ul>
-									<Space
-										size="large"
-										style={{ display: "flex", justifyContent: "center" }}
-									>
-										<Button
-											type="primary"
-											icon={<GithubOutlined />}
-											href={project.sourceCode}
-											target="_blank"
-											size="large"
-											ghost
-										>
-											Source Code
-										</Button>
-										<Button
-											type="primary"
-											icon={<GlobalOutlined />}
-											href={project.liveDemo}
-											target="_blank"
-											size="large"
-											ghost
-										>
-											Live Demo
-										</Button>
-									</Space>
-								</Card>
-							</motion.div>
-						))}
+									{tech}
+								</span>
+							))}
+							<div className="code-editor">
+								<pre>
+									<code>&lt;Project /&gt;</code>
+								</pre>
+							</div>
+						</div>
 					</motion.div>
-				</motion.div>
+				))}
 			</div>
 		</>
 	);

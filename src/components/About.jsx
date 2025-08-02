@@ -1,5 +1,6 @@
 import React from "react";
-import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
+import SocialInfo from "./SocialInfo";
+import CVCard from "./CVCard";
 
 const About = () => {
 	return (
@@ -54,29 +55,15 @@ const About = () => {
 			>
 				Feel free to check out my projects and connect with me!
 			</p>
-			<div style={{ display: "flex", gap: "15px", marginTop: "20px" }}>
-				<a
-					href="https://www.linkedin.com/in/bisweswarsahoo"
-					target="_blank"
-					rel="noopener noreferrer"
-					style={{ color: "#007BFF" }}
-				>
-					<FaLinkedin size={30} />
-				</a>
-				<a
-					href="https://github.com/bisweswarsahoo"
-					target="_blank"
-					rel="noopener noreferrer"
-					style={{ color: "#333" }}
-				>
-					<FaGithub size={30} />
-				</a>
-				<a
-					href="mailto:bisweswarsahoo.jsg@gmail.com"
-					style={{ color: "#D44638" }}
-				>
-					<FaEnvelope size={30} />
-				</a>
+			<div
+				style={{
+					display: "flex",
+					justifyContent: "space-between",
+					padding: "20px 20px",
+				}}
+			>
+				<SocialInfo />
+				<CVCard />
 			</div>
 		</div>
 	);

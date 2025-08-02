@@ -13,8 +13,8 @@ const Education = () => {
 				<EducationCard
 					title="Bachelor of Technology (B. Tech) in Computer Science & Engineering"
 					institution="Amity University, Noida"
-					details="CGPA: 8.16"
-					duration="2022 - Present"
+					details="CGPA: 8.23"
+					duration="2022 - 2026"
 					iconSrc={amitylogo}
 				/>
 				<EducationCard
