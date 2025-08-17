@@ -1,4 +1,3 @@
-import React from "react";
 import "../styles/CVCard.css";
 
 const CVCard = () => {
@@ -6,7 +5,7 @@ const CVCard = () => {
 		<div className="cv-card relative">
 			<div className="cv-info">
 				<span className="cv-name">Bisweswar Sahoo</span>
-				<p className="cv-title">Frontend Developer</p>
+				<p className="cv-title">Fullstack Developer</p>
 			</div>
 			<button className="cv-download-btn">
 				Download CV

@@ -55,7 +55,7 @@ const Projects = () => {
 					padding: "20px",
 					display: "flex",
 					justifyContent: "center",
-					gap: "60px",
+					gap: "100px",
 				}}
 			>
 				{projects.map((project, index) => (
@@ -76,7 +76,7 @@ const Projects = () => {
 								<span className="yellow"></span>
 								<span className="green"></span>
 							</div>
-							<span className="card-title">{project.name}</span>
+							<p className="card-title">{project.name}</p>
 							<p className="card-description">
 								{project.description.join(". ")}
 							</p>
