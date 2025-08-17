@@ -26,7 +26,7 @@ const Education = () => {
 				/>
 				<EducationCard
 					title="Secondary School (Class 10th)"
-					institution="C.A.M.L.E & R Matrujyoti, Jharsuguda"
+					institution="C.A.M.I.E & R Matrujyoti, Jharsuguda"
 					details="Percentage: 78.6%"
 					duration="2020"
 					iconSrc={schoollogo}
