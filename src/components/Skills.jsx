@@ -22,9 +22,11 @@ import {
 	SiJavascript,
 	SiTypescript,
 	SiMysql,
+	SiLeaflet,
 } from "react-icons/si";
 import { VscVscode } from "react-icons/vsc";
 import "../styles/Skills.css";
+import { BsTerminal } from "react-icons/bs";
 
 const skillsData = [
 	{
@@ -54,8 +56,8 @@ const skillsData = [
 			{ name: "Phaser.js", icon: <SiJavascript color="#FFCB05" /> },
 			{ name: "Bootstrap", icon: <FaBootstrap color="#7952B3" /> },
 			{ name: "React Native", icon: <FaReact color="#61DAFB" /> },
-			{ name: "Express.js", icon: <SiExpress color="#000000" /> },
-			{ name: "leaflet.js", icon: <SiJavascript color="#199900" /> },
+			{ name: "Express.js", icon: <SiExpress color="#ffffff" /> },
+			{ name: "leaflet.js", icon: <SiLeaflet color="#199900" /> },
 		],
 	},
 	{
@@ -69,12 +71,12 @@ const skillsData = [
 		category: "Tools & Technologies",
 		skills: [
 			{ name: "Git", icon: <FaGitAlt color="#F05032" /> },
-			{ name: "GitHub", icon: <FaGithub color="#181717" /> },
+			{ name: "GitHub", icon: <FaGithub color="#ebe5e5ff" /> },
 			{ name: "VS Code", icon: <VscVscode color="#007ACC" /> },
 			{ name: "Android Studio", icon: <SiAndroidstudio color="#3DDC84" /> },
 			{ name: "Postman", icon: <SiPostman color="#FF6C37" /> },
-			{ name: "Hoppscotch", icon: <SiHoppscotch color="#FF7E6B" /> },
-			{ name: "Terminal", icon: <FaTerminal color="#4D4D4D" /> },
+			{ name: "Hoppscotch", icon: <SiHoppscotch color="#14B8A6" /> },
+			{ name: "Terminal", icon: <BsTerminal color="#b8b4b4ff" /> },
 		],
 	},
 ];
