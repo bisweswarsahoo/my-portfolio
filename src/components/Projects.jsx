@@ -1,6 +1,6 @@
 import { Typography } from "antd";
 import { motion } from "framer-motion";
-import "../styles/Card.css";
+import "../styles/Projects.css";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -26,6 +26,18 @@ const projects = [
 			"Created a casting portal for finding job opportunities.",
 			"Designed a collaborative space for independent projects and networking.",
 			"Integrated cloud services using Firebase for authentication and real-time updates.",
+		],
+		sourceCode: "#",
+		liveDemo: "#",
+	},
+	{
+		name: "Heatmap: Interactive Geospatial Data Visualization Platform",
+		techStack: "React.js, Leaflet.js, Python, Ant Design",
+		description: [
+			"Architected a dynamic frontend with React and Leaflet.js featuring a customizable heatmap layer, multi-select filters, and bounding-box zoom logic for intuitive data exploration",
+			"Developed a scalable Flask backend exposing RESTful API endpoints for geospatial data with proper CORS handling and environment-based configuration",
+			"Optimized performance by caching API data in localStorage to reduce network requests and implementing efficient geographic bounding box calculations for map rendering",
+			"Enhanced UX with dark/light theme toggle, loading indicators, and a responsive layout using Ant Design components",
 		],
 		sourceCode: "#",
 		liveDemo: "#",
