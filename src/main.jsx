@@ -1,10 +1,27 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import { StrictMode, useEffect } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.jsx";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// Wrapper to attach global copy-prevention listeners once.
+function GlobalGuards({ children }) {
+	useEffect(() => {
+		const prevent = (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+		};
+		const events = ["copy", "cut", "contextmenu", "dragstart"];
+		events.forEach((ev) => document.addEventListener(ev, prevent, true));
+		return () =>
+			events.forEach((ev) => document.removeEventListener(ev, prevent, true));
+	}, []);
+	return children;
+}
+
+createRoot(document.getElementById("root")).render(
+	<StrictMode>
+		<GlobalGuards>
+			<App />
+		</GlobalGuards>
+	</StrictMode>
+);
