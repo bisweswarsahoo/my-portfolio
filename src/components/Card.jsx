@@ -2,7 +2,7 @@ import { useState } from "react";
 import { VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 
-const EducationCard = ({ title, institution, duration, details, iconSrc }) => {
+const Card = ({ title, organization, duration, location, details, icon }) => {
 	const [lineColor, setLineColor] = useState("rgb(231, 127, 226)");
 
 	// useEffect(() => {
@@ -31,7 +31,7 @@ const EducationCard = ({ title, institution, duration, details, iconSrc }) => {
 			}}
 			icon={
 				<img
-					src={iconSrc}
+					src={icon}
 					alt="icon"
 					style={{ width: "100%", height: "100%", borderRadius: "50%" }}
 				/>
@@ -45,10 +45,11 @@ const EducationCard = ({ title, institution, duration, details, iconSrc }) => {
 			contentArrowStyle={{ borderRight: "7px solid #0b0e16" }}
 		>
 			<h1>{title}</h1>
-			<h2 style={{ color: "grey" }}>{institution}</h2>
+			<h2 style={{ color: "grey" }}>{organization}</h2>
+			<h3 style={{ color: "lightgrey" }}>{location}</h3>
 			<h3 style={{ fontSize: "14px" }}>{details}</h3>
 		</VerticalTimelineElement>
 	);
 };
 
-export default EducationCard;
+export default Card;

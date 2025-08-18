@@ -1,5 +1,4 @@
-import React from "react";
-import EducationCard from "./EducationCard";
+import Card from "./Card";
 import { VerticalTimeline } from "react-vertical-timeline-component";
 import amitylogo from "../assets/amity-university-logo.png";
 import adyantlogo from "../assets/adyant-logo.png";
@@ -8,28 +7,31 @@ import schoollogo from "../assets/sri-aurobindo-integral-education-logo.png";
 const Education = () => {
 	return (
 		<>
-			<h1 style={{ display: "flex", justifyContent: "center" }}>EDUCATION</h1>
+			<h1 style={{ display: "flex", justifyContent: "center" }}>Education</h1>
 			<VerticalTimeline>
-				<EducationCard
+				<Card
 					title="Bachelor of Technology (B. Tech) in Computer Science & Engineering"
-					institution="Amity University, Noida"
+					organization="Amity University"
+					location="Noida, India"
 					details="CGPA: 8.23"
 					duration="2022 - 2026"
-					iconSrc={amitylogo}
+					icon={amitylogo}
 				/>
-				<EducationCard
+				<Card
 					title="Senior Secondary School (Class 12th)"
-					institution="Adyant Higher Secondary School, Bhubaneswar"
+					organization="Adyant Higher Secondary School"
+					location="Bhubaneswar, India"
 					details="Percentage: 81%"
 					duration="2020 - 2022"
-					iconSrc={adyantlogo}
+					icon={adyantlogo}
 				/>
-				<EducationCard
+				<Card
 					title="Secondary School (Class 10th)"
-					institution="C.A.M.I.E & R Matrujyoti, Jharsuguda"
+					organization="C.A.M.I.E & R Matrujyoti"
+					location="Jharsuguda, India"
 					details="Percentage: 78.6%"
 					duration="2020"
-					iconSrc={schoollogo}
+					icon={schoollogo}
 				/>
 			</VerticalTimeline>
 		</>

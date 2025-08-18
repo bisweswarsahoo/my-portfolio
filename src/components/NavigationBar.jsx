@@ -13,7 +13,7 @@ import "../styles/NavigationBar.css";
 const menuItems = [
 	"About",
 	"Education",
-	"Work",
+	"Experience",
 	"Certifications",
 	"Skills",
 	"Projects",
@@ -72,7 +72,7 @@ const NavigationBar = () => {
 					const iconMap = {
 						About: FaUser,
 						Education: FaGraduationCap,
-						Work: FaBriefcase,
+						Experience: FaBriefcase,
 						Certifications: FaCertificate,
 						Skills: FaTools,
 						Projects: FaFolderOpen,
