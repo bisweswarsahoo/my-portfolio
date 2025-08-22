@@ -16,7 +16,6 @@
 	color: var(--text-white);
 	cursor: default;
 	box-shadow: var(--shadow-medium);
-	font-family: "Poppins", "Inter", system-ui, sans-serif;
 	backdrop-filter: var(--backdrop-filter);
 }
 
