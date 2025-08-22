@@ -14,7 +14,7 @@
 
 .line {
 	fill: none;
-	stroke: white;
+	stroke: var(--nav-stroke);
 	stroke-linecap: round;
 	stroke-linejoin: round;
 	stroke-width: 3;
@@ -41,7 +41,7 @@
 	width: 100%;
 	padding: 0.7rem 2.5vw;
 	box-sizing: border-box;
-	box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+	box-shadow: var(--shadow-navbar);
 	border-radius: 1.2rem;
 	margin: 1.2rem auto 2.2rem auto;
 	position: sticky;
@@ -55,13 +55,30 @@
 	gap: 1.1rem;
 }
 
+.theme-toggle {
+	background: var(--background-surface) !important;
+	border: 1px solid var(--border-primary) !important;
+	color: var(--text-primary);
+	border-radius: 0.5rem !important;
+	padding: 0.5rem !important;
+	cursor: pointer !important;
+	transition: all 0.2s ease !important;
+	font-size: 1.2rem !important;
+}
+
+.theme-toggle:hover {
+	background: var(--background-glass) !important;
+	transform: scale(1.05);
+	box-shadow: var(--shadow-small);
+}
+
 .navbar-profile-img {
 	height: 48px;
 	width: 48px;
 	border-radius: 50%;
 	object-fit: cover;
 	border: 2.5px solid var(--color-border);
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	box-shadow: var(--shadow-small);
 }
 
 .navbar-profile-info {
@@ -117,7 +134,7 @@
 }
 
 .navbar-menu li:hover {
-	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+	box-shadow: var(--shadow-button);
 }
 
 @media (max-width: 1260px) and (min-width: 751px) {

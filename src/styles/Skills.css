@@ -44,7 +44,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	outline: 1px solid rgba(255 255 255 / 0.04);
+	outline: 1px solid var(--skill-group-outline);
 	transition: outline-color 0.28s ease, background 0.35s ease,
 		transform 0.35s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.35s ease;
 }
@@ -57,9 +57,9 @@
 
 .skills-group:hover,
 .skills-group:focus-within {
-	outline-color: rgba(var(--accent-rgb, 99 102 241) / 0.55);
+	outline-color: var(--skill-group-outline-hover);
 	transform: translateY(-4px);
-	box-shadow: 0 8px 22px -6px rgba(0 0 0 / 0.35), 0 2px 4px rgba(0 0 0 / 0.3);
+	box-shadow: var(--shadow-heavy), var(--shadow-small);
 }
 
 .skills-group-title {

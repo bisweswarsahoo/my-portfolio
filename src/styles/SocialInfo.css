@@ -22,55 +22,55 @@
 	height: 90px;
 	outline: none;
 	border: none;
-	background: rgba(20, 22, 34, 0.88);
-	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+	background: var(--background-surface);
+	box-shadow: var(--shadow-medium);
 	border-radius: 18px;
 	transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	font-size: 2.2rem;
-	color: #fff;
+	color: var(--text-white);
 	cursor: pointer;
-	backdrop-filter: blur(8px);
+	backdrop-filter: var(--backdrop-filter);
 }
 
 .card1:hover,
 .card2:hover,
 .card3:hover,
 .card4:hover {
-	color: #fff;
+	color: var(--text-white);
 	transform: scale(1.08);
 }
 
 .card1:hover {
-	background: #cc39a4;
+	background: var(--instagram);
 	transform: scale(1.08) rotate(-2deg);
 }
 .card2:hover {
-	background: #03a9f4;
+	background: var(--twitter);
 	transform: scale(1.08) rotate(2deg);
 }
 .card3:hover {
-	background: #23272e;
+	background: var(--github);
 	transform: scale(1.08) rotate(-2deg);
 }
 .card4:hover {
-	background: #8c9eff;
+	background: var(--discord);
 	transform: scale(1.08) rotate(2deg);
 }
 
 .instagram {
-	fill: #cc39a4;
+	fill: var(--instagram);
 }
 .twitter {
-	fill: #03a9f4;
+	fill: var(--twitter);
 }
 .github {
-	fill: #23272e;
+	fill: var(--github);
 }
 .discord {
-	fill: #8c9eff;
+	fill: var(--discord);
 }
 
 .instagram,
@@ -84,7 +84,7 @@
 .card2:hover .twitter,
 .card3:hover .github,
 .card4:hover .discord {
-	fill: #fff;
+	fill: var(--text-white);
 }
 
 @media (max-width: 600px) {

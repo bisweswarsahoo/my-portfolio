@@ -20,14 +20,14 @@
 	margin: 3rem auto 2rem auto;
 	padding: 2rem 1.5rem 2.4rem;
 	position: relative;
-	background: var(--color-surface-glass, rgba(20, 22, 34, 0.82));
-	backdrop-filter: blur(10px);
-	border: 1.5px solid rgba(255, 255, 255, 0.08);
+	background: var(--color-surface-glass, var(--background-glass));
+	backdrop-filter: var(--backdrop-filter-strong);
+	border: 1.5px solid var(--border-primary);
 	border-radius: 1.5rem;
-	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+	box-shadow: var(--shadow-medium);
 	overflow: hidden;
 	text-align: center;
-	color: var(--color-text, #e7dfdd);
+	color: var(--color-text, var(--text-primary));
 }
 
 .language-slide {
@@ -45,7 +45,7 @@
 	margin: 0 0 0.75rem;
 	font-weight: 700;
 	letter-spacing: 0.02em;
-	color: var(--color-primary, #63b3ed);
+	color: var(--color-primary, var(--primary));
 }
 
 .greeting-text {
@@ -53,7 +53,7 @@
 	line-height: 1.6;
 	margin: 0;
 	font-weight: 500;
-	color: var(--color-text-secondary, #c7c1bf);
+	color: var(--color-text-secondary, var(--text-secondary));
 }
 
 .language-indicators {
@@ -67,22 +67,22 @@
 	width: 14px;
 	height: 14px;
 	border-radius: 50%;
-	background: rgba(255, 255, 255, 0.22);
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+	background: var(--language-indicator);
+	box-shadow: var(--shadow-indicator);
 	cursor: pointer;
 	position: relative;
 	transition: background 0.25s, transform 0.25s;
 }
 
 .indicator:hover {
-	background: rgba(255, 255, 255, 0.4);
+	background: var(--language-indicator-hover);
 	transform: scale(1.15);
 }
 
 .indicator.active {
-	background: var(--color-primary, #63b3ed);
+	background: var(--color-primary, var(--primary));
 	transform: scale(1.35);
-	box-shadow: 0 0 0 4px rgba(99, 179, 237, 0.15), 0 4px 14px rgba(0, 0, 0, 0.35);
+	box-shadow: var(--shadow-indicator-active);
 }
 
 @keyframes fadeSlide {

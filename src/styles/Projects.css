@@ -2,22 +2,22 @@
 	width: 400px;
 	padding: 24px 28px;
 	border-radius: 18px;
-	background: rgba(20, 22, 34, 0.82);
-	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-	border: 1.5px solid rgba(255, 255, 255, 0.08);
+	background: var(--background-glass);
+	box-shadow: var(--shadow-medium);
+	border: 1.5px solid var(--border-primary);
 	font-family: "Poppins", "Inter", system-ui, sans-serif;
-	color: #e7dfdd;
+	color: var(--text-primary);
 	transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.22s,
 		background 0.22s;
 	position: relative;
 	cursor: pointer;
-	backdrop-filter: blur(8px);
+	backdrop-filter: var(--backdrop-filter);
 }
 
 .card:hover {
 	transform: translateY(-8px) scale(1.025);
-	box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
-	background: rgba(30, 34, 54, 0.92);
+	box-shadow: var(--shadow-heavy);
+	background: var(--background-glass-hover);
 }
 
 .mac-header {
@@ -34,27 +34,27 @@
 }
 
 .mac-header .red {
-	background-color: #ff5f57;
+	background-color: var(--mac-red);
 }
 .mac-header .yellow {
-	background-color: #ffbd2e;
+	background-color: var(--mac-yellow);
 }
 .mac-header .green {
-	background-color: #28c941;
+	background-color: var(--mac-green);
 }
 
 .card-title {
 	font-size: 1.25rem;
 	font-weight: 700;
 	margin: 0 0 12px;
-	color: #fff;
+	color: var(--text-white);
 	letter-spacing: 0.01em;
 	text-transform: uppercase;
 }
 
 .card-description {
 	font-size: 1.05rem;
-	color: #b3b3b3;
+	color: var(--text-tertiary);
 	margin-bottom: 18px;
 	line-height: 1.6;
 }
@@ -68,20 +68,20 @@
 	display: inline-block;
 	font-size: 0.85rem;
 	border-radius: 6px;
-	background: rgba(255, 255, 255, 0.07);
+	background: var(--border-primary);
 	padding: 4px 10px;
 	margin: 0 12px 12px 0;
-	color: #dcdcdc;
+	color: var(--text-muted);
 	font-weight: 500;
 }
 
 .code-editor {
-	background: #181c2a;
-	color: #e7dfdd;
+	background: var(--background-code-editor);
+	color: var(--text-primary);
 	font-size: 1rem;
 	line-height: 1.6;
 	border-radius: 8px;
-	border: 1.5px solid #23263a;
+	border: 1.5px solid var(--border-code);
 	padding: 18px;
 	height: 150px;
 	overflow: auto;
@@ -92,7 +92,7 @@
 }
 
 .code-editor::-webkit-scrollbar-thumb {
-	background: #444;
+	background: var(--scrollbar-thumb);
 	border-radius: 4px;
 }
 

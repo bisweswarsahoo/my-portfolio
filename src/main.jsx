@@ -2,6 +2,9 @@ import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
+import { initializeTheme } from "./theme/theme.js";
+
+initializeTheme();
 
 // Wrapper to attach global copy-prevention listeners once.
 function GlobalGuards({ children }) {

@@ -9,6 +9,7 @@ import {
 	FaPhoneAlt,
 } from "react-icons/fa";
 import "../styles/NavigationBar.css";
+import ThemeToggle from "../theme/ThemeToggle.jsx";
 
 const menuItems = [
 	"About",
@@ -39,6 +40,7 @@ const NavigationBar = () => {
 					<span>Bisweswar Sahoo</span>
 					<span className="navbar-profile-role">Developer</span>
 				</div>
+				<ThemeToggle />
 			</div>
 
 			<label
