@@ -3,31 +3,15 @@ import { VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 
 const Card = ({ title, organization, duration, location, details, icon }) => {
-	const [lineColor, setLineColor] = useState("rgb(231, 127, 226)");
+	const [lineColor, setLineColor] = useState("var(--primary)");
 
-	// useEffect(() => {
-	// 	const handleScroll = () => {
-	// 		const scrollY = window.scrollY;
-	// 		if (scrollY < 200) {
-	// 			setLineColor("rgb(185, 101, 181)");
-	// 		} else if (scrollY < 400) {
-	// 			setLineColor("rgb(187, 103, 183)");
-	// 		} else if (scrollY < 600) {
-	// 			setLineColor("rgb(88, 50, 87)");
-	// 		} else {
-	// 			setLineColor("rgb(24, 13, 23)");
-	// 		}
-	// 	};
-	// 	window.addEventListener("scroll", handleScroll);
-	// 	return () => window.removeEventListener("scroll", handleScroll);
-	// }, []);
 	return (
 		<VerticalTimelineElement
 			date={duration}
 			iconStyle={{
-				color: "#000",
-				backgroundColor: "#fff",
-				boxShadow: "0 0 20px rgb(211, 211, 211)",
+				color: "var(--text-primary)",
+				backgroundColor: "var(--background-secondary)",
+				boxShadow: "var(--shadow-medium)",
 			}}
 			icon={
 				<img
@@ -37,17 +21,66 @@ const Card = ({ title, organization, duration, location, details, icon }) => {
 				/>
 			}
 			contentStyle={{
-				background: "#0b0e16",
+				background: "var(--background-card)",
 				borderRadius: "25px",
 				boxShadow: `0 0 20px ${lineColor}`,
 				borderTop: `4px solid ${lineColor}`,
 			}}
-			contentArrowStyle={{ borderRight: "7px solid #0b0e16" }}
+			contentArrowStyle={{ borderRight: `7px solid var(--background-card)` }}
 		>
-			<h1>{title}</h1>
-			<h2 style={{ color: "grey" }}>{organization}</h2>
-			<h3 style={{ color: "lightgrey" }}>{location}</h3>
-			<h3 style={{ fontSize: "14px" }}>{details}</h3>
+			<h1
+				style={{
+					color: "var(--text-primary)",
+					margin: "0 0 1rem 0",
+					fontSize: "1.5rem",
+					fontWeight: "600",
+				}}
+			>
+				{title}
+			</h1>
+			<h2
+				style={{
+					color: "var(--text-secondary)",
+					margin: "0 0 0.75rem 0",
+					fontSize: "1.25rem",
+					fontWeight: "500",
+				}}
+			>
+				{organization}
+			</h2>
+			<h3
+				style={{
+					color: "var(--text-tertiary)",
+					margin: "0 0 0.75rem 0",
+					fontSize: "1.125rem",
+					fontWeight: "400",
+				}}
+			>
+				{location}
+			</h3>
+			<div
+				style={{
+					color: "var(--text-secondary)",
+					margin: "0",
+					fontSize: "0.875rem",
+					lineHeight: "1.5",
+				}}
+			>
+				{Array.isArray(details) ? (
+					<ul style={{ margin: "0", paddingLeft: "1.25rem" }}>
+						{details.map((detail, index) => (
+							<li
+								key={index}
+								style={{ marginBottom: "0.5rem" }}
+							>
+								{detail}
+							</li>
+						))}
+					</ul>
+				) : (
+					details
+				)}
+			</div>
 		</VerticalTimelineElement>
 	);
 };

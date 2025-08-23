@@ -13,6 +13,25 @@
 	backdrop-filter: var(--backdrop-filter);
 }
 
+.projects-title {
+	display: flex;
+	font-size: 40px;
+	font-weight: bold;
+	margin-top: 100px;
+	justify-content: center;
+}
+
+.projects-container {
+	display: flex;
+	justify-content: center;
+	gap: 100px;
+}
+
+.project-card-container {
+	width: 100px;
+	height: auto;
+}
+
 .card:hover {
 	transform: translateY(-8px) scale(1.025);
 	box-shadow: var(--shadow-heavy);
@@ -46,7 +65,7 @@
 	font-size: 1.25rem;
 	font-weight: 700;
 	margin: 0 0 12px;
-	color: var(--text-white);
+	color: var(--text-primary);
 	letter-spacing: 0.01em;
 	text-transform: uppercase;
 }

@@ -45,31 +45,15 @@ const projects = [
 ];
 
 const Projects = () => {
-	const cardWidth = 300;
-	const cardHeight = "auto";
-
 	return (
 		<>
 			<Title
 				level={1}
-				style={{
-					display: "flex",
-					fontSize: "40px",
-					fontWeight: "bold",
-					marginTop: "100px",
-					justifyContent: "center",
-				}}
+				className="projects-title"
 			>
 				Some Projects that have been keeping me busy...
 			</Title>
-			<div
-				style={{
-					padding: "20px",
-					display: "flex",
-					justifyContent: "center",
-					gap: "100px",
-				}}
-			>
+			<div className="projects-container">
 				{projects.map((project, index) => (
 					<motion.div
 						key={index}
@@ -77,10 +61,6 @@ const Projects = () => {
 						initial={{ opacity: 0, x: 50 }}
 						animate={{ opacity: 1, x: 0 }}
 						transition={{ duration: 0.5, delay: index * 0.2 }}
-						style={{
-							width: cardWidth,
-							height: cardHeight,
-						}}
 					>
 						<div className="card">
 							<div className="mac-header">
