@@ -8,6 +8,24 @@ body::-webkit-scrollbar {
 	font-family: "Quicksand", system-ui, sans-serif;
 	line-height: 1.5;
 	font-weight: 400;
+	--font-size-xs: 0.75rem;
+	--font-size-sm: 0.85rem;
+	--font-size-base: 0.95rem;
+	--font-size-md: 1rem;
+	--font-size-lg: 1.05rem;
+	--font-size-xl: 1.08rem;
+	--font-size-nav: 1.13rem;
+	--font-size-btn: 1.15rem;
+	--font-size-card: 1.2rem;
+	--font-size-h4: 1.25rem;
+	--font-size-h3: 1.4rem;
+	--font-size-h2: 2.1rem;
+	--font-size-h1: 2.2rem;
+	--font-size-display: 2.5rem;
+	--font-size-icon-sm: 1rem;
+	--font-size-icon-md: 1.4rem;
+	--font-size-icon-lg: 2.2rem;
+	--font-size-icon-xl: 2.5rem;
 
 	color-scheme: light dark;
 	color: var(--text-primary);

@@ -26,7 +26,7 @@
 
 .cv-name {
 	font-weight: 800;
-	font-size: 2.1rem;
+	font-size: var(--font-size-h2);
 	line-height: 1;
 	letter-spacing: 0.03em;
 	max-width: 24px;
@@ -35,7 +35,7 @@
 }
 
 .cv-info .cv-title {
-	font-size: 1rem;
+	font-size: var(--font-size-md);
 	margin-top: 0.25rem;
 	color: var(--text-tertiary);
 	font-weight: 500;
@@ -54,7 +54,7 @@
 	cursor: pointer;
 	transition: all 0.3s;
 	user-select: none;
-	font-size: 1.05rem;
+	font-size: var(--font-size-lg);
 }
 
 .cv-download-btn:hover {

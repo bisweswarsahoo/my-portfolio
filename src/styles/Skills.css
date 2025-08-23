@@ -63,7 +63,7 @@
 }
 
 .skills-group-title {
-	font-size: 1.08rem;
+	font-size: var(--font-size-xl);
 	font-weight: 700;
 	margin-bottom: 0.95rem;
 	color: var(--color-primary);
@@ -87,7 +87,7 @@
 	flex-direction: column;
 	align-items: center;
 	gap: 0.35rem;
-	font-size: 1.05rem;
+	font-size: var(--font-size-lg);
 	color: var(--color-text-secondary);
 	background: none;
 	border: none;
@@ -121,7 +121,7 @@
 }
 
 .skills-icon-label {
-	font-size: 0.95rem;
+	font-size: var(--font-size-base);
 	font-weight: 500;
 	letter-spacing: 0.015em;
 	text-align: center;
