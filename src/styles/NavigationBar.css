@@ -19,7 +19,7 @@
 	stroke-linejoin: round;
 	stroke-width: 3;
 	transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
-		stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+	           stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .line-top-bottom {
@@ -43,7 +43,7 @@
 	box-sizing: border-box;
 	box-shadow: var(--shadow-navbar);
 	border-radius: 1.2rem;
-	margin: 1.2rem auto 2.2rem auto;
+	margin: 1.2rem auto 2.2rem;
 	position: sticky;
 	top: 0;
 	z-index: 100;
@@ -77,13 +77,13 @@
 	width: 48px;
 	border-radius: 50%;
 	object-fit: cover;
-	border: 2.5px solid var(--color-border);
+	border: 2.5px solid var(--border-primary);
 	box-shadow: var(--shadow-small);
 }
 
 .navbar-profile-info {
 	font-weight: 700;
-	color: var(--color-primary);
+	color: var(--primary);
 	display: flex;
 	flex-direction: column;
 	gap: 0.1rem;
@@ -93,7 +93,7 @@
 
 .navbar-profile-role {
 	font-size: var(--font-size-base);
-	color: var(--color-text-secondary);
+	color: var(--text-secondary);
 	font-weight: 500;
 	letter-spacing: 0.03em;
 }
@@ -101,11 +101,10 @@
 .navbar-menu {
 	display: flex;
 	list-style: none;
-	margin: 0;
+	margin: 0 0.5rem 0 0;
 	padding: 0;
 	font-size: var(--font-size-nav);
 	gap: 1.7rem;
-	margin-right: 0.5rem;
 	font-family: "Inter";
 	font-weight: 600;
 	letter-spacing: 0.04em;
@@ -113,10 +112,10 @@
 
 .navbar-menu li {
 	font-weight: 600;
-	color: var(--color-primary);
+	color: var(--primary);
 	padding: 0.6rem 0.4rem;
-	transition: background 0.18s, color 0.18s, box-shadow 0.18s,
-		letter-spacing 0.18s;
+	transition: background 0.18s ease, color 0.18s ease, 
+	           box-shadow 0.18s ease, letter-spacing 0.18s ease;
 	cursor: pointer;
 	user-select: none;
 	font-size: var(--font-size-nav);
@@ -126,7 +125,6 @@
 	display: inline;
 }
 
-/* Base icon hidden unless medium or explicitly needed */
 .navbar-menu li .nav-icon {
 	margin-right: 0.45rem;
 	font-size: var(--font-size-icon-sm);
@@ -137,13 +135,16 @@
 	box-shadow: var(--shadow-button);
 }
 
+/* Medium screens - icon only navigation */
 @media (max-width: 1260px) and (min-width: 751px) {
 	.hamburger {
 		display: none;
 	}
+	
 	.navbar-menu {
 		gap: 0.9rem;
 	}
+	
 	.navbar-menu li {
 		position: relative;
 		width: 48px;
@@ -154,21 +155,25 @@
 		padding: 0;
 		font-size: var(--font-size-nav);
 	}
+	
 	.navbar-menu li .nav-text {
 		display: none;
 	}
+	
 	.navbar-menu li .nav-icon {
 		margin-right: 0;
 		font-size: var(--font-size-card);
 	}
 }
 
+/* Mobile screens - hamburger menu */
 @media (max-width: 750px) {
 	.navbar {
 		flex-direction: column;
 		gap: 0.6rem;
 		padding: 0.65rem 1vw 0.85rem;
 	}
+	
 	.hamburger {
 		display: block;
 		position: absolute;
@@ -178,6 +183,7 @@
 		border-radius: 0.5rem;
 		background: none;
 	}
+	
 	.navbar-menu {
 		display: none;
 		flex-direction: column;
@@ -187,11 +193,13 @@
 		font-size: var(--font-size-md);
 		margin: 0;
 		padding-top: 0.55rem;
-		border-top: 1px solid var(--color-border);
+		border-top: 1px solid var(--border-primary);
 	}
+	
 	.navbar-menu.open {
 		display: flex;
 	}
+	
 	.navbar-menu li {
 		width: auto;
 		height: auto;
@@ -200,9 +208,11 @@
 		background: transparent;
 		padding: 0.4rem 0.2rem;
 	}
+	
 	.navbar-menu li .nav-text {
 		display: inline;
 	}
+	
 	.navbar-menu li::after {
 		content: none;
 	}

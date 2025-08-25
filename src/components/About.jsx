@@ -1,4 +1,3 @@
-import React from "react";
 import SocialInfo from "./SocialInfo";
 import CVCard from "./CVCard";
 import "../styles/About.css";

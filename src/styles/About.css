@@ -1,26 +1,25 @@
 .about-section {
-	margin: 0 auto;
-	padding: 2.5rem 1.2rem 2rem 1.2rem;
+	margin: 2.5rem auto 0;
+	padding: 2.5rem 1.2rem 2rem;
 	text-align: center;
-	background: var(--color-surface-glass);
+	background: var(--background-glass);
 	border-radius: 1.5rem;
-	box-shadow: var(--color-shadow);
-	color: var(--color-text);
-	margin-top: 2.5rem;
+	box-shadow: var(--shadow-medium);
+	color: var(--text-primary);
 }
 
 .about-title {
 	font-size: var(--font-size-h1);
 	font-weight: 800;
 	margin-bottom: 1.2rem;
-	color: var(--color-primary);
+	color: var(--primary);
 	letter-spacing: 0.01em;
 }
 
 .about-text {
 	font-size: var(--font-size-btn);
 	line-height: 1.8;
-	color: var(--color-text-secondary);
+	color: var(--text-secondary);
 	margin-bottom: 1.1rem;
 }
 
@@ -38,9 +37,10 @@
 	.about-section {
 		padding: 1.2rem 0.5rem;
 	}
+
 	.about-cards {
 		gap: 1.2rem;
 		flex-direction: column;
-		justify-content: space-between;
+		align-items: center;
 	}
 }

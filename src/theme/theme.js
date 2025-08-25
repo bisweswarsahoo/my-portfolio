@@ -2,7 +2,6 @@ export const themes = {
 	dark: {
 		// Core Colors
 		primary: "#1f718fff",
-		primaryHover: "#4299e1",
 
 		// Text Colors
 		textPrimary: "#e7dfdd",
@@ -75,7 +74,6 @@ export const themes = {
 
 		// Accent Colors
 		accent: "#6366f1",
-		accentRgb: "99 102 241",
 
 		// Navigation Colors
 		navStroke: "white",
@@ -85,7 +83,6 @@ export const themes = {
 	light: {
 		// Core Colors
 		primary: "#1f718fff",
-		primaryHover: "#1d4ed8",
 
 		// Text Colors
 		textPrimary: "#1f2937",
@@ -158,7 +155,6 @@ export const themes = {
 
 		// Accent Colors
 		accent: "#6366f1",
-		accentRgb: "99 102 241",
 
 		// Navigation Colors
 		navStroke: "#1f2937",
@@ -197,7 +193,7 @@ export const applyTheme = (themeName) => {
 	root.style.setProperty("--color-card-shadow", theme.shadowCard);
 	root.style.setProperty("--color-border", theme.borderPrimary);
 	root.style.setProperty("--color-link", theme.primary);
-	root.style.setProperty("--accent-rgb", theme.accentRgb);
+	root.style.setProperty("--accent-rgb", "99 102 241");
 };
 
 export const initializeTheme = () => {

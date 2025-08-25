@@ -6,7 +6,6 @@ import {
 	FaCuttlefish,
 	FaGithub,
 	FaGitAlt,
-	FaTerminal,
 	FaHtml5,
 	FaCss3Alt,
 	FaBootstrap,

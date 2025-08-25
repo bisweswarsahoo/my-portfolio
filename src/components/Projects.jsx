@@ -1,8 +1,5 @@
-import { Typography } from "antd";
 import { motion } from "framer-motion";
 import "../styles/Projects.css";
-
-const { Title, Text, Paragraph } = Typography;
 
 const projects = [
 	{
@@ -47,12 +44,9 @@ const projects = [
 const Projects = () => {
 	return (
 		<>
-			<Title
-				level={1}
-				className="projects-title"
-			>
+			<h2 className="projects-title">
 				Some Projects that have been keeping me busy...
-			</Title>
+			</h2>
 			<div className="projects-container">
 				{projects.map((project, index) => (
 					<motion.div

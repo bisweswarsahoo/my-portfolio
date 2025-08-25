@@ -4,11 +4,11 @@ body::-webkit-scrollbar {
 	width: 0 !important;
 	background: transparent !important;
 }
+
 :root {
 	font-family: "Quicksand", system-ui, sans-serif;
 	line-height: 1.5;
 	font-weight: 400;
-	--font-size-xs: 0.75rem;
 	--font-size-sm: 0.85rem;
 	--font-size-base: 0.95rem;
 	--font-size-md: 1rem;
@@ -25,12 +25,10 @@ body::-webkit-scrollbar {
 	--font-size-icon-sm: 1rem;
 	--font-size-icon-md: 1.4rem;
 	--font-size-icon-lg: 2.2rem;
-	--font-size-icon-xl: 2.5rem;
 
 	color-scheme: light dark;
 	color: var(--text-primary);
 	background-color: var(--background-primary);
-
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -41,77 +39,20 @@ body {
 	margin: 0;
 	min-width: 370px;
 	min-height: 100vh;
+	cursor: default;
 }
 html,
 body,
 body *:not(input):not(textarea):not([contenteditable="true"]) {
-	-webkit-user-select: none !important;
-	-moz-user-select: none !important;
-	-ms-user-select: none !important;
 	user-select: none !important;
 }
 
 [contenteditable="true"],
 input,
 textarea {
-	-webkit-user-select: text !important;
-	-moz-user-select: text !important;
-	-ms-user-select: text !important;
 	user-select: text !important;
 }
 
-body {
-	cursor: default;
-}
-
-.project-card {
-	box-shadow: var(--shadow-light);
-}
-
-.project-card:hover {
-	transform: translateY(-8px) !important;
-	box-shadow: var(--shadow-card);
-}
-
-.projects-container {
-	cursor: grab;
-	overflow: hidden;
-	width: 100%;
-	margin: 20px -20px;
-}
-
-.projects-inner {
-	display: flex;
-	gap: 24px;
-	padding: 24px;
-	min-width: min-content;
-	margin: 0 auto;
-}
-
-.project-card-container {
-	flex: 0 0 400px; /* Fixed width */
-	height: 500px; /* Fixed height */
-	padding: 10px 0;
-}
-
-.project-card.dark {
-	background: var(--background-secondary);
-	border: 1px solid var(--border-light);
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-}
-
-.project-card.dark:hover {
-	transform: translateY(-8px) !important;
-	box-shadow: var(--shadow-card-hover);
-}
-
-.project-card.dark .ant-card-body {
-	padding: 24px;
-}
-
-/* Override ant-design card styles */
 .ant-card.project-card.dark {
 	background-color: var(--background-secondary);
 }
