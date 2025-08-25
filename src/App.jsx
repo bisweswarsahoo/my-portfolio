@@ -9,15 +9,26 @@ import Skills from "./components/Skills.jsx";
 import { ThemeProvider } from "./theme/ThemeProvider.jsx";
 
 function App() {
+	const components = [
+		Experience,
+		Education,
+		Skills,
+		Projects,
+		Languages,
+		About,
+	];
+
 	return (
 		<ThemeProvider>
 			<NavigationBar />
-			<Experience />
-			<Education />
-			<Skills />
-			<Projects />
-			<Languages />
-			<About />
+			{components.map((Component, index) => (
+				<div
+					key={index}
+					style={{ margin: "4rem 0" }}
+				>
+					<Component />
+				</div>
+			))}
 		</ThemeProvider>
 	);
 }

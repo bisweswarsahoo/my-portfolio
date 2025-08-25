@@ -1,5 +1,4 @@
 .about-section {
-	margin: 2.5rem auto 0;
 	padding: 2.5rem 1.2rem 2rem;
 	text-align: center;
 	background: var(--background-glass);
@@ -23,19 +22,9 @@
 	margin-bottom: 1.1rem;
 }
 
-.about-cards {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
-	gap: 2.5rem;
-	margin-top: 2.2rem;
-	flex-wrap: wrap;
-	text-align: left;
-}
-
 @media (max-width: 900px) {
 	.about-section {
-		padding: 1.2rem 0.5rem;
+		padding: 1.2rem 0.8rem;
 	}
 
 	.about-cards {

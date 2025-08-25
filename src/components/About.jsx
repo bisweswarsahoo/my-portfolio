@@ -19,11 +19,7 @@ const About = () => (
 		<p className="about-text">
 			Feel free to check out my projects and connect with me!
 		</p>
-		<div className="about-cards">
-			<SocialInfo />
-
-			<CVCard />
-		</div>
+		<SocialInfo />
 		<p>Made by Bisweswar...</p>
 	</section>
 );

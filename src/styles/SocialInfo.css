@@ -1,22 +1,17 @@
 .main {
 	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 0.7em;
-}
-
-.up,
-.down {
-	display: flex;
 	flex-direction: row;
-	gap: 0.7em;
+	gap: 1.7em;
+	justify-content: center;
+	margin: 50px;
+	flex-wrap: wrap;
 }
 
 .card1,
 .card2,
 .card3,
 .card4 {
-	width: 90px;
+	min-width: 90px;
 	height: 90px;
 	outline: none;
 	border: none;
@@ -24,7 +19,7 @@
 	box-shadow: var(--shadow-medium);
 	border-radius: 18px;
 	transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
-	           background 0.22s ease, color 0.22s ease;
+		background 0.22s ease, color 0.22s ease;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -63,33 +58,33 @@
 }
 
 .instagram {
-	fill: var(--instagram);
+	color: var(--instagram);
 }
 
 .twitter {
-	fill: var(--twitter);
+	color: var(--twitter);
 }
 
 .github {
-	fill: var(--github);
+	color: var(--github);
 }
 
 .discord {
-	fill: var(--discord);
+	color: var(--discord);
 }
 
 .instagram,
 .twitter,
 .github,
 .discord {
-	transition: fill 0.2s ease;
+	transition: color 0.2s ease;
 }
 
 .card1:hover .instagram,
 .card2:hover .twitter,
 .card3:hover .github,
 .card4:hover .discord {
-	fill: var(--text-white);
+	color: var(--text-white);
 }
 
 @media (max-width: 600px) {
@@ -97,7 +92,7 @@
 	.card2,
 	.card3,
 	.card4 {
-		width: 64px;
+		min-width: 64px;
 		height: 64px;
 		font-size: var(--font-size-icon-md);
 	}
