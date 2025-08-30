@@ -37,8 +37,6 @@ const themeVariants = {
 		borderSecondary: "rgba(255, 255, 255, 0.09)",
 		borderCode: "#23263a",
 		borderLight: "#e7dfdd30",
-		borderAccent: "#e7dfdd",
-		borderAccentHover: "#e7dfdd99",
 
 		buttonPrimary: "#f8fafc",
 		buttonPrimaryText: "#1f718fff",
@@ -87,8 +85,6 @@ const themeVariants = {
 		borderSecondary: "rgba(0, 0, 0, 0.09)",
 		borderCode: "#e5e7eb",
 		borderLight: "#e5e7eb",
-		borderAccent: "#2563eb",
-		borderAccentHover: "#1d4ed8",
 
 		buttonPrimary: "#000",
 		buttonPrimaryText: "#ffffff",

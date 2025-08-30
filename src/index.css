@@ -52,21 +52,3 @@ input,
 textarea {
 	user-select: text !important;
 }
-
-.ant-card.project-card.dark {
-	background-color: var(--background-secondary);
-}
-
-.ant-typography {
-	color: var(--text-primary) !important;
-}
-
-.ant-btn-primary.ant-btn-background-ghost {
-	border-color: var(--border-accent);
-	color: var(--border-accent);
-}
-
-.ant-btn-primary.ant-btn-background-ghost:hover {
-	border-color: var(--border-accent-hover);
-	color: var(--border-accent-hover);
-}
