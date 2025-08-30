@@ -1,5 +1,4 @@
 import SocialInfo from "./SocialInfo";
-import CVCard from "./CVCard";
 import "../styles/About.css";
 
 const About = () => (
@@ -20,7 +19,7 @@ const About = () => (
 			Feel free to check out my projects and connect with me!
 		</p>
 		<SocialInfo />
-		<p>Made by Bisweswar...</p>
+		<p>Crafted with code & curiousity by Bisweswar Sahoo</p>
 	</section>
 );
 
