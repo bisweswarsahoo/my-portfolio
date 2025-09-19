@@ -68,6 +68,16 @@ npm run build
 npm run preview
 ```
 
+## 🚀 Deployment
+
+This portfolio is configured for automatic deployment to GitHub Pages:
+
+- **Live URL**: https://bisweswarsahoo.github.io/my-portfolio/
+- **Auto-deploy**: Pushes to `main` branch trigger deployment via GitHub Actions
+- **Manual deploy**: Run `npm run deploy` for manual deployment
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
+
 ## 🗺 Roadmap
 
 - Integrate framer-motion for entrance & scroll animations
