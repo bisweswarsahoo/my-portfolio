@@ -4,7 +4,6 @@ const commonThemeProperties = {
 	twitter: "#03a9f4",
 	discord: "#8c9eff",
 	linkedin: "#0a66c2",
-	github: "#1f2937",
 
 	macRed: "#ff5f57",
 	macYellow: "#ffbd2e",
@@ -24,6 +23,7 @@ const themeVariants = {
 		textSecondary: "#c7c1bf",
 		textTertiary: "#b3b3b3",
 		textMuted: "#dcdcdc",
+		github: "#ffffff",
 
 		backgroundPrimary: "#0b0e16",
 		backgroundSecondary: "#1a1f2c",
@@ -72,6 +72,7 @@ const themeVariants = {
 		textSecondary: "#4b5563",
 		textTertiary: "#6b7280",
 		textMuted: "#374151",
+		github: "#1f2937",
 
 		backgroundPrimary: "#f9fafb",
 		backgroundSecondary: "#ffffff",

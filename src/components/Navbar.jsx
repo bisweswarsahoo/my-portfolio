@@ -1,28 +1,59 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
 	FaUser,
 	FaGraduationCap,
 	FaBriefcase,
-	FaCertificate,
 	FaTools,
 	FaFolderOpen,
-	FaPhoneAlt,
 } from "react-icons/fa";
-import "../styles/NavigationBar.css";
+import "../styles/Navbar.css";
 import ThemeToggle from "../theme/ThemeToggle.jsx";
 
 const menuItems = [
-	"About",
-	"Education",
-	"Experience",
-	"Certifications",
-	"Skills",
-	"Projects",
-	"Contact",
+	{ name: "Education", id: "education" },
+	{ name: "Work", id: "work" },
+	{ name: "Skills", id: "skills" },
+	{ name: "Projects", id: "projects" },
+	{ name: "About", id: "about" },
 ];
 
-const NavigationBar = () => {
+const Navbar = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
+	const [activeSection, setActiveSection] = useState("");
+
+	useEffect(() => {
+		const handleScroll = () => {
+			const scrollPos = window.scrollY + 200; // offset
+			let currentSection = "";
+
+			for (const item of menuItems) {
+				const section = document.getElementById(item.id);
+				if (section && section.offsetTop <= scrollPos) {
+					currentSection = item.id;
+				}
+			}
+
+			if (currentSection !== activeSection) {
+				setActiveSection(currentSection);
+			}
+		};
+
+		window.addEventListener("scroll", handleScroll);
+		handleScroll(); // initial check
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, [activeSection]);
+
+	const scrollToSection = (id) => {
+		setMenuOpen(false);
+		const element = document.getElementById(id);
+		if (element) {
+			const y = element.getBoundingClientRect().top + window.scrollY - 80;
+			window.scrollTo({ top: y, behavior: "smooth" });
+		}
+	};
 
 	return (
 		<nav
@@ -33,7 +64,7 @@ const NavigationBar = () => {
 			<div className="navbar-profile">
 				<img
 					className="navbar-profile-img"
-					src="https://media.licdn.com/dms/image/D5603AQGnA-XupodrLw/profile-displayphoto-shrink_800_800/0/1676651618744?e=2147483647&v=beta&t=vAtQ74y1z92R-hqHzY8e3XbDmBiR12OGCS1RWnJ2NFE"
+					src="https://github.com/bisweswarsahoo.png"
 					alt="Bisweswar Sahoo profile"
 				/>
 				<div className="navbar-profile-info">
@@ -74,19 +105,22 @@ const NavigationBar = () => {
 					const iconMap = {
 						About: FaUser,
 						Education: FaGraduationCap,
-						Experience: FaBriefcase,
-						Certifications: FaCertificate,
+						Work: FaBriefcase,
+
 						Skills: FaTools,
 						Projects: FaFolderOpen,
-						Contact: FaPhoneAlt,
 					};
-					const Icon = iconMap[item];
+					const Icon = iconMap[item.name];
 					return (
 						<li
 							key={index}
 							tabIndex={0}
-							aria-label={item}
-							onClick={() => setMenuOpen(false)}
+							aria-label={item.name}
+							onClick={() => scrollToSection(item.id)}
+							className={activeSection === item.id ? "active" : ""}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") scrollToSection(item.id);
+							}}
 						>
 							{Icon && (
 								<Icon
@@ -95,7 +129,7 @@ const NavigationBar = () => {
 									focusable="false"
 								/>
 							)}
-							<span className="nav-text">{item}</span>
+							<span className="nav-text">{item.name}</span>
 						</li>
 					);
 				})}
@@ -104,4 +138,4 @@ const NavigationBar = () => {
 	);
 };
 
-export default NavigationBar;
+export default Navbar;

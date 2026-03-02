@@ -1,6 +1,6 @@
 import { VerticalTimeline } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import Card from "./Card";
+import Card from "../components/Card";
 import jabszlogo from "../assets/jabsz-logo.png";
 
 const experienceItems = [
@@ -20,7 +20,7 @@ const experienceItems = [
 	},
 ];
 
-const Experience = () => {
+const Work = () => {
 	return (
 		<>
 			<h1 style={{ display: "flex", justifyContent: "center" }}>Experience</h1>
@@ -36,4 +36,4 @@ const Experience = () => {
 	);
 };
 
-export default Experience;
+export default Work;

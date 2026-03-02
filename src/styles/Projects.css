@@ -47,7 +47,7 @@
 	justify-content: center;
 	cursor: pointer;
 	color: var(--text-primary);
-	font-size: 28px;
+	font-size: var(--font-size-icon-md);
 	z-index: 10;
 	transition: all 0.3s ease;
 	backdrop-filter: var(--backdrop-filter);
@@ -70,15 +70,17 @@
 }
 
 .card {
-	width: 490px;
+	width: min(85vw, 490px);
 	padding: 24px 28px;
 	border-radius: 18px;
 	background: var(--background-glass);
 	box-shadow: var(--shadow-medium);
 	border: 1.5px solid var(--border-primary);
 	color: var(--text-primary);
-	transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
-		box-shadow 0.22s ease, background 0.22s ease;
+	transition:
+		transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+		box-shadow 0.22s ease,
+		background 0.22s ease;
 	cursor: pointer;
 	backdrop-filter: var(--backdrop-filter);
 }
@@ -182,6 +184,7 @@
 	.projects-title {
 		font-size: var(--font-size-h3);
 		margin-top: 60px;
+		margin-bottom: 20px;
 	}
 
 	.projects-wrapper {
@@ -203,7 +206,7 @@
 	}
 
 	.card {
-		width: 450px;
+		width: min(85vw, 450px);
 	}
 
 	.nav-arrow {
@@ -217,7 +220,7 @@
 
 	.project-link {
 		padding: 6px 12px;
-		font-size: var(--font-size-xs);
+		font-size: var(--font-size-sm);
 	}
 }
 

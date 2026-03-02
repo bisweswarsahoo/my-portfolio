@@ -1,4 +1,4 @@
-import Card from "./Card";
+import Card from "../components/Card";
 import { VerticalTimeline } from "react-vertical-timeline-component";
 import amitylogo from "../assets/amity-university-logo.png";
 import adyantlogo from "../assets/adyant-logo.png";
@@ -13,7 +13,7 @@ const Education = () => {
 					title="Bachelor of Technology (B. Tech) in Computer Science & Engineering"
 					organization="Amity University"
 					location="Noida, India"
-					details="CGPA: 8.23"
+					details="CGPA: 8.28"
 					duration="2022 - 2026"
 					icon={amitylogo}
 				/>

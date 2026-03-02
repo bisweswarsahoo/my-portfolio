@@ -11,7 +11,7 @@
 	position: relative;
 	cursor: pointer;
 	transition: all 0.2s;
-	font-size: 17px;
+	font-size: var(--font-size-md);
 	border-radius: 10px;
 }
 
@@ -25,9 +25,11 @@
 	pointer-events: none;
 	transition: all 0.3s;
 	border-radius: 15px;
-	box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.2),
+	box-shadow:
+		inset 5px 5px 5px rgba(0, 0, 0, 0.2),
 		inset -5px -5px 15px rgba(255, 255, 255, 0.1),
-		5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(255, 255, 255, 0.1);
+		5px 5px 15px rgba(0, 0, 0, 0.3),
+		-5px -5px 15px rgba(255, 255, 255, 0.1);
 	z-index: 1000;
 }
 
@@ -54,7 +56,7 @@
 .img {
 	width: 50px;
 	height: 50px;
-	font-size: 16px;
+	font-size: var(--font-size-base);
 	font-weight: 700;
 	border: 1px solid var(--color-primary);
 	border-radius: 10px;
@@ -66,7 +68,7 @@
 }
 
 .name {
-	font-size: 17px;
+	font-size: var(--font-size-md);
 	font-weight: 700;
 	color: var(--color-primary);
 }
@@ -80,13 +82,13 @@
 
 .username {
 	color: var(--text-secondary);
-	font-size: 14px;
+	font-size: var(--font-size-sm);
 }
 
 .about {
 	color: var(--text-secondary);
 	padding-top: 5px;
-	font-size: 14px;
+	font-size: var(--font-size-sm);
 }
 
 .icon {
@@ -126,9 +128,11 @@
 	opacity: 0;
 	font-weight: 500;
 	transform: translateX(-50%);
-	transition: bottom 0.3s ease, opacity 0.3s ease;
+	transition:
+		bottom 0.3s ease,
+		opacity 0.3s ease;
 	color: var(--text-primary);
-	font-size: 14px;
+	font-size: var(--font-size-sm);
 }
 
 .icon:hover .text {
@@ -161,7 +165,7 @@
 }
 
 .layer span.fab {
-	font-size: 30px;
+	font-size: var(--font-size-icon-lg);
 	line-height: 90px;
 	text-align: center;
 	display: flex;
@@ -253,7 +257,7 @@
 
 	.layer span.fab {
 		line-height: 64px;
-		font-size: 24px;
+		font-size: var(--font-size-icon-md);
 	}
 
 	.main {
@@ -269,10 +273,10 @@
 	.img {
 		width: 40px;
 		height: 40px;
-		font-size: 14px;
+		font-size: var(--font-size-sm);
 	}
 
 	.name {
-		font-size: 15px;
+		font-size: var(--font-size-base);
 	}
 }

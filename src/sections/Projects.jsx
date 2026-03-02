@@ -46,6 +46,31 @@ const projects = [
 		sourceCode: "#",
 		liveDemo: "#",
 	},
+	{
+		name: "ScamGuard AI – Browser-Based Multi-Modal Scam Detection System",
+		techStack:
+			"Python, FastAPI, Machine Learning, Chrome Extension API, TF-IDF",
+		description: [
+			"Built a Chrome extension with ML-powered real-time scam detection achieving ~97% accuracy and 0.99 ROC-AUC",
+			"Developed FastAPI backend serving a hybrid text classifier using TF-IDF and handcrafted lexical features with ~90% scam recall",
+			"Implemented content script for webpage text extraction with risk score visualization and explanation engine",
+			"Designed modular architecture supporting future multi-modal expansion for image (OCR + CNN) and audio fraud detection",
+		],
+		sourceCode: "#",
+		liveDemo: "#",
+	},
+	{
+		name: "SeeMeWatch – Movie & TV Show Tracking App",
+		techStack: "React Native, Expo, TypeScript, Zustand, MMKV, TMDB API",
+		description: [
+			"Built a comprehensive mobile app for tracking movies and TV shows with integration to TMDB and Simkl APIs",
+			"Implemented efficient state management using Zustand and high-performance local storage with react-native-mmkv",
+			"Developed features including custom collections, watchlist management, search functionality, and automatic viewing history tracking",
+			"Designed fully internationalized UI with dark/light theme support and smooth animations using Reanimated",
+		],
+		sourceCode: "#",
+		liveDemo: "#",
+	},
 ];
 
 const Projects = () => {
