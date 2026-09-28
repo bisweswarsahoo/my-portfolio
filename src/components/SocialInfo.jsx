@@ -6,65 +6,17 @@ import {
 	FaDiscord,
 	FaLinkedin,
 } from "react-icons/fa";
+import portfolioData from "../data/portfolioData.js";
 
 const SocialInfo = () => {
-	const socialData = [
-		{
-			icon: FaInstagram,
-			className: "instagram",
-			cardClass: "card1",
-			img: "IG",
-			name: "Instagram",
-			username: "@_bisweswarsahoo_",
-			about: "Follow for updates",
-			text: "Instagram",
-			href: "#",
-		},
-		{
-			icon: FaTwitter,
-			className: "twitter",
-			cardClass: "card2",
-			img: "TW",
-			name: "Twitter",
-			username: "@bisweswarsahoo",
-			about: "Latest tweets",
-			text: "Twitter",
-			href: "#",
-		},
-		{
-			icon: FaGithub,
-			className: "github",
-			cardClass: "card3",
-			img: "GH",
-			name: "GitHub",
-			username: "@bisweswarsahoo",
-			about: "15+ Repositories",
-			text: "GitHub",
-			href: "https://github.com/bisweswarsahoo",
-		},
-		{
-			icon: FaDiscord,
-			className: "discord",
-			cardClass: "card4",
-			img: "DC",
-			name: "Discord",
-			username: "@bisweswarsahoo",
-			about: "Join the community",
-			text: "Discord",
-			href: "#",
-		},
-		{
-			icon: FaLinkedin,
-			className: "linkedin",
-			cardClass: "card5",
-			img: "LI",
-			name: "LinkedIn",
-			username: "@bisweswarsahoo",
-			about: "Professional network",
-			text: "LinkedIn",
-			href: "https://linkedin.com/in/bisweswarsahoo",
-		},
-	];
+	const iconData = {
+		instagram: { icon: FaInstagram, className: "instagram", cardClass: "card1", img: "IG" },
+		twitter: { icon: FaTwitter, className: "twitter", cardClass: "card2", img: "TW" },
+		github: { icon: FaGithub, className: "github", cardClass: "card3", img: "GH" },
+		discord: { icon: FaDiscord, className: "discord", cardClass: "card4", img: "DC" },
+		linkedin: { icon: FaLinkedin, className: "linkedin", cardClass: "card5", img: "LI" },
+	};
+	const socialData = portfolioData.socials.map((social) => ({ ...iconData[social.key], ...social }));
 
 	return (
 		<div className="main">

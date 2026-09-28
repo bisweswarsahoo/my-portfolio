@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import "../styles/Navbar.css";
 import ThemeToggle from "../theme/ThemeToggle.jsx";
+import portfolioData from "../data/portfolioData.js";
 
 const menuItems = [
 	{ name: "Education", id: "education" },
@@ -64,12 +65,12 @@ const Navbar = () => {
 			<div className="navbar-profile">
 				<img
 					className="navbar-profile-img"
-					src="https://github.com/bisweswarsahoo.png"
-					alt="Bisweswar Sahoo profile"
+					src={portfolioData.profileImage}
+					alt={`${portfolioData.name} profile`}
 				/>
 				<div className="navbar-profile-info">
-					<span>Bisweswar Sahoo</span>
-					<span className="navbar-profile-role">Developer</span>
+					<span>{portfolioData.name}</span>
+					<span className="navbar-profile-role">{portfolioData.role}</span>
 				</div>
 				<ThemeToggle />
 			</div>

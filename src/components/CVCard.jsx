@@ -1,14 +1,39 @@
 import "../styles/CVCard.css";
+import { useState } from "react";
+import portfolioData from "../data/portfolioData.js";
+import { generateResumePdf } from "../cv/resumeTemplate.js";
 
 const CVCard = () => {
+	const [isDownloading, setIsDownloading] = useState(false);
+	const [downloadError, setDownloadError] = useState("");
+
+	const handleDownload = async () => {
+		setIsDownloading(true);
+		setDownloadError("");
+		try {
+			await generateResumePdf(portfolioData);
+		} catch (error) {
+			console.error("CV download failed", error);
+			setDownloadError(error instanceof Error ? `PDF error: ${error.message}` : "Unable to create the PDF. Please try again.");
+		} finally {
+			setIsDownloading(false);
+		}
+	};
+
 	return (
 		<div className="cv-card relative">
 			<div className="cv-info">
-				<span className="cv-name">Bisweswar Sahoo</span>
-				<p className="cv-title">Fullstack Developer</p>
+				<span className="cv-name">{portfolioData.name}</span>
+				<p className="cv-title">{portfolioData.title}</p>
 			</div>
-			<button className="cv-download-btn">
-				Download CV
+			<button
+				className="cv-download-btn"
+				onClick={handleDownload}
+				disabled={isDownloading}
+				type="button"
+				aria-label="Download CV as PDF"
+			>
+				{isDownloading ? "Preparing PDF..." : "Download CV"}
 				<svg
 					className="download-icon"
 					height="24"
@@ -24,6 +49,7 @@ const CVCard = () => {
 					/>
 				</svg>
 			</button>
+			{downloadError && <span className="cv-download-error">{downloadError}</span>}
 
 			<svg
 				className="bg-svg svg1"

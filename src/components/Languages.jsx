@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
 import "../styles/Languages.css";
+import portfolioData from "../data/portfolioData.js";
 
 const Languages = () => {
-	const languages = [
-		{ name: "English", greeting: "Hi, I am Bisweswar Sahoo." },
-		{ name: "Hindi", greeting: "नमस्ते, मैं बिस्वेश्वर साहू हूँ।" },
-		{ name: "Odia (Native)", greeting: "ନମସ୍କାର, ମୁଁ ବିଶ୍ବେଶ୍ବର ସାହୁ।" },
-		{ name: "French (Elemental)", greeting: "Salut, je suis Bisweswar Sahoo." },
-	];
+	const languages = portfolioData.languages.filter((language) => language.name || language.level);
+	if (!languages.length) return null;
 
 	const [currentIndex, setCurrentIndex] = useState(0);
 

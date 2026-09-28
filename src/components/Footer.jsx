@@ -1,5 +1,7 @@
 import "../styles/Footer.css";
 import SocialInfo from "./SocialInfo";
+import portfolioData from "../data/portfolioData.js";
+import CVCard from "./CVCard";
 
 const Footer = () => {
 	const currentYear = new Date().getFullYear();
@@ -10,27 +12,16 @@ const Footer = () => {
 			id="about"
 		>
 			<div className="footer-content">
-				<h2 className="footer-name">About Me</h2>
+				<h2 className="footer-name">{portfolioData.about.heading}</h2>
 				<div className="footer-about-text">
-					<p>
-						Hello! I'm a passionate software developer with expertise in
-						full-stack development, mobile applications, and cloud-based
-						solutions. I love solving complex problems and creating scalable
-						applications that make a difference.
-					</p>
-					<p>
-						My technical skills include working with{" "}
-						<strong>React, Node.js, Java, Python, MongoDB</strong> etc. I am
-						always exploring new technologies and love collaborating on exciting
-						projects.
-					</p>
-					<p>Feel free to check out my projects and connect with me!</p>
+					{portfolioData.about.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
 				</div>
 
 				<div className="footer-socials-container">
 					<SocialInfo />
 				</div>
 			</div>
+			<CVCard />
 
 			<div
 				className="footer-bottom-wrapper"
@@ -40,13 +31,13 @@ const Footer = () => {
 					{/* Copyright */}
 					<p className="footer-copyright">
 						&copy; {currentYear}{" "}
-						<span className="footer-copyright-name">Bisweswar Sahoo</span>. All
+						<span className="footer-copyright-name">{portfolioData.name}</span>. All
 						rights reserved.
 					</p>
 
 					{/* Disclaimer */}
 					<p className="footer-disclaimer">
-						Building scalable and impactful digital solutions
+						{portfolioData.about.disclaimer}
 					</p>
 				</div>
 			</div>

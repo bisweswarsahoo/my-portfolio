@@ -1,0 +1,85 @@
+\documentclass[a4paper,10pt]{article}
+
+%------------------------------------------------------------------------------
+% PACKAGES
+%------------------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[left=0.9in, right=0.9in, top=0.9in, bottom=0.9in]{geometry}
+\usepackage{titlesec}       % section heading style
+\usepackage{enumitem}       % bullet list spacing
+\usepackage{xcolor}         % colours (needed for \textcolor)
+\usepackage{hyperref}       % clickable links
+\usepackage{fontawesome5}   % icons (envelope, phone, GitHub, LinkedIn)
+\usepackage{graphicx}       % \reflectbox for the phone icon
+
+%------------------------------------------------------------------------------
+% STYLING
+%------------------------------------------------------------------------------
+% Section headings: large, bold, with a rule underneath
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+
+% Hyperlink appearance
+\hypersetup{
+    colorlinks=true,
+    urlcolor=cyan
+}
+
+\setlength{\parindent}{0pt}
+\pagestyle{empty}
+
+%------------------------------------------------------------------------------
+% REUSABLE MACROS
+%------------------------------------------------------------------------------
+% \entry{Bold title}{Right-aligned date}{Italic subtitle}
+%   For projects, jobs and competitions. Use {} for any part you want empty.
+\newcommand{\entry}[3]{%
+    \textbf{#1} \hfill #2 \\
+    \textit{#3}\par\noppagebreak
+}
+
+% \edu{Degree or school}{Institution}{Years}{Grade line}
+%   For the Education section.
+\newcommand{\edu}[4]{%
+    \textbf{#1} \\
+    #2 \hfill #3 \\
+    #4\par
+}
+
+% \gap adds a small space between two entries
+\newcommand{\gap}{\vspace{6pt}}
+
+\begin{document}
+
+%==============================================================================
+% HEADER
+%==============================================================================
+% INSTRUCTION: Write your full name in capitals. It links to your portfolio;
+%              remove the \href wrapper if you do not have one.
+% INSTRUCTION: Keep only the contact items you want shown. For each \href the
+%              real URL comes first and the visible text second.
+\begin{center}
+    {\LARGE \href{((PORTFOLIO URL))}{\textcolor{black}{\textbf{((FULL NAME))}}}} \\[4pt]
+    \faEnvelope~ \href{mailto:((EMAIL ADDRESS))}{((EMAIL ADDRESS))} \quad
+    \reflectbox{\faPhone}~ \href{tel:((PHONE WITH COUNTRY CODE))}{((PHONE DISPLAY FORMAT))} \\
+    \faGithub~ \href{https://github.com/((GITHUB USERNAME))}{github.com/((GITHUB USERNAME))} \quad
+    \faLinkedin~ \href{https://www.linkedin.com/in/((LINKEDIN USERNAME))}{linkedin.com/in/((LINKEDIN USERNAME))}
+\end{center}
+
+\section*{Projects}
+((PROJECTS))
+
+\section*{Experience}
+((EXPERIENCE))
+
+\section*{Education}
+((EDUCATION))
+
+\section*{Technical Skills}
+\begin{itemize}
+((SKILLS))
+\end{itemize}
+
+\section*{Competitions}
+((OPTIONAL_SECTIONS))
+
+\end{document}
