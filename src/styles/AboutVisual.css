@@ -773,16 +773,17 @@
 @media (max-width: 1024px) {
   .about-visual-root {
     max-width: 520px;
-    height: 540px;
+    height: 520px;
+    min-height: 480px;
   }
 
   .av-planet-wrap {
-    width: 240px;
-    height: 240px;
+    width: 230px;
+    height: 230px;
   }
 
   .av-portrait-wrap {
-    width: clamp(330px, 46vw, 410px);
+    width: clamp(320px, 46vw, 400px);
   }
 
   .av-card {
@@ -812,57 +813,60 @@
 /* Mobile (<= 768px) */
 @media (max-width: 768px) {
   .about-visual-root {
-    max-width: 420px;
-    height: 480px;
-    min-height: 460px;
+    width: 100%;
+    max-width: 440px;
+    height: 460px;
+    min-height: 420px;
+    margin: 0 auto;
+    overflow: hidden;
   }
 
   .av-planet-wrap {
-    width: 200px;
-    height: 200px;
+    width: 190px;
+    height: 190px;
   }
 
   .av-portrait-wrap {
-    width: clamp(300px, 76vw, 340px);
+    width: min(84vw, 340px);
   }
 
   .av-terminal-float {
-    top: 3%;
-    left: 28%;
-    font-size: 0.68rem;
+    top: 2%;
+    left: 24%;
+    font-size: 0.66rem;
     padding: 4px 8px;
   }
 
   /* Compact card arrangement on mobile avoiding overflow */
   .av-card {
     padding: 5px 8px;
-    min-width: 82px;
-    max-width: 102px;
+    min-width: 80px;
+    max-width: 100px;
     border-radius: 9px;
   }
 
   .av-card--ai {
-    top: 10%;
-    left: 1%;
+    top: 8%;
+    left: 2%;
   }
 
   .av-card--models {
-    top: 44%;
-    left: 0;
+    top: 42%;
+    left: 1%;
   }
 
   .av-card--db {
     top: 76%;
-    left: 4%;
+    left: 2%;
   }
 
   .av-card--fullstack {
-    top: 12%;
-    right: 1%;
+    top: 10%;
+    right: 2%;
   }
 
   .av-card--cloud {
-    top: 68%;
+    top: 70%;
     right: 2%;
   }
 
@@ -884,8 +888,8 @@
   }
 
   .av-impact-wrap {
-    bottom: -15px;
-    left: 5%;
+    bottom: 0px;
+    left: 3%;
   }
 
   .av-impact-text {
@@ -893,30 +897,67 @@
   }
 
   .av-impact-arrow {
-    width: 40px;
-    height: 32px;
+    width: 38px;
+    height: 30px;
   }
 }
 
 /* Small Mobile (<= 480px) */
 @media (max-width: 480px) {
   .about-visual-root {
-    max-width: 360px;
-    height: 440px;
+    max-width: 100%;
+    height: 420px;
+    min-height: 390px;
   }
 
   .av-portrait-wrap {
-    width: 250px;
+    width: clamp(220px, 70vw, 275px);
   }
 
   .av-planet-wrap {
-    width: 170px;
-    height: 170px;
+    width: 155px;
+    height: 155px;
+  }
+
+  .av-terminal-float {
+    top: 1.5%;
+    left: 16%;
+    font-size: 0.62rem;
+    padding: 3px 6px;
+  }
+
+  .av-card {
+    padding: 4px 6px;
+    min-width: 72px;
+    max-width: 92px;
+    border-radius: 8px;
+  }
+
+  .av-card-title {
+    font-size: 0.64rem;
+  }
+
+  .av-card-item {
+    font-size: 0.56rem;
   }
 
   .av-card--models .av-card-list,
   .av-card--cloud .av-card-list {
     display: none;
+  }
+
+  .av-impact-wrap {
+    bottom: -4px;
+    left: 2%;
+  }
+
+  .av-impact-text {
+    font-size: 1.12rem;
+  }
+
+  .av-impact-arrow {
+    width: 32px;
+    height: 25px;
   }
 }
 

@@ -85,23 +85,40 @@ const Projects = () => {
 	}, [handleNext, handlePrev]);
 
 	// Touch swipe support for mobile
+	const touchStartY = useRef(null);
+
 	const handleTouchStart = (e) => {
+		// Prevent swipe conflict when user touches interactive controls or thumbnail strip
+		if (
+			e.target.closest(
+				".ps-thumbnails-strip, .ps-nav-arrow, .ps-archive-btn, .ps-actions, button, a"
+			)
+		) {
+			touchStartX.current = null;
+			touchStartY.current = null;
+			return;
+		}
 		touchStartX.current = e.touches[0].clientX;
+		touchStartY.current = e.touches[0].clientY;
 	};
 
 	const handleTouchEnd = (e) => {
-		if (touchStartX.current === null) return;
+		if (touchStartX.current === null || touchStartY.current === null) return;
 		const touchEndX = e.changedTouches[0].clientX;
-		const diff = touchStartX.current - touchEndX;
+		const touchEndY = e.changedTouches[0].clientY;
+		const diffX = touchStartX.current - touchEndX;
+		const diffY = touchStartY.current - touchEndY;
 
-		if (Math.abs(diff) > 50) {
-			if (diff > 0) {
+		// Only change projects on deliberate horizontal swipe (horizontal movement > 1.5x vertical movement)
+		if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+			if (diffX > 0) {
 				handleNext();
 			} else {
 				handlePrev();
 			}
 		}
 		touchStartX.current = null;
+		touchStartY.current = null;
 	};
 
 	if (!projects.length) return null;

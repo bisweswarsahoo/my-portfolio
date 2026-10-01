@@ -953,6 +953,11 @@
 
 /* Tablet (max-width: 900px) */
 @media (max-width: 900px) {
+	.orbital-section-wrapper {
+		padding: 3.5rem 1.25rem 2rem;
+		min-height: auto;
+	}
+
 	.orbital-stage {
 		height: 520px;
 		max-width: 740px;
@@ -971,69 +976,126 @@
 /* Mobile (max-width: 640px) */
 @media (max-width: 640px) {
 	.orbital-section-wrapper {
-		padding: 2.8rem 0.8rem 1.5rem;
+		padding: 2.5rem 0.8rem 1.5rem;
 		min-height: auto;
+		overflow-x: hidden;
 	}
 
 	.orbital-stage {
-		height: 520px;
-		margin: 0.8rem auto;
+		height: 490px;
+		margin: 0.6rem auto;
+		max-width: 100%;
+		overflow: hidden;
 	}
 
 	/* Adjust coordinates on mobile to prevent edge clipping */
-	.planet-pos-english { top: 9%; left: 50%; }
-	.planet-pos-french  { top: 25%; left: 15%; }
-	.planet-pos-chinese { top: 25%; left: 85%; }
-	.planet-pos-hindi   { top: 67%; left: 15%; }
-	.planet-pos-odia    { top: 67%; left: 85%; }
-	.planet-pos-spanish { top: 85%; left: 50%; }
+	.planet-pos-english { top: 8%; left: 50%; }
+	.planet-pos-french  { top: 24%; left: 19%; }
+	.planet-pos-chinese { top: 24%; left: 81%; }
+	.planet-pos-hindi   { top: 68%; left: 19%; }
+	.planet-pos-odia    { top: 68%; left: 81%; }
+	.planet-pos-spanish { top: 86%; left: 50%; }
 
-	.planet-english { width: 54px; height: 54px; }
-	.planet-hindi, .planet-odia { width: 50px; height: 50px; }
-	.planet-french, .planet-chinese, .planet-spanish { width: 48px; height: 48px; }
+	.planet-english { width: 52px; height: 52px; }
+	.planet-hindi, .planet-odia { width: 48px; height: 48px; }
+	.planet-french, .planet-chinese, .planet-spanish { width: 46px; height: 46px; }
 
-	.planet-name { font-size: 0.86rem; }
-	.planet-level { font-size: 0.68rem; }
+	.planet-name { font-size: 0.82rem; }
+	.planet-level { font-size: 0.65rem; }
 
-	.core-disc { width: 84px; height: 84px; }
-	.central-core-container { width: 98px; height: 98px; }
-	.core-label { font-size: 0.66rem; letter-spacing: 0.18em; }
-	.core-underline { width: 22px; }
-	.core-dynamic-greeting { font-size: 0.8rem; }
+	/* Safe text and quote alignments preventing edge overflow */
+	.planet-pos-chinese .planet-info,
+	.planet-pos-odia .planet-info {
+		align-items: flex-end;
+		text-align: right;
+	}
+
+	.planet-pos-french .planet-info,
+	.planet-pos-hindi .planet-info {
+		align-items: flex-start;
+		text-align: left;
+	}
+
+	.planet-pos-french .planet-native-quote,
+	.planet-pos-hindi .planet-native-quote {
+		left: 0;
+		transform: translateX(0);
+	}
+
+	.planet-pos-chinese .planet-native-quote,
+	.planet-pos-odia .planet-native-quote {
+		left: auto;
+		right: 0;
+		transform: translateX(0);
+	}
+
+	.planet-pos-english .planet-native-quote,
+	.planet-pos-spanish .planet-native-quote {
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.core-disc { width: 82px; height: 82px; }
+	.central-core-container { width: 94px; height: 94px; }
+	.core-label { font-size: 0.64rem; letter-spacing: 0.16em; }
+	.core-underline { width: 20px; }
+	.core-dynamic-greeting { font-size: 0.78rem; }
 
 	.satellite-greeting-text {
-		font-size: 10px;
+		font-size: 9.5px;
 	}
 
 	.orbital-motto {
 		font-size: 0.58rem;
 		gap: 8px;
-		letter-spacing: 0.18em;
+		letter-spacing: 0.16em;
 	}
 
-	.status-track { width: 180px; }
+	.status-track { width: 170px; }
 
 	.planet-native-quote {
 		white-space: normal;
-		max-width: 160px;
+		max-width: 140px;
 		text-align: center;
+		padding: 4px 8px;
+	}
+
+	.quote-text {
+		font-size: 0.72rem;
 	}
 }
 
-/* Small Mobile Screens (max-width: 400px) */
-@media (max-width: 400px) {
-	.planet-pos-french  { left: 13%; }
-	.planet-pos-chinese { left: 87%; }
-	.planet-pos-hindi   { left: 13%; }
-	.planet-pos-odia    { left: 87%; }
+/* Small Mobile Screens (max-width: 420px) */
+@media (max-width: 420px) {
+	.orbital-stage {
+		height: 460px;
+	}
 
-	.planet-english { width: 48px; height: 48px; }
-	.planet-hindi, .planet-odia { width: 45px; height: 45px; }
-	.planet-french, .planet-chinese, .planet-spanish { width: 44px; height: 44px; }
+	.planet-pos-french  { left: 16%; }
+	.planet-pos-chinese { left: 84%; }
+	.planet-pos-hindi   { left: 16%; }
+	.planet-pos-odia    { left: 84%; }
+
+	.planet-english { width: 46px; height: 46px; }
+	.planet-hindi, .planet-odia { width: 44px; height: 44px; }
+	.planet-french, .planet-chinese, .planet-spanish { width: 42px; height: 42px; }
+
+	.planet-name { font-size: 0.76rem; }
+	.planet-level { font-size: 0.6rem; }
+
+	.core-disc { width: 76px; height: 76px; }
+	.central-core-container { width: 88px; height: 88px; }
+	.core-label { font-size: 0.58rem; letter-spacing: 0.12em; }
+	.core-dynamic-greeting { font-size: 0.72rem; }
 
 	.orbital-motto {
-		font-size: 0.54rem;
-		letter-spacing: 0.14em;
+		font-size: 0.52rem;
+		letter-spacing: 0.12em;
+		gap: 6px;
+	}
+
+	.planet-native-quote {
+		max-width: 125px;
 	}
 }
 

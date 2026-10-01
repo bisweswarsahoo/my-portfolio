@@ -7,6 +7,7 @@
   position: relative;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   min-height: 640px;
   overflow: hidden;
   box-sizing: border-box;
@@ -561,6 +562,9 @@
 
 /* Tablet (<= 1024px) */
 @media (max-width: 1024px) {
+  .skills-loop-wrapper {
+    min-height: 580px;
+  }
   .skills-main-title {
     font-size: 2.2rem;
   }
@@ -575,27 +579,39 @@
 
 /* Mobile (<= 768px) */
 @media (max-width: 768px) {
+  .skills-loop-wrapper {
+    min-height: 520px;
+  }
   .skills-fixed-header {
-    padding-top: 14px;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-top: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   .skills-main-title {
-    font-size: 1.75rem;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
   }
   .skills-subtitle {
-    font-size: 0.78rem;
-    max-width: 320px;
+    font-size: 0.75rem;
+    max-width: 310px;
+    line-height: 1.35;
   }
   .skills-hud-bar {
-    gap: 0.5rem;
+    gap: 0.45rem;
+    margin-top: 0.35rem;
   }
   .skills-categories-pill {
     padding: 3px;
+    max-width: calc(100vw - 20px);
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
   }
   .skills-cat-btn {
     padding: 4px 9px;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
+  }
+  .skills-recenter-btn {
+    padding: 4px 10px;
+    font-size: 0.68rem;
   }
   .skills-count-pill {
     display: none; /* Conserve vertical space on mobile */
@@ -603,52 +619,70 @@
 
   /* Compact item sizes for mobile touchscreens */
   .tech-loop-item {
-    width: 110px;
-    height: 110px;
+    width: 105px;
+    height: 105px;
   }
   .tech-loop-plate {
-    width: 50px;
-    height: 50px;
-    border-radius: 14px;
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
   }
   .tech-loop-icon {
-    font-size: 1.55rem;
+    font-size: 1.5rem;
   }
   .tech-loop-label {
-    font-size: 0.66rem;
+    font-size: 0.64rem;
   }
   .tech-loop-item.is-hovered .tech-loop-scaler {
-    scale: 1.35;
+    scale: 1.3;
   }
   .tech-loop-tooltip {
-    width: 180px;
+    max-width: 220px;
+    min-width: 160px;
+    font-size: 0.7rem;
   }
   .skills-drag-hint {
-    font-size: 0.68rem;
-    padding: 5px 12px;
-    bottom: 14px;
+    font-size: 0.64rem;
+    padding: 4px 11px;
+    bottom: 12px;
   }
 }
 
 /* Small Mobile (<= 480px) */
 @media (max-width: 480px) {
+  .skills-loop-wrapper {
+    min-height: 480px;
+  }
+  .skills-badge {
+    padding: 3px 10px;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+  }
   .skills-main-title {
-    font-size: 1.5rem;
+    font-size: 1.45rem;
   }
   .skills-subtitle {
     display: none; /* Maximize visible canvas area on very small phones */
   }
   .tech-loop-plate {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
   }
   .tech-loop-icon {
-    font-size: 1.35rem;
+    font-size: 1.3rem;
+  }
+  .tech-loop-label {
+    font-size: 0.6rem;
   }
   .tech-loop-item {
-    width: 96px;
-    height: 96px;
+    width: 90px;
+    height: 90px;
+  }
+  .tech-loop-tooltip {
+    max-width: 200px;
+    min-width: 140px;
+    padding: 8px 10px;
   }
 }
 

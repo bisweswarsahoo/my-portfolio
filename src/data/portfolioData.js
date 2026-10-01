@@ -15,7 +15,7 @@ const skill = (name, icon, color = "currentColor", desc = "") => ({ name, icon, 
 const portfolioData = {
 	name: "Bisweswar Sahoo",
 	title: "Fullstack Developer",
-	role: "Developer",
+	role: "AI Generalist",
 	profileImage: "https://github.com/bisweswarsahoo.png",
 	portfolioUrl: "https://bisweswarsahoo.github.io/my-portfolio",
 	email: "bisweswarsahoo.jsg@gmail.com",
