@@ -10,7 +10,6 @@ import Projects from "./sections/Projects.jsx";
 import Languages from "./components/Languages.jsx";
 import Footer from "./components/Footer.jsx";
 import { ThemeProvider } from "./theme/ThemeProvider.jsx";
-import CVCard from "./components/CVCard.jsx";
 import portfolioData from "./data/portfolioData.js";
 
 const sections = [

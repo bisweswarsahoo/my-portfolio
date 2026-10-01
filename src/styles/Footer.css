@@ -1,104 +1,715 @@
+/* =========================================================
+   CINEMATIC FOOTER & DIGITAL IDENTITY CARD SHOWCASE
+   Atmosphere: Dark (#03070D) & Light Theme Compatible
+   ========================================================= */
+
 .footer {
-	background-color: var(--background-surface, #121212);
-	color: var(--text-color, #ffffff);
-	padding: 3rem 1.5rem 1.5rem;
-	border-top: 1px solid var(--border-primary, #333333);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
+	position: relative;
+	width: 100%;
+	background-color: #03070d;
+	background: radial-gradient(circle at 50% 0%, #081020 0%, #03070d 75%);
+	color: #f8fafc;
+	padding: 5rem 1.5rem 2.5rem;
+	border-top: 1px solid rgba(56, 189, 248, 0.15);
+	overflow: hidden;
+	box-sizing: border-box;
 	margin-top: 4rem;
+	transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-.footer-content {
-	max-width: 900px;
+/* ================= ATMOSPHERE & AMBIENT GLOWS ================= */
+.footer-atmosphere {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	overflow: hidden;
+	z-index: 1;
+}
+
+.ambient-glow {
+	position: absolute;
+	border-radius: 50%;
+	filter: blur(90px);
+	opacity: 0.35;
+	pointer-events: none;
+	transition: background 0.3s ease, opacity 0.3s ease;
+}
+
+.glow-top-left {
+	top: -100px;
+	left: -50px;
+	width: 420px;
+	height: 420px;
+	background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, transparent 70%);
+}
+
+.glow-center-blue {
+	top: 30%;
+	right: 15%;
+	width: 500px;
+	height: 450px;
+	background: radial-gradient(circle, rgba(30, 64, 175, 0.22) 0%, transparent 75%);
+}
+
+.glow-bottom-right {
+	bottom: -80px;
+	right: -60px;
+	width: 400px;
+	height: 400px;
+	background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+}
+
+.ambient-particles {
+	position: absolute;
+	inset: 0;
+	background-image: radial-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+	background-size: 32px 32px;
+	opacity: 0.6;
+}
+
+/* ================= INNER CONTAINER ================= */
+.footer-inner-container {
+	position: relative;
+	z-index: 2;
+	max-width: 1140px;
+	margin: 0 auto;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	gap: 1rem;
-	margin-bottom: 2.5rem;
+	gap: 3.5rem;
 }
 
-.footer-name {
-	font-size: var(--font-size-h2);
+/* ================= 1. CONTACT HERO HEADER ================= */
+.footer-hero-header {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	text-align: left;
+	gap: 0.85rem;
+	width: 100%;
+}
+
+/* Status Pill: ● CURRENTLY BUILDING */
+.contact-status-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+	padding: 0.35rem 0.85rem;
+	background: rgba(14, 165, 233, 0.08);
+	border: 1px solid rgba(56, 189, 248, 0.35);
+	box-shadow: 0 0 16px rgba(56, 189, 248, 0.12);
+	border-radius: 9999px;
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	transition: all 0.3s ease;
+}
+
+.status-dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: #38bdf8;
+	box-shadow: 0 0 10px #38bdf8, 0 0 18px rgba(56, 189, 248, 0.6);
+	animation: pulseStatusDot 2s ease-in-out infinite;
+}
+
+.status-text {
+	font-size: 0.72rem;
 	font-weight: 700;
+	letter-spacing: 0.08em;
+	color: #bae6fd;
+	text-transform: uppercase;
+	transition: color 0.3s ease;
+}
+
+/* Heading: LET'S CONNECT */
+.contact-heading {
+	font-size: clamp(2.4rem, 2.2rem + 2vw, 3.6rem);
+	font-weight: 800;
+	line-height: 1.05;
+	letter-spacing: -0.025em;
 	margin: 0;
-	background: linear-gradient(90deg,
-			var(--primary, #4facfe),
-			var(--accent-color, #00f2fe));
+}
+
+.heading-lets {
+	color: #ffffff;
+	transition: color 0.3s ease;
+}
+
+.heading-connect {
+	background: linear-gradient(135deg, #60a5fa 0%, #38bdf8 55%, #93c5fd 100%);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	background-clip: text;
+	text-shadow: 0 0 35px rgba(56, 189, 248, 0.25);
 }
 
-.footer-about-text {
-	font-size: var(--font-size-lg);
-	color: var(--text-secondary, #a0a0a0);
-	margin: 0;
+/* Subheading */
+.contact-subtext {
+	font-size: 0.98rem;
 	line-height: 1.6;
-	text-align: center;
+	color: #94a3b8;
+	margin: 0;
+	font-weight: 400;
+	max-width: 480px;
+	transition: color 0.3s ease;
+}
+
+/* ================= 2. INTERACTIVE SHOWCASE STAGE ================= */
+.footer-interactive-stage {
+	position: relative;
 	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-}
-
-.footer-about-text strong {
-	color: var(--text-primary);
-}
-
-.footer-socials-container {
+	align-items: center;
+	justify-content: space-between;
+	gap: 2rem;
 	width: 100%;
-	display: flex;
-	justify-content: center;
-	margin-top: 0;
-	transform: scale(0.9);
+	min-height: 290px;
 }
 
-.footer-bottom-wrapper {
-	margin-top: 3.5rem;
-	border-top: 1px solid var(--border-primary, #333333);
-	padding-top: 2rem;
-	width: 100%;
-	max-width: 1200px;
+.stage-social-col {
+	flex: 0 0 340px;
+	max-width: 360px;
+	position: relative;
+	z-index: 5;
 }
 
-.footer-bottom-container {
+.stage-cv-col {
+	flex: 0 0 350px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
+	position: relative;
+	z-index: 5;
+}
+
+.cv-card-centering-wrap {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	z-index: 5;
+}
+
+/* ================= DYNAMIC SVG CONNECTOR OVERLAY ================= */
+.connector-overlay-svg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	overflow: visible;
+	z-index: 4;
+}
+
+.bridge-path {
+	fill: none;
+	stroke: rgba(56, 189, 248, 0.3);
+	stroke-width: 1.5;
+	stroke-dasharray: 4 2;
+	transition: stroke 0.3s ease, stroke-width 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
+}
+
+.bridge-path.active {
+	stroke: #38bdf8;
+	stroke-width: 2.5;
+	stroke-dasharray: none;
+	filter: drop-shadow(0 0 7px #38bdf8);
+	opacity: 1;
+}
+
+.bridge-trunk {
+	stroke: rgba(56, 189, 248, 0.4);
+	stroke-width: 1.6;
+	transition: all 0.3s ease;
+}
+
+.bridge-trunk.active {
+	stroke: #38bdf8;
+	stroke-width: 2.5;
+	filter: drop-shadow(0 0 7px #38bdf8);
+}
+
+.bridge-arrow-path {
+	fill: #38bdf8;
+	transition: fill 0.3s ease;
+}
+
+.bridge-node {
+	fill: #03070d;
+	stroke: rgba(56, 189, 248, 0.6);
+	stroke-width: 1.5;
+	transition: all 0.3s ease;
+}
+
+.bridge-node.active {
+	fill: #38bdf8;
+	stroke: #ffffff;
+	stroke-width: 2;
+	box-shadow: 0 0 12px #38bdf8;
+	filter: drop-shadow(0 0 6px #38bdf8);
+}
+
+.bridge-badge-pill {
+	fill: rgba(10, 16, 30, 0.94);
+	stroke: rgba(56, 189, 248, 0.45);
+	stroke-width: 1;
+	transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.bridge-badge-text {
+	font-size: 8.5px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	fill: #38bdf8;
+	font-family: inherit;
+	transition: fill 0.3s ease;
+}
+
+/* ================= SCULPTED LIQUID GLASS PEDESTAL ================= */
+.liquid-glass-pedestal {
+	position: relative;
+	width: 100%;
+	max-width: 380px;
+	height: 80px;
+	margin-top: -35px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.liquid-glow-pool {
+	position: absolute;
+	width: 260px;
+	height: 45px;
+	border-radius: 50%;
+	background: radial-gradient(circle, rgba(2, 132, 199, 0.32) 0%, transparent 70%);
+	filter: blur(18px);
+	top: 15px;
+	transition: background 0.3s ease;
+}
+
+.liquid-card-reflection {
+	position: absolute;
+	width: 220px;
+	height: 30px;
+	border-radius: 50%;
+	background: radial-gradient(ellipse, rgba(56, 189, 248, 0.22) 0%, transparent 75%);
+	filter: blur(12px);
+	top: 8px;
+}
+
+.liquid-surface-svg {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+.liquid-ripple {
+	transition: transform 0.5s ease;
+	animation: liquidWaveMove 7s ease-in-out infinite alternate;
+}
+
+.liquid-ripple.ripple-2 {
+	animation-duration: 9s;
+	animation-direction: alternate-reverse;
+}
+
+/* ================= 3. FOOTER BOTTOM ================= */
+.footer-bottom-divider {
+	width: 100%;
+	height: 1px;
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(56, 189, 248, 0.2) 20%,
+		rgba(56, 189, 248, 0.2) 80%,
+		transparent 100%
+	);
+	transition: background 0.3s ease;
+}
+
+.footer-bottom-bar {
+	display: flex;
+	align-items: center;
 	justify-content: space-between;
-	gap: 1rem;
-	font-size: var(--font-size-sm);
-	color: var(--text-dim, #777777);
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	width: 100%;
 }
 
-.footer-copyright {
+/* Left Copyright */
+.footer-copyright-block {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.25rem;
+	text-align: left;
+}
+
+.footer-copyright-text {
+	font-size: 0.82rem;
+	color: #94a3b8;
 	margin: 0;
+	transition: color 0.3s ease;
 }
 
-.footer-copyright-name {
+.copyright-author {
+	color: #f1f5f9;
+	font-weight: 600;
+	transition: color 0.3s ease;
+}
+
+.footer-disclaimer-text {
+	font-size: 0.74rem;
+	color: #64748b;
+	margin: 0;
+	transition: color 0.3s ease;
+}
+
+/* Center Back to Top Glass Pill */
+.footer-back-to-top {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.45rem 1.05rem;
+	background: rgba(15, 23, 42, 0.6);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border: 1px solid rgba(56, 189, 248, 0.25);
+	border-radius: 9999px;
+	color: #e2e8f0;
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	cursor: pointer;
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.footer-back-to-top:hover {
+	background: rgba(14, 165, 233, 0.15);
+	border-color: rgba(56, 189, 248, 0.5);
+	color: #38bdf8;
+	transform: translateY(-3px);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), 0 0 14px rgba(56, 189, 248, 0.2);
+}
+
+.footer-back-to-top .btt-arrow {
+	font-size: 0.95rem;
+	transition: transform 0.25s ease;
+}
+
+.footer-back-to-top:hover .btt-arrow {
+	transform: translateY(-2px);
+}
+
+/* Right Navigation Links */
+.footer-bottom-nav {
+	display: flex;
+	align-items: center;
+	gap: 1.35rem;
+	flex-wrap: wrap;
+}
+
+.footer-nav-btn {
+	background: none;
+	border: none;
+	color: #94a3b8;
+	font-size: 0.82rem;
 	font-weight: 500;
-	color: var(--text-secondary, #a0a0a0);
+	cursor: pointer;
+	padding: 0.2rem 0;
+	transition: color 0.2s ease, transform 0.2s ease;
+	font-family: inherit;
 }
 
-.footer-disclaimer {
-	margin: 0;
-	text-align: center;
+.footer-nav-btn:hover {
+	color: #38bdf8;
+	transform: translateY(-1px);
 }
 
-@media (min-width: 640px) {
-	.footer-bottom-container {
-		flex-direction: row;
+/* =========================================================
+   LIGHT THEME COMPLETE STYLING
+   ========================================================= */
+[data-theme="light"] .footer {
+	background-color: #f8fafc;
+	background: radial-gradient(circle at 50% 0%, #e0f2fe 0%, #f8fafc 75%);
+	color: #0f172a;
+	border-top: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+[data-theme="light"] .glow-top-left {
+	background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, transparent 70%);
+}
+
+[data-theme="light"] .glow-center-blue {
+	background: radial-gradient(circle, rgba(96, 165, 250, 0.1) 0%, transparent 75%);
+}
+
+[data-theme="light"] .glow-bottom-right {
+	background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
+}
+
+[data-theme="light"] .ambient-particles {
+	background-image: radial-gradient(rgba(14, 165, 233, 0.08) 1px, transparent 1px);
+}
+
+[data-theme="light"] .contact-status-pill {
+	background: rgba(14, 165, 233, 0.08);
+	border: 1px solid rgba(2, 132, 199, 0.3);
+	box-shadow: 0 0 16px rgba(2, 132, 199, 0.1);
+}
+
+[data-theme="light"] .status-dot {
+	background: #0284c7;
+	box-shadow: 0 0 10px #0284c7, 0 0 16px rgba(2, 132, 199, 0.4);
+}
+
+[data-theme="light"] .status-text {
+	color: #0369a1;
+}
+
+[data-theme="light"] .heading-lets {
+	color: #0f172a;
+}
+
+[data-theme="light"] .heading-connect {
+	background: linear-gradient(135deg, #0284c7 0%, #0369a1 60%, #0ea5e9 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	text-shadow: 0 0 25px rgba(2, 132, 199, 0.15);
+}
+
+[data-theme="light"] .contact-subtext {
+	color: #475569;
+}
+
+/* SVG Bridge in Light Theme */
+[data-theme="light"] .bridge-path {
+	stroke: rgba(2, 132, 199, 0.35);
+}
+
+[data-theme="light"] .bridge-path.active {
+	stroke: #0284c7;
+	filter: drop-shadow(0 0 6px rgba(2, 132, 199, 0.6));
+}
+
+[data-theme="light"] .bridge-trunk {
+	stroke: rgba(2, 132, 199, 0.4);
+}
+
+[data-theme="light"] .bridge-trunk.active {
+	stroke: #0284c7;
+	filter: drop-shadow(0 0 6px rgba(2, 132, 199, 0.6));
+}
+
+[data-theme="light"] .bridge-node {
+	fill: #ffffff;
+	stroke: #0284c7;
+}
+
+[data-theme="light"] .bridge-node.active {
+	fill: #0284c7;
+	stroke: #ffffff;
+}
+
+[data-theme="light"] .bridge-badge-pill {
+	fill: rgba(255, 255, 255, 0.95);
+	stroke: rgba(2, 132, 199, 0.4);
+}
+
+[data-theme="light"] .bridge-badge-text {
+	fill: #0284c7;
+}
+
+[data-theme="light"] .bridge-arrow-path {
+	fill: #0284c7;
+}
+
+/* Liquid Platform in Light Theme */
+[data-theme="light"] .liquid-glow-pool {
+	background: radial-gradient(circle, rgba(14, 165, 233, 0.18) 0%, transparent 70%);
+}
+
+[data-theme="light"] .liquid-card-reflection {
+	background: radial-gradient(ellipse, rgba(2, 132, 199, 0.15) 0%, transparent 75%);
+}
+
+[data-theme="light"] .liquid-base-ellipse {
+	fill: rgba(224, 242, 254, 0.6);
+}
+
+[data-theme="light"] .liquid-rim-ellipse {
+	stroke: rgba(2, 132, 199, 0.4);
+}
+
+[data-theme="light"] .liquid-ripple {
+	stroke: rgba(2, 132, 199, 0.35);
+}
+
+/* Footer Bottom in Light Theme */
+[data-theme="light"] .footer-bottom-divider {
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(203, 213, 225, 0.8) 20%,
+		rgba(203, 213, 225, 0.8) 80%,
+		transparent 100%
+	);
+}
+
+[data-theme="light"] .footer-copyright-text {
+	color: #64748b;
+}
+
+[data-theme="light"] .copyright-author {
+	color: #0f172a;
+}
+
+[data-theme="light"] .footer-disclaimer-text {
+	color: #94a3b8;
+}
+
+[data-theme="light"] .footer-back-to-top {
+	background: rgba(255, 255, 255, 0.88);
+	border: 1px solid rgba(203, 213, 225, 0.85);
+	color: #0f172a;
+	box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+}
+
+[data-theme="light"] .footer-back-to-top:hover {
+	background: rgba(14, 165, 233, 0.1);
+	border-color: #0284c7;
+	color: #0284c7;
+	box-shadow: 0 6px 18px rgba(2, 132, 199, 0.18);
+}
+
+[data-theme="light"] .footer-nav-btn {
+	color: #64748b;
+}
+
+[data-theme="light"] .footer-nav-btn:hover {
+	color: #0284c7;
+}
+
+/* ================= KEYFRAME ANIMATIONS ================= */
+@keyframes pulseStatusDot {
+	0%, 100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.55;
+		transform: scale(0.85);
+	}
+}
+
+@keyframes liquidWaveMove {
+	0% {
+		transform: translateY(0px) scaleX(1);
+	}
+	100% {
+		transform: translateY(-2px) scaleX(1.03);
+	}
+}
+
+/* ================= REDUCED MOTION ================= */
+@media (prefers-reduced-motion: reduce) {
+	.status-dot,
+	.liquid-ripple {
+		animation: none !important;
 	}
 
-	.footer-disclaimer {
-		text-align: right;
+	.footer-back-to-top,
+	.footer-nav-btn {
+		transition: none !important;
+		transform: none !important;
+	}
+}
+
+/* ================= RESPONSIVE BEHAVIOR ================= */
+@media (max-width: 900px) {
+	.footer-interactive-stage {
+		gap: 1rem;
+	}
+
+	.stage-social-col {
+		flex: 0 0 300px;
+	}
+
+	.stage-cv-col {
+		flex: 0 0 320px;
 	}
 }
 
 @media (max-width: 768px) {
 	.footer {
-		padding: 2.5rem 1rem 1rem;
+		padding: 4rem 1.25rem 2rem;
+	}
+
+	.footer-hero-header {
+		align-items: center;
+		text-align: center;
+	}
+
+	.contact-subtext {
+		text-align: center;
+	}
+
+	.footer-interactive-stage {
+		flex-direction: column;
+		align-items: center;
+		gap: 2.5rem;
+	}
+
+	.stage-social-col {
+		flex: 0 0 auto;
+		width: 100%;
+		max-width: 360px;
+	}
+
+	.connector-overlay-svg {
+		display: none !important;
+	}
+
+	.stage-cv-col {
+		flex: 0 0 auto;
+		width: 100%;
+		margin-top: 0.5rem;
+	}
+
+	.footer-bottom-bar {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 1.25rem;
+	}
+
+	.footer-copyright-block {
+		align-items: center;
+		text-align: center;
+	}
+
+	.footer-bottom-nav {
+		justify-content: center;
+	}
+}
+
+@media (max-width: 480px) {
+	.contact-heading {
+		font-size: 2.1rem;
+	}
+
+	.contact-subtext {
+		font-size: 0.88rem;
+	}
+
+	.liquid-glass-pedestal {
+		max-width: 320px;
 	}
 }

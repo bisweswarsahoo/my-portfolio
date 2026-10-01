@@ -1,65 +1,132 @@
 import "../styles/SocialInfo.css";
 import {
-	FaInstagram,
-	FaTwitter,
 	FaGithub,
-	FaDiscord,
 	FaLinkedin,
+	FaEnvelope,
+	FaDiscord,
+	FaInstagram,
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import portfolioData from "../data/portfolioData.js";
 
-const SocialInfo = () => {
-	const iconData = {
-		instagram: { icon: FaInstagram, className: "instagram", cardClass: "card1", img: "IG" },
-		twitter: { icon: FaTwitter, className: "twitter", cardClass: "card2", img: "TW" },
-		github: { icon: FaGithub, className: "github", cardClass: "card3", img: "GH" },
-		discord: { icon: FaDiscord, className: "discord", cardClass: "card4", img: "DC" },
-		linkedin: { icon: FaLinkedin, className: "linkedin", cardClass: "card5", img: "LI" },
-	};
-	const socialData = portfolioData.socials.map((social) => ({ ...iconData[social.key], ...social }));
+const SocialInfo = ({ activeHoverIndex, onHoverIndex, cardRefs }) => {
+	const twitterItem = portfolioData.socials.find((s) => s.key === "twitter");
+	const discordItem = portfolioData.socials.find((s) => s.key === "discord");
+	const instagramItem = portfolioData.socials.find((s) => s.key === "instagram");
+
+	const socialCards = [
+		{
+			id: "github",
+			name: "GitHub",
+			description: "Check out my code",
+			href: portfolioData.github || "https://github.com/bisweswarsahoo",
+			icon: FaGithub,
+		},
+		{
+			id: "linkedin",
+			name: "LinkedIn",
+			description: "Let's connect professionally",
+			href: portfolioData.linkedin || "https://linkedin.com/in/bisweswarsahoo",
+			icon: FaLinkedin,
+		},
+		{
+			id: "x",
+			name: "X",
+			description: "Thoughts & updates",
+			href: twitterItem?.href || "https://x.com/bisweswarsahoo",
+			icon: FaXTwitter,
+		},
+		{
+			id: "email",
+			name: "Email",
+			description: "Drop me a message",
+			href: `mailto:${portfolioData.email}`,
+			icon: FaEnvelope,
+		},
+	];
+
+	const secondarySocials = [
+		discordItem && {
+			name: "Discord",
+			href: discordItem.href,
+			icon: FaDiscord,
+		},
+		instagramItem && {
+			name: "Instagram",
+			href: instagramItem.href,
+			icon: FaInstagram,
+		},
+	].filter(Boolean);
 
 	return (
-		<div className="main">
-			{socialData.map((social, index) => {
-				const IconComponent = social.icon;
-				return (
-					<div
-						key={index}
-						className="tooltip-container"
-					>
-						<div className="tooltip">
-							<div className="profile">
-								<div className="user">
-									<div className="img">{social.img}</div>
-									<div className="details">
-										<div className="name">{social.name}</div>
-										<div className="username">{social.username}</div>
-									</div>
-								</div>
-								<div className="about">{social.about}</div>
-							</div>
-						</div>
+		<div className="social-modules-container">
+			<div className="social-cards-list" role="list">
+				{socialCards.map((card, index) => {
+					const IconComponent = card.icon;
+					const isHovered = activeHoverIndex === index;
+
+					return (
 						<a
-							href={social.href}
-							className={`icon ${social.cardClass}`}
+							key={card.id}
+							ref={(el) => {
+								if (cardRefs && cardRefs.current) {
+									cardRefs.current[index] = el;
+								}
+							}}
+							href={card.href}
+							target={card.href.startsWith("mailto:") ? "_self" : "_blank"}
+							rel="noopener noreferrer"
+							className={`social-glass-card ${isHovered ? "active-hover" : ""}`}
+							onMouseEnter={() => onHoverIndex && onHoverIndex(index)}
+							onMouseLeave={() => onHoverIndex && onHoverIndex(null)}
+							onFocus={() => onHoverIndex && onHoverIndex(index)}
+							onBlur={() => onHoverIndex && onHoverIndex(null)}
+							role="listitem"
+							aria-label={`${card.name}: ${card.description}`}
 						>
-							<div className="layer">
-								<span></span>
-								<span></span>
-								<span></span>
-								<span></span>
-								<span className="fab">
-									<IconComponent
-										className={social.className}
-										size={30}
-									/>
-								</span>
+							<div className="social-card-left">
+								<div className="social-card-icon-frame">
+									<IconComponent className="social-card-icon" />
+								</div>
+								<div className="social-card-text">
+									<span className="social-card-name">{card.name}</span>
+									<span className="social-card-desc">{card.description}</span>
+								</div>
 							</div>
-							<div className="text">{social.text}</div>
+
+							<div className="social-card-arrow-wrap" aria-hidden="true">
+								<span className="social-card-arrow">↗</span>
+							</div>
+
+							{/* Connection line anchor indicator on the right edge */}
+							<div className="social-card-node" aria-hidden="true" />
 						</a>
-					</div>
-				);
-			})}
+					);
+				})}
+			</div>
+
+			{/* Secondary channels from existing portfolioData */}
+			{secondarySocials.length > 0 && (
+				<div className="secondary-channels-row">
+					<span className="secondary-channels-label">Also on:</span>
+					{secondarySocials.map((item, idx) => {
+						const SecIcon = item.icon;
+						return (
+							<a
+								key={idx}
+								href={item.href}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="secondary-channel-pill"
+								aria-label={item.name}
+							>
+								<SecIcon className="secondary-channel-icon" />
+								<span>{item.name}</span>
+							</a>
+						);
+					})}
+				</div>
+			)}
 		</div>
 	);
 };
