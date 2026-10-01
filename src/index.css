@@ -41,6 +41,7 @@ body {
 	min-height: 100vh;
 	cursor: default;
 }
+
 html,
 body,
 body *:not(input):not(textarea):not([contenteditable="true"]) {
@@ -54,7 +55,31 @@ textarea {
 }
 
 .app-container {
-	max-width: 1500px;
-	margin: 0 auto;
 	width: 100%;
+	display: flex;
+	flex-direction: column;
 }
+
+
+
+.portfolio-section {
+	min-height: calc(100vh - 85px);
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+	padding: 60px 5vw;
+	/* no snap by default */
+	scroll-margin-top: 85px;
+}
+
+/* Skills cloud: remove outer padding so the cloud fills the full section */
+#skills.portfolio-section {
+	padding: 0;
+	justify-content: stretch;
+	align-items: stretch;
+	min-height: 100vh;
+}
+

@@ -4,7 +4,7 @@ import { SiAnthropic, SiClaude, SiGoogle, SiGooglegemini, SiN8N, SiOpenai, SiAnd
 import { VscVscode } from "react-icons/vsc";
 import { BsTerminal } from "react-icons/bs";
 
-const skill = (name, icon, color = "currentColor") => ({ name, icon, color });
+const skill = (name, icon, color = "currentColor", desc = "") => ({ name, icon, color, desc });
 
 const portfolioData = {
 	name: "Bisweswar Sahoo",
@@ -68,7 +68,7 @@ const portfolioData = {
 			sourceCode: "https://github.com/CandybarCruncher/NodeNexus",
 			liveDemo: "https://nodenexus-d11u.onrender.com/",
 		},
-		
+
 	],
 	experience: [{ title: "Web Development Intern", organization: "Jabsz Gaming Studios LLP", location: "Gurugram, India", duration: "May 2025 - July 2025", details: ["Engineered and optimized gameplay mechanics using TypeScript and Phaser.js for the 2D arcade title Engulf.", "Architected interactive bot opponents with behavior trees to improve challenge dynamics.", "Designed and integrated pause, main menu, and game-over UI flows with consistent scene transitions.", "Refined asset management pipelines and enforced GitHub pull-request and code-review standards.", "Developed player controls, collision detection, and arena logic for the game Engulf: Consume. Survive. Dominate."] }],
 	education: [
@@ -77,24 +77,72 @@ const portfolioData = {
 		{ degree: "Secondary School (Class X)", institution: "C.A.M.I.E & R Matrujyoti, Jharsuguda, India", years: "2020", grade: "Percentage: 78.6%" },
 	],
 	skills: [
-		{ category: "Programming Languages", items: [skill("JavaScript", SiJavascript, "#F0DB4F"), skill("TypeScript", SiTypescript, "#3178C6"), skill("Java", FaJava, "#007396"), skill("Python", FaPython, "#3776AB"), skill("C", FaCuttlefish, "#A8B9CC"), skill("C++", SiCplusplus, "#00599C")] },
-		{ category: "Web Development", items: [skill("HTML", FaHtml5, "#E34F26"), skill("CSS", FaCss3Alt, "#1572B6"), skill("JavaScript", SiJavascript, "#F0DB4F"), skill("Node.js", FaNodeJs, "#339933"), skill("React.js", FaReact, "#61DAFB"), skill("Redux", SiRedux, "#764ABC")] },
-		{ category: "Frameworks & Libraries", items: [skill("Phaser.js", SiJavascript, "#FFCB05"), skill("Bootstrap", FaBootstrap, "#7952B3"), skill("React Native", FaReact, "#61DAFB"), skill("Express.js", SiExpress, "#ffffff"), skill("Leaflet.js", SiLeaflet, "#199900")] },
-		{ category: "Databases & Messaging", items: [skill("MongoDB", SiMongodb, "#47A248"), skill("MongoDB Atlas", SiMongodb, "#47A248"), skill("MySQL", SiMysql, "#4479A1")] },
-		{ category: "Tools & Technologies", items: [skill("Git", FaGitAlt, "#F05032"), skill("GitHub", FaGithub, "#ebe5e5"), skill("VS Code", VscVscode, "#007ACC"), skill("Android Studio", SiAndroidstudio, "#3DDC84"), skill("Postman", SiPostman, "#FF6C37"), skill("Hoppscotch", SiHoppscotch, "#14B8A6"), skill("Antigravity", FaWandMagicSparkles, "#F59E0B"), skill("Terminal", BsTerminal, "#b8b4b4")] },
+		{
+			category: "Programming Languages",
+			items: [
+				skill("JavaScript",  SiJavascript, "#F0DB4F", "The programming language of the web."),
+				skill("TypeScript",  SiTypescript, "#3178C6", "Typed superset of JavaScript that scales."),
+				skill("Java",        FaJava,       "#007396", "Write once, run anywhere — object-oriented language."),
+				skill("Python",      FaPython,     "#3776AB", "Versatile language for web, AI and scripting."),
+				skill("C",           FaCuttlefish, "#A8B9CC", "Low-level, general-purpose systems language."),
+				skill("C++",         SiCplusplus,  "#00599C", "High-performance systems programming language."),
+			],
+		},
+		{
+			category: "Web Development",
+			items: [
+				skill("HTML",     FaHtml5,     "#E34F26", "Standard markup language for the web."),
+				skill("CSS",      FaCss3Alt,   "#1572B6", "Stylesheet language for designing web pages."),
+				skill("JavaScript", SiJavascript, "#F0DB4F", "The programming language of the web."),
+				skill("Node.js",  FaNodeJs,    "#339933", "JavaScript runtime built on Chrome's V8 engine."),
+				skill("React.js", FaReact,     "#61DAFB", "A JavaScript library for building user interfaces."),
+				skill("Redux",    SiRedux,     "#764ABC", "Predictable state container for JS apps."),
+			],
+		},
+		{
+			category: "Frameworks & Libraries",
+			items: [
+				skill("Phaser.js",    SiJavascript, "#FFCB05", "HTML5 game framework for web-based games."),
+				skill("Bootstrap",    FaBootstrap,  "#7952B3", "Popular CSS framework for responsive design."),
+				skill("React Native", FaReact,      "#61DAFB", "Build native mobile apps with React."),
+				skill("Express.js",   SiExpress,    "#ffffff", "Fast, minimalist web framework for Node.js."),
+				skill("Leaflet.js",   SiLeaflet,    "#199900", "Open-source JavaScript library for interactive maps."),
+			],
+		},
+		{
+			category: "Databases & Messaging",
+			items: [
+				skill("MongoDB",       SiMongodb, "#47A248", "NoSQL document-oriented database."),
+				skill("MongoDB Atlas", SiMongodb, "#47A248", "Fully managed cloud MongoDB database service."),
+				skill("MySQL",         SiMysql,   "#4479A1", "Popular open-source relational database."),
+			],
+		},
+		{
+			category: "Tools & Technologies",
+			items: [
+				skill("Git",            FaGitAlt,          "#F05032", "Distributed version control system."),
+				skill("GitHub",         FaGithub,          "#ebe5e5", "Platform for hosting and collaborating on code."),
+				skill("VS Code",        VscVscode,         "#007ACC", "Lightweight, powerful source-code editor."),
+				skill("Android Studio", SiAndroidstudio,   "#3DDC84", "Official IDE for Android development."),
+				skill("Postman",        SiPostman,         "#FF6C37", "API development and testing platform."),
+				skill("Hoppscotch",     SiHoppscotch,      "#14B8A6", "Open-source API development ecosystem."),
+				skill("Antigravity",    FaWandMagicSparkles, "#F59E0B", "AI-powered coding assistant by Google DeepMind."),
+				skill("Terminal",       BsTerminal,        "#b8b4b4", "Command-line interface for system interaction."),
+			],
+		},
 		{
 			category: "AI Tools & Automation",
 			items: [
-				{ name: "happenstance.ai", icon: FaWandMagicSparkles, color: "#F59E0B" },
-				{ name: "Claude", icon: SiClaude, color: "#D97757" },
-				{ name: "Anthropic", icon: SiAnthropic, color: "#111827" },
-				{ name: "OpenAI", icon: SiOpenai, color: "#10A37F" },
-				{ name: "Gemini", icon: SiGooglegemini, color: "#4285F4" },
-				{ name: "Google AI Studio", icon: SiGoogle, color: "#4285F4" },
-				{ name: "N8N", icon: SiN8N, color: "#EA4B71" },
-				{ name: "lovable.ai", icon: FaWandMagicSparkles, color: "#FB7185" },
-				{ name: "emergent", icon: FaCode, color: "#6366F1" },
-				{ name: "Wispr Flow", icon: FaMicrophoneLines, color: "#0EA5E9" },
+				{ name: "happenstance.ai", icon: FaWandMagicSparkles, color: "#F59E0B", desc: "AI-powered productivity and workflow tool." },
+				{ name: "Claude",          icon: SiClaude,             color: "#D97757", desc: "AI assistant built by Anthropic." },
+				{ name: "Anthropic",       icon: SiAnthropic,          color: "#111827", desc: "AI safety company behind Claude." },
+				{ name: "OpenAI",          icon: SiOpenai,             color: "#10A37F", desc: "AI research and deployment company." },
+				{ name: "Gemini",          icon: SiGooglegemini,       color: "#4285F4", desc: "Google's multimodal AI model." },
+				{ name: "Google AI Studio",icon: SiGoogle,             color: "#4285F4", desc: "Google's AI development and prototyping platform." },
+				{ name: "N8N",             icon: SiN8N,                color: "#EA4B71", desc: "Workflow automation and integration platform." },
+				{ name: "lovable.ai",      icon: FaWandMagicSparkles,  color: "#FB7185", desc: "AI-powered full-stack web app builder." },
+				{ name: "emergent",        icon: FaCode,               color: "#6366F1", desc: "AI-driven software development platform." },
+				{ name: "Wispr Flow",      icon: FaMicrophoneLines,    color: "#0EA5E9", desc: "AI voice-to-text productivity tool." },
 			],
 		},
 	],
@@ -106,10 +154,10 @@ const portfolioData = {
 	languages: [
 		{ name: "English", level: "Professional", greeting: "Hi, I am Bisweswar Sahoo." },
 		{ name: "Hindi", level: "Professional", greeting: "नमस्ते, मैं बिस्वेश्वर साहू हूँ।" },
-        { name: "Odia", level: "Native", greeting: "ନମସ୍କାର, ମୁଁ ବିଶ୍ୱେଶ୍ୱର ସାହୁ ଅଟେ।" },
-        { name: "French", level: "Beginner", greeting: "Bonjour, je suis Bisweswar Sahoo." },
-        { name: "Spanish", level: "Beginner", greeting: "Hola, soy Bisweswar Sahoo." },
-        { name: "Chinese (Mandarin)", level: "Beginner", greeting: "你好，我是比斯韦斯瓦尔·萨胡。" },
+		{ name: "Odia", level: "Native", greeting: "ନମସ୍କାର, ମୁଁ ବିଶ୍ୱେଶ୍ୱର ସାହୁ ଅଟେ।" },
+		{ name: "French", level: "Beginner", greeting: "Bonjour, je suis Bisweswar Sahoo." },
+		{ name: "Spanish", level: "Beginner", greeting: "Hola, soy Bisweswar Sahoo." },
+		{ name: "Chinese (Mandarin)", level: "Beginner", greeting: "你好，我是比斯韦斯瓦尔·萨胡。" },
 	],
 	hobbies: [
 		{ name: "Puzzle Solving", note: "Logical & Analytical Skills" },
