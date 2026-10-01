@@ -191,15 +191,6 @@ const CVCard = ({
 						<div className="cv-back-center-info">
 							<h3 className="cv-back-clean-name">{portfolioData.name}</h3>
 							<p className="cv-back-clean-role">{portfolioData.title} & AI Generalist</p>
-
-							{/* Minimal focus tags */}
-							<div className="cv-back-tags-row">
-								<span className="cv-clean-tag">React</span>
-								<span className="cv-clean-tag">Node.js</span>
-								<span className="cv-clean-tag">TypeScript</span>
-								<span className="cv-clean-tag">Python</span>
-								<span className="cv-clean-tag">FastAPI</span>
-							</div>
 						</div>
 
 						{/* Bottom: Refined CTA */}

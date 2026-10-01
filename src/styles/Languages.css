@@ -6,14 +6,14 @@
 /* Outer section overrides to ensure immersive full-viewport display */
 #languages.portfolio-section {
 	padding: 0 !important;
-	min-height: 100vh;
+	min-height: auto;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: stretch;
 	align-items: stretch;
 	position: relative;
-	overflow: hidden;
+	overflow: visible;
 	background: transparent !important;
 }
 
@@ -21,16 +21,16 @@
 .orbital-section-wrapper {
 	position: relative;
 	width: 100%;
-	min-height: 100vh;
+	min-height: auto;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-between;
-	padding: 3.5rem 1.5rem 2rem;
+	justify-content: flex-start;
+	padding: 3rem 1.5rem 1.25rem;
 	box-sizing: border-box;
 	background: transparent !important;
 	color: #f8fafc;
-	overflow: hidden;
+	overflow: visible;
 	font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
@@ -41,7 +41,7 @@
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
-	overflow: hidden;
+	overflow: visible;
 	z-index: 0;
 }
 
@@ -53,31 +53,20 @@
 	pointer-events: none;
 }
 
-.ambient-blue-glow.glow-top {
-	top: -15%;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 800px;
-	height: 380px;
-	background: radial-gradient(ellipse at center, rgba(30, 58, 138, 0.22) 0%, rgba(14, 165, 233, 0.08) 50%, transparent 80%);
+/* Disabled top and bottom glow blocks so centralized background flows with zero separation seams */
+.ambient-blue-glow.glow-top,
+.ambient-blue-glow.glow-bottom {
+	display: none !important;
 }
 
 .ambient-blue-glow.glow-center {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 650px;
-	height: 500px;
-	background: radial-gradient(circle at center, rgba(37, 99, 235, 0.09) 0%, rgba(99, 102, 241, 0.04) 55%, transparent 75%);
-}
-
-.ambient-blue-glow.glow-bottom {
-	bottom: -10%;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 900px;
-	height: 280px;
-	background: radial-gradient(ellipse at center, rgba(15, 23, 42, 0.8) 0%, transparent 75%);
+	width: 520px;
+	height: 420px;
+	background: radial-gradient(circle at center, rgba(37, 99, 235, 0.08) 0%, rgba(99, 102, 241, 0.03) 50%, transparent 70%);
+	opacity: 0.8;
 }
 
 /* Sparse Tiny Stars */
@@ -121,6 +110,7 @@
 	align-items: center;
 	text-align: center;
 	margin-top: 0.2rem;
+	margin-bottom: 1.25rem;
 }
 
 /* Futuristic Capsule / Badge */
@@ -948,13 +938,18 @@
 /* Tablet (max-width: 900px) */
 @media (max-width: 900px) {
 	.orbital-section-wrapper {
-		padding: 3.5rem 1.25rem 2rem;
+		padding: 2.8rem 1.25rem 1.5rem;
 		min-height: auto;
+	}
+
+	.languages-header {
+		margin-bottom: 1.5rem;
 	}
 
 	.orbital-stage {
 		height: 520px;
 		max-width: 740px;
+		margin: 1rem auto 0.6rem;
 	}
 
 	.planet-english { width: 62px; height: 62px; }
@@ -970,29 +965,61 @@
 /* Mobile (max-width: 640px) */
 @media (max-width: 640px) {
 	.orbital-section-wrapper {
-		padding: 2.5rem 0.8rem 1.5rem;
+		padding: 2rem 0.8rem 1.25rem;
 		min-height: auto;
 		overflow-x: hidden;
 	}
 
-	.orbital-stage {
-		height: 490px;
-		margin: 0.6rem auto;
-		max-width: 100%;
-		overflow: hidden;
+	.languages-header {
+		margin-top: 0;
+		margin-bottom: 1.6rem;
+		padding: 0 0.5rem;
 	}
 
-	/* Adjust coordinates on mobile to prevent edge clipping */
-	.planet-pos-english { top: 8%; left: 50%; }
-	.planet-pos-french  { top: 24%; left: 19%; }
-	.planet-pos-chinese { top: 24%; left: 81%; }
+	.languages-pill {
+		padding: 0.28rem 0.95rem;
+		margin-bottom: 0.65rem;
+	}
+
+	.pill-text {
+		font-size: 0.66rem;
+		letter-spacing: 0.22em;
+	}
+
+	.languages-main-heading {
+		font-size: clamp(1.6rem, 5.5vw, 2.1rem);
+		line-height: 1.25;
+	}
+
+	.languages-subheading {
+		font-size: 0.82rem;
+		margin-top: 0.35rem;
+		max-width: 320px;
+		line-height: 1.4;
+	}
+
+	.orbital-stage {
+		height: 480px;
+		margin: 1.25rem auto 0.6rem;
+		max-width: 100%;
+		overflow: visible;
+	}
+
+	/* Adjust coordinates on mobile to prevent overlapping with heading above */
+	.planet-pos-english { top: 12%; left: 50%; }
+	.planet-pos-french  { top: 26%; left: 19%; }
+	.planet-pos-chinese { top: 26%; left: 81%; }
 	.planet-pos-hindi   { top: 68%; left: 19%; }
 	.planet-pos-odia    { top: 68%; left: 81%; }
 	.planet-pos-spanish { top: 86%; left: 50%; }
 
-	.planet-english { width: 52px; height: 52px; }
+	.planet-english { width: 50px; height: 50px; }
 	.planet-hindi, .planet-odia { width: 48px; height: 48px; }
 	.planet-french, .planet-chinese, .planet-spanish { width: 46px; height: 46px; }
+
+	.planet-pos-english .planet-info {
+		margin-top: 6px;
+	}
 
 	.planet-name { font-size: 0.82rem; }
 	.planet-level { font-size: 0.65rem; }
@@ -1061,18 +1088,38 @@
 
 /* Small Mobile Screens (max-width: 420px) */
 @media (max-width: 420px) {
-	.orbital-stage {
-		height: 460px;
+	.orbital-section-wrapper {
+		padding: 1.6rem 0.6rem 1rem;
 	}
 
-	.planet-pos-french  { left: 16%; }
-	.planet-pos-chinese { left: 84%; }
-	.planet-pos-hindi   { left: 16%; }
-	.planet-pos-odia    { left: 84%; }
+	.languages-header {
+		margin-bottom: 1.3rem;
+	}
 
-	.planet-english { width: 46px; height: 46px; }
-	.planet-hindi, .planet-odia { width: 44px; height: 44px; }
-	.planet-french, .planet-chinese, .planet-spanish { width: 42px; height: 42px; }
+	.languages-main-heading {
+		font-size: clamp(1.4rem, 5vw, 1.75rem);
+	}
+
+	.languages-subheading {
+		font-size: 0.78rem;
+		max-width: 280px;
+	}
+
+	.orbital-stage {
+		height: 450px;
+		margin: 1rem auto 0.4rem;
+	}
+
+	.planet-pos-english { top: 13%; left: 50%; }
+	.planet-pos-french  { top: 27%; left: 16%; }
+	.planet-pos-chinese { top: 27%; left: 84%; }
+	.planet-pos-hindi   { top: 68%; left: 16%; }
+	.planet-pos-odia    { top: 68%; left: 84%; }
+	.planet-pos-spanish { top: 86%; left: 50%; }
+
+	.planet-english { width: 44px; height: 44px; }
+	.planet-hindi, .planet-odia { width: 42px; height: 42px; }
+	.planet-french, .planet-chinese, .planet-spanish { width: 40px; height: 40px; }
 
 	.planet-name { font-size: 0.76rem; }
 	.planet-level { font-size: 0.6rem; }
@@ -1129,16 +1176,14 @@
 }
 
 /* Atmospheric Glows & Overlays */
-[data-theme="light"] .ambient-blue-glow.glow-top {
-	background: radial-gradient(ellipse at center, rgba(186, 230, 253, 0.45) 0%, rgba(224, 242, 254, 0.25) 50%, transparent 80%);
+[data-theme="light"] .ambient-blue-glow.glow-top,
+[data-theme="light"] .ambient-blue-glow.glow-bottom {
+	display: none !important;
 }
 
 [data-theme="light"] .ambient-blue-glow.glow-center {
-	background: radial-gradient(circle at center, rgba(199, 210, 254, 0.35) 0%, rgba(224, 231, 255, 0.15) 55%, transparent 75%);
-}
-
-[data-theme="light"] .ambient-blue-glow.glow-bottom {
-	background: radial-gradient(ellipse at center, rgba(226, 232, 240, 0.7) 0%, transparent 75%);
+	background: radial-gradient(circle at center, rgba(14, 165, 233, 0.12) 0%, rgba(99, 102, 241, 0.04) 50%, transparent 70%);
+	opacity: 0.8;
 }
 
 [data-theme="light"] .star {

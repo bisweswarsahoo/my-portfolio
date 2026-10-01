@@ -83,7 +83,7 @@ function generateToroidalLayout(count, W, H, seed = 53) {
   }
 
   // Rest distributed across the torus with blue-noise rejection
-  const MIN_DIST = 160; // minimum distance in pixels
+  const MIN_DIST = 95; // minimum distance in pixels
   for (let i = centerCount; i < count; i++) {
     let bestU = rand(), bestV = rand(), bestDist = -1;
     for (let attempt = 0; attempt < 80; attempt++) {
@@ -156,7 +156,7 @@ const CARD_HALF = CARD_SIZE / 2;
 export default function Skills() {
   const containerRef = useRef(null);
   const viewportRef = useRef({ w: 1200, h: 800 });
-  const domainRef = useRef({ w: 2600, h: 1800 });
+  const domainRef = useRef({ w: 1500, h: 1000 });
   const nodeRefs = useRef([]);
   const tooltipRef = useRef(null);
   const bgGridRef = useRef(null);
@@ -208,8 +208,8 @@ export default function Skills() {
 
       // Ensure domain is wider and taller than viewport by at least 700px
       // This guarantees wrapping point is ALWAYS >350px offscreen (zero pop-in!)
-      const dw = Math.max(2600, Math.round(vw + 900));
-      const dh = Math.max(1800, Math.round(vh + 700));
+      const dw = Math.max(1500, Math.round(vw + 400));
+      const dh = Math.max(1000, Math.round(vh + 250));
       domainRef.current = { w: dw, h: dh };
 
       const pts = generateToroidalLayout(TECHNOLOGIES.length, dw, dh);
@@ -357,18 +357,35 @@ export default function Skills() {
         }
       }
 
-      // Step 4: Position floating tooltip dynamically BELOW the hovered item
+      // Step 4: Position floating tooltip dynamically with screen-aware dimensions & arrow alignment
       if (hovItem && tooltipRef.current) {
-        const halfTooltip = 145;
-        // Clamp X so tooltip never clips outside left/right screen borders
-        const ttX = Math.max(halfTooltip + 12, Math.min(vw - halfTooltip - 12, Math.round(hovItem.screenX)));
+        const isMobile = vw < 640;
+        const isSmallMobile = vw < 420;
+        const estTooltipWidth = isSmallMobile ? 210 : isMobile ? 240 : 280;
+        const halfTooltip = estTooltipWidth / 2;
 
-        // Default placement is BELOW the icon and label (screenY + 58px)
-        // If near the bottom edge of the viewport, flip cleanly above so it remains fully visible
-        const isNearBottom = hovItem.screenY > vh - 130;
-        const ttY = isNearBottom
-          ? Math.round(hovItem.screenY - 68)
-          : Math.round(hovItem.screenY + 58);
+        // Clamp X so tooltip never clips outside left/right screen borders with comfortable safety margin
+        const safetyMargin = isMobile ? 12 : 16;
+        const minX = halfTooltip + safetyMargin;
+        const maxX = vw - halfTooltip - safetyMargin;
+        const ttX = minX > maxX
+          ? Math.round(vw / 2)
+          : Math.max(minX, Math.min(maxX, Math.round(hovItem.screenX)));
+
+        // Calculate dynamic caret arrow pointer offset pointing directly at the active item
+        const rawOffset = Math.round(hovItem.screenX - (ttX - halfTooltip));
+        const arrowLeft = Math.max(16, Math.min(estTooltipWidth - 16, rawOffset));
+        tooltipRef.current.style.setProperty("--arrow-left", `${arrowLeft}px`);
+
+        // Check if item is in the lower portion of viewport, or close to bottom edge
+        const bottomThreshold = isMobile ? vh - 150 : vh - 130;
+        const isNearBottom = hovItem.screenY > bottomThreshold;
+
+        // Scale vertical offsets appropriately for mobile plate dimensions
+        const yOffset = isNearBottom
+          ? (isMobile ? -48 : -68)
+          : (isMobile ? 46 : 58);
+        const ttY = Math.round(hovItem.screenY + yOffset);
         const yTranslate = isNearBottom ? "-100%" : "0";
 
         tooltipRef.current.style.transform = `translate3d(${ttX}px, ${ttY}px, 0) translate(-50%, ${yTranslate})`;
