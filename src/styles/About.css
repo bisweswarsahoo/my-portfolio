@@ -244,6 +244,44 @@
 .ab-terminal__dot--yellow { background-color: #eab308; }
 .ab-terminal__dot--green { background-color: #10b981; }
 
+.ab-terminal__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ab-terminal__replay-btn {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #7dd3fc;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 3px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  font-family: inherit;
+  outline: none;
+}
+
+.ab-terminal__replay-btn:hover {
+  background: rgba(56, 189, 248, 0.22);
+  border-color: #38bdf8;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.ab-terminal__replay-btn:active {
+  transform: translateY(1px);
+}
+
+.ab-terminal__replay-icon {
+  font-size: 0.65rem;
+}
+
 .ab-terminal__cwd {
   font-size: 0.76rem;
   color: #64748b;
@@ -267,6 +305,9 @@
   color: #cbd5e1;
   opacity: 0;
   transform: translateY(3px);
+  padding: 3px 6px;
+  border-radius: 6px;
+  user-select: text;
   transition: opacity 0.28s ease, transform 0.28s ease;
 }
 
@@ -320,6 +361,22 @@
   align-items: center;
   gap: 0.75rem;
   position: relative;
+  padding: 4px 6px;
+  border-radius: 8px;
+  transition: transform 0.22s ease, background-color 0.22s ease;
+  cursor: default;
+}
+
+.ab-infobar__block:hover {
+  transform: translateY(-2px);
+  background-color: rgba(56, 189, 248, 0.06);
+}
+
+.ab-infobar__block:hover .ab-infobar__icon-wrap {
+  border-color: #38bdf8;
+  background-color: rgba(56, 189, 248, 0.18);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+  transform: scale(1.05);
 }
 
 .ab-infobar__divider {
@@ -549,6 +606,19 @@
   color: #64748b;
   font-weight: 600;
 }
+
+[data-theme="light"] .ab-terminal__replay-btn {
+  background: rgba(2, 132, 199, 0.08);
+  border-color: rgba(2, 132, 199, 0.28);
+  color: #0284c7;
+}
+
+[data-theme="light"] .ab-terminal__replay-btn:hover {
+  background: rgba(2, 132, 199, 0.16);
+  color: #0369a1;
+}
+
+
 
 [data-theme="light"] .ab-terminal__line {
   color: #334155;

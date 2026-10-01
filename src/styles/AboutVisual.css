@@ -1,0 +1,1018 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ABOUT VISUAL — HIGH-PERFORMANCE INTERACTIVE SYSTEM
+   Buttery 60+ FPS Lerp Parallax, Dynamic Ray Coupling, and Tactile Feedback
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.about-visual-root {
+  position: relative;
+  width: 100%;
+  max-width: 660px;
+  height: 640px;
+  min-height: 560px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+/* ── Layers Framework (Zero-render physics parallax via CSS custom properties) ── */
+.av-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Layer depth multipliers using JS lerp custom properties */
+.av-layer--planet {
+  z-index: 2;
+  transform: translate3d(calc(var(--av-mx, 0) * 8px), calc(var(--av-my, 0) * 8px), 0);
+}
+
+.av-layer--orbits {
+  z-index: 3;
+  transform: translate3d(calc(var(--av-mx, 0) * 12px), calc(var(--av-my, 0) * 12px), 0);
+}
+
+.av-layer--portrait {
+  z-index: 5;
+  transform: translate3d(calc(var(--av-mx, 0) * 15px), calc(var(--av-my, 0) * 15px), 0);
+}
+
+.av-layer--terminal {
+  z-index: 7;
+  transform: translate3d(calc(var(--av-mx, 0) * 18px), calc(var(--av-my, 0) * 18px), 0);
+}
+
+.av-layer--cards {
+  z-index: 8;
+  transform: translate3d(calc(var(--av-mx, 0) * 22px), calc(var(--av-my, 0) * 22px), 0);
+}
+
+/* ── 1. Atmosphere Background Halo ───────────────────────────────────────── */
+.av-ambient-halo {
+  position: absolute;
+  width: 440px;
+  height: 440px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, rgba(99, 102, 241, 0.15) 45%, transparent 70%);
+  filter: blur(65px);
+  pointer-events: none;
+  z-index: 1;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: avAtmospherePulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes avAtmospherePulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1.08);
+    opacity: 1;
+  }
+}
+
+/* ── 2. Subtle Micro Stars ───────────────────────────────────────────────── */
+.av-particles-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.av-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 4px #38bdf8;
+  opacity: 0.55;
+  animation: avStarTwinkle 4s ease-in-out infinite;
+}
+
+.av-star.s1 {
+  top: 8%;
+  left: 18%;
+  animation-delay: 0.3s;
+}
+
+.av-star.s2 {
+  top: 15%;
+  left: 78%;
+  animation-delay: 1.1s;
+}
+
+.av-star.s3 {
+  top: 28%;
+  left: 88%;
+  animation-delay: 2.2s;
+}
+
+.av-star.s4 {
+  top: 38%;
+  left: 10%;
+  animation-delay: 0.7s;
+}
+
+.av-star.s5 {
+  top: 62%;
+  left: 5%;
+  animation-delay: 1.9s;
+}
+
+.av-star.s6 {
+  top: 78%;
+  left: 82%;
+  animation-delay: 3.1s;
+}
+
+.av-star.s7 {
+  top: 88%;
+  left: 24%;
+  animation-delay: 1.4s;
+}
+
+.av-star.s8 {
+  top: 22%;
+  left: 32%;
+  animation-delay: 2.8s;
+}
+
+.av-star.s9 {
+  top: 84%;
+  left: 68%;
+  animation-delay: 0.5s;
+}
+
+.av-star.s10 {
+  top: 5%;
+  left: 58%;
+  animation-delay: 3.5s;
+}
+
+.av-star.s11 {
+  top: 52%;
+  left: 94%;
+  animation-delay: 1.7s;
+}
+
+.av-star.s12 {
+  top: 92%;
+  left: 45%;
+  animation-delay: 2.5s;
+}
+
+@keyframes avStarTwinkle {
+
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.4);
+  }
+}
+
+/* ── 3. Central Digital Planet / AI Core ─────────────────────────────────── */
+.av-planet-wrap {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 290px;
+  height: 290px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.av-planet-glow {
+  position: absolute;
+  inset: -35px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--planet-glow-color, #38bdf8) 45%, transparent) 0%, rgba(30, 58, 138, 0.2) 50%, transparent 72%);
+  filter: blur(28px);
+  animation: avPlanetGlowPulse 6s ease-in-out infinite alternate;
+  transition: background 0.4s ease;
+}
+
+@keyframes avPlanetGlowPulse {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.75;
+  }
+
+  100% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+.av-planet-sphere {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #2563eb 0%, #1e3a8a 25%, #0f172a 65%, #020617 100%);
+  box-shadow:
+    0 0 50px rgba(56, 189, 248, 0.3),
+    inset 0 0 35px rgba(56, 189, 248, 0.45),
+    inset -16px -16px 45px #020617;
+  overflow: hidden;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.av-planet-highlight {
+  position: absolute;
+  top: 8%;
+  left: 12%;
+  width: 90px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.32) 0%, rgba(56, 189, 248, 0.15) 50%, transparent 80%);
+  transform: rotate(-25deg);
+  pointer-events: none;
+}
+
+.av-planet-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.42;
+  transform: rotate(-15deg);
+  animation: avPlanetLinesRotate 40s linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes avPlanetLinesRotate {
+  from {
+    transform: rotate(-15deg);
+  }
+
+  to {
+    transform: rotate(345deg);
+  }
+}
+
+.av-planet-lat {
+  fill: none;
+  stroke: rgba(56, 189, 248, 0.45);
+  stroke-width: 1.1px;
+}
+
+.av-planet-axis {
+  stroke: rgba(56, 189, 248, 0.35);
+  stroke-width: 1px;
+  stroke-dasharray: 4 3;
+}
+
+/* ── 4. Vector Orbital System & Dynamic Connection Rays ──────────────────── */
+.av-orbital-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.av-orbit-path {
+  fill: none;
+  transition: stroke 0.3s ease;
+}
+
+.av-orbit-path--major {
+  stroke: url(#orbitGradCyan);
+  stroke-width: 1.4px;
+  stroke-dasharray: 6 3.5;
+}
+
+.av-orbit-path--secondary {
+  stroke: url(#orbitGradPurple);
+  stroke-width: 1.3px;
+}
+
+.av-orbit-path--dashed {
+  stroke: rgba(56, 189, 248, 0.35);
+  stroke-width: 1.2px;
+  stroke-dasharray: 4 4;
+}
+
+.av-orbit-path--outer {
+  stroke: rgba(147, 197, 253, 0.18);
+  stroke-width: 1.1px;
+}
+
+/* Traveling Energy Streams on Orbits */
+.av-orbit-pulse {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 2.2px;
+  pointer-events: none;
+}
+
+.av-orbit-pulse--1 {
+  stroke: #38bdf8;
+  stroke-dasharray: 25 400;
+  animation: avOrbitStream1 7.5s linear infinite;
+  filter: drop-shadow(0 0 6px #38bdf8);
+}
+
+.av-orbit-pulse--2 {
+  stroke: #c084fc;
+  stroke-dasharray: 22 360;
+  animation: avOrbitStream2 8.2s linear infinite reverse;
+  filter: drop-shadow(0 0 6px #c084fc);
+}
+
+@keyframes avOrbitStream1 {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -425;
+  }
+}
+
+@keyframes avOrbitStream2 {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -382;
+  }
+}
+
+.av-orbit-node {
+  fill: #ffffff;
+  stroke: #38bdf8;
+  stroke-width: 1.5px;
+  transition: r 0.3s ease, fill 0.3s ease;
+}
+
+.av-orbit-node--pulsing {
+  animation: avNodePulse 2.4s ease-in-out infinite;
+}
+
+@keyframes avNodePulse {
+
+  0%,
+  100% {
+    r: 4px;
+    opacity: 1;
+    fill: #ffffff;
+  }
+
+  50% {
+    r: 6px;
+    opacity: 0.7;
+    fill: #38bdf8;
+  }
+}
+
+/* ── 5. Central Portrait Anchor ──────────────────────────────────────────── */
+.av-portrait-wrap {
+  position: relative;
+  width: clamp(390px, 58vw, 500px);
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.av-portrait-rim {
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  right: 20%;
+  bottom: 25%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.28) 0%, rgba(99, 102, 241, 0.15) 50%, transparent 75%);
+  filter: blur(35px);
+  pointer-events: none;
+}
+
+.av-portrait-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 0 28px rgba(56, 189, 248, 0.2));
+  user-select: none;
+  -webkit-user-drag: none;
+
+  /* Natural bottom edge fade */
+  mask-image: linear-gradient(to bottom, black 65%, rgba(0, 0, 0, 0.8) 80%, transparent 98%);
+  -webkit-mask-image: linear-gradient(to bottom, black 65%, rgba(0, 0, 0, 0.8) 80%, transparent 98%);
+}
+
+.av-portrait-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 55px;
+  background: linear-gradient(to top, #060913 20%, transparent 100%);
+  pointer-events: none;
+}
+
+/* ── 6. Decorative Interactive Terminal Float ────────────────────────────── */
+.av-terminal-float {
+  position: absolute;
+  top: 6%;
+  left: 36%;
+  background: rgba(11, 17, 33, 0.88);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 9px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(56, 189, 248, 0.15);
+  pointer-events: auto;
+  cursor: pointer;
+  outline: none;
+  animation: avCardFloat 6s ease-in-out infinite alternate;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.av-terminal-float:hover {
+  transform: translateY(-3px) scale(1.03);
+  border-color: #38bdf8;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(56, 189, 248, 0.3);
+}
+
+.av-terminal-float:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+.av-terminal-float:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 3px;
+}
+
+.av-tf-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.av-tf-dot {
+  width: 6.5px;
+  height: 6.5px;
+  border-radius: 50%;
+}
+
+.av-tf-dot.red {
+  background: #ef4444;
+}
+
+.av-tf-dot.yellow {
+  background: #eab308;
+}
+
+.av-tf-dot.green {
+  background: #10b981;
+}
+
+.av-tf-content {
+  font-family: "Fira Code", Consolas, monospace;
+  font-size: 0.74rem;
+  color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.av-tf-content.is-fading {
+  opacity: 0.3;
+  transform: translateY(2px);
+}
+
+.av-tf-prompt {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.av-tf-cmd {
+  color: #a5f3fc;
+  font-weight: 500;
+}
+
+.av-tf-cursor {
+  color: #38bdf8;
+  font-weight: 700;
+  animation: avBlink 1s infinite;
+}
+
+@keyframes avBlink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ── 7. Floating Capability Cards (Interactive HTML Buttons) ─────────────── */
+.av-card {
+  position: absolute;
+  pointer-events: auto;
+  background: rgba(11, 18, 36, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 12px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 10px 28px -5px rgba(0, 0, 0, 0.65),
+    0 0 16px rgba(56, 189, 248, 0.1);
+  min-width: 108px;
+  max-width: 140px;
+  cursor: default;
+  outline: none;
+  text-align: left;
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+  animation: avCardFloat 6.5s ease-in-out infinite alternate;
+}
+
+.av-card:focus-visible {
+  outline: 2px solid var(--card-accent, #38bdf8);
+  outline-offset: 3px;
+}
+
+/* Card Hover Elevation */
+.av-card:hover,
+.av-card:focus-visible {
+  transform: translateY(-6px) scale(1.04) !important;
+  border-color: var(--card-accent, #38bdf8) !important;
+  box-shadow:
+    0 16px 36px -4px rgba(0, 0, 0, 0.8),
+    0 0 25px color-mix(in srgb, var(--card-accent, #38bdf8) 55%, transparent) !important;
+  z-index: 15;
+}
+
+.av-card:hover .av-card-item,
+.av-card:focus-visible .av-card-item {
+  color: #f1f5f9;
+}
+
+/* Cardinal Coordinates */
+.av-card--ai {
+  top: 12%;
+  left: 4%;
+  animation-duration: 6.2s;
+}
+
+.av-card--models {
+  top: 46%;
+  left: 1%;
+  animation-duration: 7s;
+}
+
+.av-card--db {
+  top: 74%;
+  left: 8%;
+  animation-duration: 6.6s;
+}
+
+.av-card--fullstack {
+  top: 15%;
+  right: 3%;
+  animation-duration: 7.2s;
+}
+
+.av-card--cloud {
+  top: 66%;
+  right: 5%;
+  animation-duration: 6.8s;
+}
+
+@keyframes avCardFloat {
+  0% {
+    transform: translateY(0px);
+  }
+
+  100% {
+    transform: translateY(-7px);
+  }
+}
+
+/* Card Internal Styling */
+.av-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.av-card-icon-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--card-accent, #38bdf8) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-accent, #38bdf8) 35%, transparent);
+  flex-shrink: 0;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.av-card:hover .av-card-icon-box,
+.av-card:focus-visible .av-card-icon-box {
+  transform: scale(1.1);
+  background: color-mix(in srgb, var(--card-accent, #38bdf8) 25%, transparent);
+}
+
+.av-card-icon {
+  font-size: 0.72rem;
+  color: var(--card-accent, #38bdf8);
+}
+
+.av-card-title {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #f8fafc;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.av-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5px;
+}
+
+.av-card-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  line-height: 1.25;
+  transition: color 0.2s ease;
+}
+
+.av-card-bullet {
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--card-accent, #38bdf8) 75%, transparent);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.av-card:hover .av-card-bullet,
+.av-card:focus-visible .av-card-bullet {
+  transform: scale(1.3);
+  background: #ffffff;
+}
+
+/* ── 8. Handwritten Statement & Dynamic Curved Arrow ─────────────────────── */
+.av-impact-wrap {
+  position: absolute;
+  bottom: 2%;
+  left: 2%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+  cursor: default;
+}
+
+.av-impact-text {
+  font-family: "Caveat", cursive, sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #93c5fd;
+  transform: rotate(-5deg);
+  display: flex;
+  flex-direction: column;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.av-impact-wrap:hover .av-impact-text {
+  transform: rotate(-3deg) scale(1.03);
+}
+
+.av-impact-highlight {
+  color: #38bdf8;
+  font-weight: 700;
+  transition: text-shadow 0.3s ease;
+}
+
+.av-impact-wrap:hover .av-impact-highlight {
+  text-shadow: 0 0 16px rgba(56, 189, 248, 0.8), 0 0 24px #38bdf8;
+}
+
+.av-impact-arrow {
+  width: 60px;
+  height: 48px;
+  color: #38bdf8;
+  transform: rotate(-10deg);
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.4));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.av-impact-wrap:hover .av-impact-arrow {
+  transform: rotate(-6deg) scale(1.08);
+  filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.8));
+}
+
+.av-arrow-stem {
+  animation: avArrowDash 2.5s linear infinite;
+}
+
+@keyframes avArrowDash {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -30;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN (Desktop, Tablet, Mobile)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Tablet (<= 1024px) */
+@media (max-width: 1024px) {
+  .about-visual-root {
+    max-width: 520px;
+    height: 540px;
+  }
+
+  .av-planet-wrap {
+    width: 240px;
+    height: 240px;
+  }
+
+  .av-portrait-wrap {
+    width: clamp(330px, 46vw, 410px);
+  }
+
+  .av-card {
+    padding: 7px 10px;
+    min-width: 95px;
+    max-width: 120px;
+  }
+
+  .av-card-title {
+    font-size: 0.72rem;
+  }
+
+  .av-card-item {
+    font-size: 0.64rem;
+  }
+
+  .av-impact-text {
+    font-size: 1.35rem;
+  }
+
+  .av-impact-arrow {
+    width: 48px;
+    height: 40px;
+  }
+}
+
+/* Mobile (<= 768px) */
+@media (max-width: 768px) {
+  .about-visual-root {
+    max-width: 420px;
+    height: 480px;
+    min-height: 460px;
+  }
+
+  .av-planet-wrap {
+    width: 200px;
+    height: 200px;
+  }
+
+  .av-portrait-wrap {
+    width: clamp(300px, 76vw, 340px);
+  }
+
+  .av-terminal-float {
+    top: 3%;
+    left: 28%;
+    font-size: 0.68rem;
+    padding: 4px 8px;
+  }
+
+  /* Compact card arrangement on mobile avoiding overflow */
+  .av-card {
+    padding: 5px 8px;
+    min-width: 82px;
+    max-width: 102px;
+    border-radius: 9px;
+  }
+
+  .av-card--ai {
+    top: 10%;
+    left: 1%;
+  }
+
+  .av-card--models {
+    top: 44%;
+    left: 0;
+  }
+
+  .av-card--db {
+    top: 76%;
+    left: 4%;
+  }
+
+  .av-card--fullstack {
+    top: 12%;
+    right: 1%;
+  }
+
+  .av-card--cloud {
+    top: 68%;
+    right: 2%;
+  }
+
+  .av-card-icon-box {
+    width: 18px;
+    height: 18px;
+  }
+
+  .av-card-icon {
+    font-size: 0.65rem;
+  }
+
+  .av-card-title {
+    font-size: 0.68rem;
+  }
+
+  .av-card-item {
+    font-size: 0.6rem;
+  }
+
+  .av-impact-wrap {
+    bottom: -15px;
+    left: 5%;
+  }
+
+  .av-impact-text {
+    font-size: 1.25rem;
+  }
+
+  .av-impact-arrow {
+    width: 40px;
+    height: 32px;
+  }
+}
+
+/* Small Mobile (<= 480px) */
+@media (max-width: 480px) {
+  .about-visual-root {
+    max-width: 360px;
+    height: 440px;
+  }
+
+  .av-portrait-wrap {
+    width: 250px;
+  }
+
+  .av-planet-wrap {
+    width: 170px;
+    height: 170px;
+  }
+
+  .av-card--models .av-card-list,
+  .av-card--cloud .av-card-list {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIGHT THEME SUPPORT ([data-theme="light"])
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="light"] .av-ambient-halo {
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.18) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 70%);
+}
+
+[data-theme="light"] .av-planet-glow {
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.22) 0%, rgba(37, 99, 235, 0.12) 50%, transparent 72%);
+}
+
+[data-theme="light"] .av-planet-sphere {
+  background: radial-gradient(circle at 35% 30%, #60a5fa 0%, #2563eb 35%, #1e40af 75%, #0f172a 100%);
+  box-shadow:
+    0 0 35px rgba(14, 165, 233, 0.2),
+    inset 0 0 25px rgba(255, 255, 255, 0.35),
+    inset -10px -10px 30px rgba(15, 23, 42, 0.6);
+  border-color: rgba(14, 165, 233, 0.4);
+}
+
+[data-theme="light"] .av-planet-lat {
+  stroke: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .av-planet-axis {
+  stroke: rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="light"] .av-orbit-node {
+  fill: #0284c7;
+  stroke: #ffffff;
+}
+
+[data-theme="light"] .av-portrait-fade {
+  background: linear-gradient(to top, #f8fafc 20%, transparent 100%);
+}
+
+[data-theme="light"] .av-terminal-float {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(2, 132, 199, 0.35);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08), 0 0 16px rgba(14, 165, 233, 0.1);
+}
+
+[data-theme="light"] .av-tf-cmd {
+  color: #0f172a;
+}
+
+[data-theme="light"] .av-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(203, 213, 225, 0.9);
+  box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.08), 0 0 12px rgba(14, 165, 233, 0.08);
+}
+
+[data-theme="light"] .av-card-title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .av-card-item {
+  color: #475569;
+}
+
+[data-theme="light"] .av-card.is-active,
+[data-theme="light"] .av-card:hover {
+  background: #ffffff !important;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.14), 0 0 25px color-mix(in srgb, var(--card-accent, #0284c7) 35%, transparent) !important;
+}
+
+[data-theme="light"] .av-impact-text {
+  color: #0369a1;
+  text-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
+}
+
+[data-theme="light"] .av-impact-highlight {
+  color: #0284c7;
+}
+
+[data-theme="light"] .av-impact-arrow {
+  color: #0284c7;
+}
+
+/* ── Accessibility: Reduced Motion ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+
+  .av-card,
+  .av-terminal-float,
+  .av-ambient-halo,
+  .av-planet-glow,
+  .av-star,
+  .av-orbit-node--pulsing,
+  .av-orbit-pulse,
+  .av-planet-lines,
+  .av-arrow-stem {
+    animation: none !important;
+    transition: none !important;
+  }
+}

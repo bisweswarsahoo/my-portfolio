@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { FaGraduationCap, FaCode } from "react-icons/fa";
+import { FaRotateRight } from "react-icons/fa6";
 import { BsRobot } from "react-icons/bs";
-import heroImage from "../assets/Futuristic AI Developer with Holographic UI.png";
+import portraitImage from "../assets/Personal Portrait.png";
+import AboutVisual from "../components/about/AboutVisual.jsx";
 import "../styles/About.css";
 import portfolioData from "../data/portfolioData.js";
 
@@ -51,12 +53,26 @@ const INFO_BLOCKS = [
   },
 ];
 
+
 /* ─── Developer Terminal Component ───────────────────────────────────────── */
 const Terminal = () => {
   const [visibleLines, setVisibleLines] = useState(0);
   const [blink, setBlinkOn] = useState(true);
   const ref = useRef(null);
   const started = useRef(false);
+
+  const runSequence = useCallback((delay = 240) => {
+    setVisibleLines(0);
+    let i = 0;
+    const next = () => {
+      i++;
+      setVisibleLines(i);
+      if (i < TERMINAL_LINES.length) {
+        setTimeout(next, delay);
+      }
+    };
+    setTimeout(next, 150);
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -66,15 +82,7 @@ const Terminal = () => {
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
           started.current = true;
-          let i = 0;
-          const next = () => {
-            i++;
-            setVisibleLines(i);
-            if (i < TERMINAL_LINES.length) {
-              setTimeout(next, 280);
-            }
-          };
-          setTimeout(next, 300);
+          runSequence(260);
         }
       },
       { threshold: 0.25 }
@@ -82,13 +90,18 @@ const Terminal = () => {
 
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
+  }, [runSequence]);
 
   /* Blinking cursor effect */
   useEffect(() => {
     const id = setInterval(() => setBlinkOn(b => !b), 530);
     return () => clearInterval(id);
   }, []);
+
+  const handleReplay = (e) => {
+    e.stopPropagation();
+    runSequence(200);
+  };
 
   return (
     <div className="ab-terminal" ref={ref} aria-label="Developer terminal">
@@ -99,7 +112,19 @@ const Terminal = () => {
           <span className="ab-terminal__dot ab-terminal__dot--yellow" />
           <span className="ab-terminal__dot ab-terminal__dot--green" />
         </div>
-        <span className="ab-terminal__cwd">~/about</span>
+        <div className="ab-terminal__actions">
+          <button
+            className="ab-terminal__replay-btn"
+            onClick={handleReplay}
+            title="Re-run terminal commands"
+            type="button"
+            aria-label="Re-run terminal commands"
+          >
+            <FaRotateRight className="ab-terminal__replay-icon" aria-hidden="true" />
+            <span>Re-run</span>
+          </button>
+          <span className="ab-terminal__cwd">~/about</span>
+        </div>
       </div>
 
       {/* Terminal content */}
@@ -146,19 +171,9 @@ const About = () => (
     </div>
 
     <div className="ab-container">
-      {/* ── Left side: Single finished visual artwork ─────────────────────── */}
-      <div className="ab-left" aria-hidden="true">
-        <div className="ab-artwork-wrapper">
-          <img
-            src={heroImage}
-            alt="Futuristic AI developer holographic artwork"
-            className="ab-hero-img"
-            draggable="false"
-            loading="eager"
-          />
-          {/* Subtle edge blend overlay */}
-          <div className="ab-artwork-blend" />
-        </div>
+      {/* ── Left side: Programmatic AI Developer Planetary Ecosystem ──────── */}
+      <div className="ab-left">
+        <AboutVisual portrait={portraitImage} />
       </div>
 
       {/* ── Right side: Premium developer & AI generalist content ─────────── */}
