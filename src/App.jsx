@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar.jsx";
 import Education from "./sections/Education.jsx";
 import Work from "./sections/Work.jsx";
 
+import About from "./sections/About.jsx";
 import Skills from "./sections/Skills.jsx";
 import Projects from "./sections/Projects.jsx";
 import Languages from "./components/Languages.jsx";
@@ -17,6 +18,7 @@ const sections = [
 	{ id: "work", Component: Work, dataKey: "experience" },
 	{ id: "skills", Component: Skills, dataKey: "skills" },
 	{ id: "projects", Component: Projects, dataKey: "projects" },
+	{ id: "about", Component: About, dataKey: "about" },
 	{ id: "languages", Component: Languages, dataKey: "languages" },
 ];
 
@@ -32,20 +34,32 @@ const hasContent = (value) => {
 	});
 };
 
+import { Routes, Route } from "react-router-dom";
+import AllProjects from "./sections/AllProjects.jsx";
+
+const Home = () => (
+	<>
+		{sections.filter(({ dataKey }) => hasContent(portfolioData[dataKey])).map(({ id, Component }) => (
+			<section
+				key={id}
+				id={id}
+				className="portfolio-section"
+			>
+				<Component />
+			</section>
+		))}
+	</>
+);
+
 function App() {
 	return (
 		<ThemeProvider>
 			<div className="app-container">
 				<Navbar />
-				{sections.filter(({ dataKey }) => hasContent(portfolioData[dataKey])).map(({ id, Component }) => (
-					<div
-						key={id}
-						id={id}
-						style={{ paddingTop: "80px", marginTop: "-80px" }} // for scroll offset if not using scroll-padding-top
-					>
-						<Component />
-					</div>
-				))}
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/projects" element={<AllProjects />} />
+				</Routes>
 			</div>
 			<Footer />
 		</ThemeProvider>

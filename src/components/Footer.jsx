@@ -7,16 +7,8 @@ const Footer = () => {
 	const currentYear = new Date().getFullYear();
 
 	return (
-		<footer
-			className="footer"
-			id="about"
-		>
+		<footer className="footer">
 			<div className="footer-content">
-				<h2 className="footer-name">{portfolioData.about.heading}</h2>
-				<div className="footer-about-text">
-					{portfolioData.about.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-				</div>
-
 				<div className="footer-socials-container">
 					<SocialInfo />
 				</div>
