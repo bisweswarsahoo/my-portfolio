@@ -11,7 +11,7 @@
   min-height: 640px;
   overflow: hidden;
   box-sizing: border-box;
-  background-color: #030712;
+  background: transparent !important;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -221,18 +221,19 @@
   cursor: grabbing !important;
 }
 
-/* ── Dynamic Technical Grid Background ───────────────────────────────── */
+/* ── Dynamic Technical Parallax Grid Background (Moves interactively on drag) ── */
 .skills-bg-grid {
   position: absolute;
   inset: -100px;
   pointer-events: none;
   z-index: 0;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    linear-gradient(to right, rgba(56, 189, 248, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.08) 1px, transparent 1px);
   background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, black 25%, transparent 95%);
-  -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, black 25%, transparent 95%);
+  mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, black 30%, transparent 95%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, black 30%, transparent 95%);
+  opacity: 0.85;
 }
 
 /* ── Parallax Stars Layers ───────────────────────────────────────────── */
@@ -703,14 +704,15 @@
    LIGHT THEME SUPPORT — SKILLS SECTION
    ═══════════════════════════════════════════════════════════════════════════ */
 [data-theme="light"] .skills-loop-wrapper {
-  background-color: #f8fafc;
+  background: transparent !important;
   color: #0f172a;
 }
 
 [data-theme="light"] .skills-bg-grid {
   background-image:
-    linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(14, 165, 233, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(14, 165, 233, 0.12) 1px, transparent 1px);
+  opacity: 0.75;
 }
 
 [data-theme="light"] .skills-bg-stars--1,

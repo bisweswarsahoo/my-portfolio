@@ -13,7 +13,7 @@ const Education = () => {
 
 	return (
 		<>
-			<h1 style={{ display: "flex", justifyContent: "center" }}>Education</h1>
+			<h1 className="timeline-section-title">Education</h1>
 			<VerticalTimeline>
 				{visibleEducation.map((item, index) => (
 					<Card

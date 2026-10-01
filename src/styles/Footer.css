@@ -6,15 +6,14 @@
 .footer {
 	position: relative;
 	width: 100%;
-	background-color: #03070d;
-	background: radial-gradient(circle at 50% 0%, #081020 0%, #03070d 75%);
+	background: transparent !important;
 	color: #f8fafc;
 	padding: 5rem 1.5rem 2.5rem;
 	border-top: 1px solid rgba(56, 189, 248, 0.15);
 	overflow: hidden;
 	box-sizing: border-box;
 	margin-top: 4rem;
-	transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+	transition: border-color 0.3s ease, color 0.3s ease;
 }
 
 /* ================= ATMOSPHERE & AMBIENT GLOWS ================= */
@@ -60,11 +59,7 @@
 }
 
 .ambient-particles {
-	position: absolute;
-	inset: 0;
-	background-image: radial-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px);
-	background-size: 32px 32px;
-	opacity: 0.6;
+	display: none;
 }
 
 /* ================= INNER CONTAINER ================= */
@@ -436,8 +431,7 @@
    LIGHT THEME COMPLETE STYLING
    ========================================================= */
 [data-theme="light"] .footer {
-	background-color: #f8fafc;
-	background: radial-gradient(circle at 50% 0%, #e0f2fe 0%, #f8fafc 75%);
+	background: transparent !important;
 	color: #0f172a;
 	border-top: 1px solid rgba(14, 165, 233, 0.2);
 }
@@ -455,7 +449,7 @@
 }
 
 [data-theme="light"] .ambient-particles {
-	background-image: radial-gradient(rgba(14, 165, 233, 0.08) 1px, transparent 1px);
+	display: none;
 }
 
 [data-theme="light"] .contact-status-pill {

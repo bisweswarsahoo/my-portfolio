@@ -7,14 +7,14 @@
   min-height: 100vh;
   justify-content: stretch;
   align-items: stretch;
-  background-color: #060913;
+  background: transparent !important;
 }
 
 .ab-section {
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background-color: #060913;
+  background: transparent !important;
   color: #f8fafc;
   display: flex;
   align-items: center;
@@ -33,14 +33,7 @@
 }
 
 .ab-bg__grid {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    radial-gradient(rgba(56, 189, 248, 0.08) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 60%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 60%, transparent 100%);
-  opacity: 0.6;
+  display: none;
 }
 
 .ab-bg__glow {
@@ -548,18 +541,17 @@
    LIGHT THEME SUPPORT ([data-theme="light"])
    ═══════════════════════════════════════════════════════════════════════════ */
 [data-theme="light"] #about.portfolio-section {
-  background-color: #f8fafc;
+  background: transparent !important;
 }
 
 [data-theme="light"] .ab-section {
-  background-color: #f8fafc;
+  background: transparent !important;
   color: #0f172a;
 }
 
 /* ── Light Background Layer & Ambient Glows ──────────────────────────────── */
 [data-theme="light"] .ab-bg__grid {
-  background-image: radial-gradient(rgba(14, 165, 233, 0.12) 1px, transparent 1px);
-  opacity: 0.55;
+  display: none;
 }
 
 [data-theme="light"] .ab-bg__glow--1 {

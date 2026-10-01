@@ -7,7 +7,7 @@
 	position: relative;
 	width: 100%;
 	min-height: 100vh;
-	background-color: #05080D;
+	background: transparent !important;
 	color: #f8fafc;
 	display: flex;
 	align-items: center;
@@ -27,13 +27,7 @@
 }
 
 .ps-bg__grid {
-	position: absolute;
-	inset: 0;
-	background-image: radial-gradient(rgba(56, 189, 248, 0.07) 1px, transparent 1px);
-	background-size: 36px 36px;
-	mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, #000 40%, transparent 100%);
-	-webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, #000 40%, transparent 100%);
-	opacity: 0.7;
+	display: none;
 }
 
 .ps-bg__glow {
@@ -2664,15 +2658,12 @@
    LIGHT THEME SUPPORT — PROJECTS SECTION
    ═══════════════════════════════════════════════════════════════════════════ */
 [data-theme="light"] .ps-section {
-	background-color: #f8fafc;
+	background: transparent !important;
 	color: #0f172a;
 }
 
 [data-theme="light"] .ps-bg__grid {
-	background-image: radial-gradient(rgba(15, 23, 42, 0.07) 1px, transparent 1px);
-	mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, #000 30%, transparent 100%);
-	-webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, #000 30%, transparent 100%);
-	opacity: 0.6;
+	display: none;
 }
 
 [data-theme="light"] .ps-bg__glow--1 {

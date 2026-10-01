@@ -1,0 +1,179 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   CENTRALIZED GLOBAL BACKGROUND SYSTEM
+   Single, unified, seamless background architecture for the entire website.
+   Harmonizes Education, Work, Skills, Projects, About, Languages, and Footer
+   in both Light and Dark themes with zero section seams.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.centralized-bg {
+	position: fixed;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+	pointer-events: none;
+	z-index: 0;
+	overflow: hidden;
+	transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── 1. Base Canvas Gradient Layer ─────────────────────────────────────── */
+.centralized-bg__canvas {
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(ellipse 130% 100% at 50% -10%, #0c1224 0%, #060914 45%, #03060c 100%);
+	transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+}
+
+[data-theme="light"] .centralized-bg__canvas {
+	background: radial-gradient(ellipse 130% 100% at 50% -10%, #ffffff 0%, #f4f7fb 45%, #e8edf5 100%);
+}
+
+/* ── 2. Ambient Floating Mesh Aura Orbs ─────────────────────────────────── */
+.centralized-bg__glow {
+	position: absolute;
+	border-radius: 50%;
+	pointer-events: none;
+	filter: blur(120px);
+	will-change: transform, opacity;
+	transition: opacity 0.5s ease, background 0.5s ease;
+}
+
+/* Cyan / Sky Blue Orb (Top Right / Center) */
+.centralized-bg__glow--cyan {
+	top: -8%;
+	right: 12%;
+	width: 680px;
+	height: 680px;
+	background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(14, 165, 233, 0.04) 50%, transparent 70%);
+	animation: bgFloatCyan 24s ease-in-out infinite alternate;
+}
+
+[data-theme="light"] .centralized-bg__glow--cyan {
+	background: radial-gradient(circle, rgba(14, 165, 233, 0.09) 0%, rgba(56, 189, 248, 0.03) 50%, transparent 70%);
+}
+
+/* Indigo / Violet Orb (Mid Left) */
+.centralized-bg__glow--indigo {
+	top: 30%;
+	left: -8%;
+	width: 740px;
+	height: 740px;
+	background: radial-gradient(circle, rgba(99, 102, 241, 0.10) 0%, rgba(79, 70, 229, 0.03) 50%, transparent 70%);
+	animation: bgFloatIndigo 28s ease-in-out infinite alternate;
+}
+
+[data-theme="light"] .centralized-bg__glow--indigo {
+	background: radial-gradient(circle, rgba(139, 92, 246, 0.07) 0%, rgba(99, 102, 241, 0.02) 50%, transparent 70%);
+}
+
+/* Purple / Rose Orb (Bottom Right) */
+.centralized-bg__glow--purple {
+	bottom: 10%;
+	right: -6%;
+	width: 680px;
+	height: 680px;
+	background: radial-gradient(circle, rgba(168, 85, 247, 0.09) 0%, rgba(217, 70, 239, 0.02) 50%, transparent 70%);
+	animation: bgFloatPurple 26s ease-in-out infinite alternate;
+}
+
+[data-theme="light"] .centralized-bg__glow--purple {
+	background: radial-gradient(circle, rgba(236, 72, 153, 0.06) 0%, rgba(168, 85, 247, 0.02) 50%, transparent 70%);
+}
+
+/* Deep Azure / Cobalt Orb (Bottom Left / Center) */
+.centralized-bg__glow--azure {
+	bottom: -15%;
+	left: 22%;
+	width: 640px;
+	height: 640px;
+	background: radial-gradient(circle, rgba(30, 64, 175, 0.10) 0%, rgba(37, 99, 235, 0.03) 50%, transparent 70%);
+	animation: bgFloatAzure 22s ease-in-out infinite alternate;
+}
+
+[data-theme="light"] .centralized-bg__glow--azure {
+	background: radial-gradient(circle, rgba(37, 99, 235, 0.06) 0%, rgba(14, 165, 233, 0.02) 50%, transparent 70%);
+}
+
+/* ── 3. High-Precision Tech Grid / Dot Matrix Pattern ───────────────────── */
+.centralized-bg__grid {
+	position: absolute;
+	inset: 0;
+	background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+	background-size: 32px 32px;
+	opacity: 0.85;
+	mask-image: radial-gradient(ellipse 95% 90% at 50% 50%, #000 45%, transparent 100%);
+	-webkit-mask-image: radial-gradient(ellipse 95% 90% at 50% 50%, #000 45%, transparent 100%);
+	transition: opacity 0.5s ease;
+}
+
+[data-theme="light"] .centralized-bg__grid {
+	background-image: radial-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1px);
+	opacity: 0.9;
+}
+
+/* ── 4. Ambient Starlight Dust ─────────────────────────────────────────── */
+.centralized-bg__stars {
+	position: absolute;
+	inset: 0;
+	background-image:
+		radial-gradient(1.5px 1.5px at 18% 22%, rgba(255, 255, 255, 0.55) 0%, transparent 100%),
+		radial-gradient(1px 1px at 42% 14%,     rgba(147, 197, 253, 0.6)  0%, transparent 100%),
+		radial-gradient(1.5px 1.5px at 72% 32%, rgba(255, 255, 255, 0.45) 0%, transparent 100%),
+		radial-gradient(1px 1px at 86% 62%,     rgba(196, 181, 253, 0.5)  0%, transparent 100%),
+		radial-gradient(1.5px 1.5px at 28% 72%, rgba(255, 255, 255, 0.5)  0%, transparent 100%),
+		radial-gradient(1px 1px at 10% 82%,     rgba(147, 197, 253, 0.45) 0%, transparent 100%),
+		radial-gradient(1px 1px at 58% 86%,     rgba(255, 255, 255, 0.4)  0%, transparent 100%),
+		radial-gradient(1.5px 1.5px at 92% 16%, rgba(244, 114, 182, 0.45) 0%, transparent 100%);
+	background-size: 700px 700px;
+	opacity: 0.65;
+	transition: opacity 0.5s ease, filter 0.5s ease;
+}
+
+[data-theme="light"] .centralized-bg__stars {
+	opacity: 0.12;
+	filter: invert(1);
+}
+
+/* ── 5. Cinematic Vignette Depth ───────────────────────────────────────── */
+.centralized-bg__vignette {
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(ellipse 90% 85% at 50% 50%, transparent 60%, rgba(3, 6, 12, 0.35) 100%);
+	pointer-events: none;
+	transition: opacity 0.5s ease;
+}
+
+[data-theme="light"] .centralized-bg__vignette {
+	background: radial-gradient(ellipse 90% 85% at 50% 50%, transparent 65%, rgba(15, 23, 42, 0.04) 100%);
+}
+
+/* ── Subtle Floating Keyframes ─────────────────────────────────────────── */
+@keyframes bgFloatCyan {
+	0%   { transform: translate3d(0, 0, 0) scale(1); }
+	50%  { transform: translate3d(-30px, 35px, 0) scale(1.06); }
+	100% { transform: translate3d(20px, -20px, 0) scale(0.97); }
+}
+
+@keyframes bgFloatIndigo {
+	0%   { transform: translate3d(0, 0, 0) scale(1); }
+	50%  { transform: translate3d(35px, -28px, 0) scale(1.05); }
+	100% { transform: translate3d(-20px, 28px, 0) scale(0.96); }
+}
+
+@keyframes bgFloatPurple {
+	0%   { transform: translate3d(0, 0, 0) scale(1); }
+	50%  { transform: translate3d(-35px, -22px, 0) scale(1.06); }
+	100% { transform: translate3d(25px, 18px, 0) scale(0.97); }
+}
+
+@keyframes bgFloatAzure {
+	0%   { transform: translate3d(0, 0, 0) scale(1); }
+	50%  { transform: translate3d(28px, 30px, 0) scale(1.04); }
+	100% { transform: translate3d(-25px, -18px, 0) scale(0.98); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.centralized-bg__glow {
+		animation: none !important;
+	}
+}

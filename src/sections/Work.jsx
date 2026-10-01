@@ -12,7 +12,7 @@ const Work = () => {
 
 	return (
 		<>
-			<h1 style={{ display: "flex", justifyContent: "center" }}>Experience</h1>
+			<h1 className="timeline-section-title">Experience</h1>
 			<VerticalTimeline>
 				{visibleExperience.map((item, idx) => (
 					<Card

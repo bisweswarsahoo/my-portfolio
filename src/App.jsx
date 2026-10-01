@@ -9,6 +9,7 @@ import Skills from "./sections/Skills.jsx";
 import Projects from "./sections/Projects.jsx";
 import Languages from "./components/Languages.jsx";
 import Footer from "./components/Footer.jsx";
+import CentralizedBackground from "./components/CentralizedBackground.jsx";
 import { ThemeProvider } from "./theme/ThemeProvider.jsx";
 import portfolioData from "./data/portfolioData.js";
 
@@ -53,6 +54,7 @@ const Home = () => (
 function App() {
 	return (
 		<ThemeProvider>
+			<CentralizedBackground />
 			<div className="app-container">
 				<Navbar />
 				<Routes>

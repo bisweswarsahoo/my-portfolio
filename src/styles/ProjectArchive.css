@@ -6,20 +6,16 @@
 	position: relative;
 	width: 100%;
 	min-height: 100vh;
-	background-color: #05080D;
+	background: transparent !important;
 	color: #f8fafc;
 	overflow-x: hidden;
 	box-sizing: border-box;
 	padding-bottom: 6rem;
 }
 
-/* ── Ambient Background Layer ────────────────────────────────────────────── */
+/* ── Ambient Background Layer (subordinated to centralized background) ── */
 .pa-bg {
-	position: fixed;
-	inset: 0;
-	pointer-events: none;
-	z-index: 0;
-	overflow: hidden;
+	display: none;
 }
 
 .pa-bg__grid {
@@ -842,13 +838,8 @@
    LIGHT THEME SUPPORT — PROJECT ARCHIVE
    ═══════════════════════════════════════════════════════════════════════════ */
 [data-theme="light"] .pa-page {
-	background-color: #f8fafc;
+	background: transparent !important;
 	color: #0f172a;
-}
-
-[data-theme="light"] .pa-bg__grid {
-	background-image: radial-gradient(rgba(15, 23, 42, 0.07) 1px, transparent 1px);
-	opacity: 0.6;
 }
 
 [data-theme="light"] .pa-back-btn {
