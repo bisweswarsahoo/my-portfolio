@@ -2,6 +2,14 @@
    ABOUT SECTION — Premium AI Generalist & Developer Interface
    ═══════════════════════════════════════════════════════════════════════════ */
 
+#about.portfolio-section {
+  padding: 0 !important;
+  min-height: 100vh;
+  justify-content: stretch;
+  align-items: stretch;
+  background-color: #060913;
+}
+
 .ab-section {
   position: relative;
   width: 100%;
@@ -449,3 +457,152 @@
     display: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIGHT THEME SUPPORT ([data-theme="light"])
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="light"] #about.portfolio-section {
+  background-color: #f8fafc;
+}
+
+[data-theme="light"] .ab-section {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* ── Light Background Layer & Ambient Glows ──────────────────────────────── */
+[data-theme="light"] .ab-bg__grid {
+  background-image: radial-gradient(rgba(14, 165, 233, 0.12) 1px, transparent 1px);
+  opacity: 0.55;
+}
+
+[data-theme="light"] .ab-bg__glow--1 {
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
+}
+
+[data-theme="light"] .ab-bg__glow--2 {
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);
+}
+
+/* ── Left Artwork ────────────────────────────────────────────────────────── */
+[data-theme="light"] .ab-artwork-wrapper {
+  box-shadow: 
+    0 20px 45px -12px rgba(15, 23, 42, 0.12),
+    0 0 25px rgba(14, 165, 233, 0.08);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: #ffffff;
+}
+
+[data-theme="light"] .ab-hero-img {
+  filter: drop-shadow(0 10px 25px rgba(14, 165, 233, 0.18));
+}
+
+[data-theme="light"] .ab-artwork-blend {
+  box-shadow: inset 0 0 35px 8px rgba(248, 250, 252, 0.55);
+}
+
+/* ── Right Content Area ─────────────────────────────────────────────────── */
+[data-theme="light"] .ab-eyebrow__dot {
+  background-color: #0284c7;
+  box-shadow: 0 0 10px rgba(14, 165, 233, 0.55), 0 0 18px rgba(99, 102, 241, 0.4);
+}
+
+[data-theme="light"] .ab-eyebrow__text {
+  color: #0284c7;
+  font-weight: 700;
+}
+
+[data-theme="light"] .ab-heading {
+  color: #0f172a;
+}
+
+[data-theme="light"] .ab-heading__name {
+  background: linear-gradient(135deg, #0284c7 0%, #4f46e5 50%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .ab-bio p {
+  color: #334155;
+}
+
+[data-theme="light"] .ab-highlight {
+  color: #0f172a;
+  background: linear-gradient(180deg, transparent 65%, rgba(14, 165, 233, 0.22) 65%);
+}
+
+/* ── Light Developer Terminal ────────────────────────────────────────────── */
+[data-theme="light"] .ab-terminal {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  box-shadow: 
+    0 16px 35px -8px rgba(15, 23, 42, 0.08),
+    0 0 20px rgba(14, 165, 233, 0.05);
+}
+
+[data-theme="light"] .ab-terminal__bar {
+  background: rgba(241, 245, 249, 0.95);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+[data-theme="light"] .ab-terminal__cwd {
+  color: #64748b;
+  font-weight: 600;
+}
+
+[data-theme="light"] .ab-terminal__line {
+  color: #334155;
+}
+
+[data-theme="light"] .ab-terminal__prompt {
+  color: #0284c7;
+  font-weight: 700;
+}
+
+[data-theme="light"] .ab-terminal__cmd {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+[data-theme="light"] .ab-terminal__arrow {
+  color: #94a3b8;
+}
+
+[data-theme="light"] .ab-terminal__out {
+  color: #0284c7;
+  font-weight: 600;
+}
+
+[data-theme="light"] .ab-terminal__cursor {
+  color: #0284c7;
+  font-weight: 700;
+}
+
+/* ── Light Bottom Information Bar ────────────────────────────────────────── */
+[data-theme="light"] .ab-infobar {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+}
+
+[data-theme="light"] .ab-infobar__divider {
+  background: rgba(226, 232, 240, 0.9);
+}
+
+[data-theme="light"] .ab-infobar__icon-wrap {
+  background: rgba(14, 165, 233, 0.1);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+}
+
+[data-theme="light"] .ab-infobar__icon {
+  color: #0284c7;
+}
+
+[data-theme="light"] .ab-infobar__title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .ab-infobar__sub {
+  color: #64748b;
+}
+

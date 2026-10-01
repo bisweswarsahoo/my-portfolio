@@ -664,3 +664,129 @@
     scale: 1 !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIGHT THEME SUPPORT — SKILLS SECTION
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="light"] .skills-loop-wrapper {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+[data-theme="light"] .skills-bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+}
+
+[data-theme="light"] .skills-bg-stars--1,
+[data-theme="light"] .skills-bg-stars--2 {
+  opacity: 0.18;
+  filter: invert(1);
+}
+
+[data-theme="light"] .skills-ambient-glow {
+  background:
+    radial-gradient(circle 600px at 50% 50%, rgba(37, 99, 235, 0.06) 0%, transparent 70%),
+    radial-gradient(circle 500px at 30% 65%, rgba(139, 92, 246, 0.04) 0%, transparent 70%);
+}
+
+[data-theme="light"] .skills-badge {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(37, 99, 235, 0.25);
+  color: #1d4ed8;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .skills-main-title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .skills-subtitle {
+  color: #475569;
+}
+
+[data-theme="light"] .skills-categories-pill {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .skills-cat-btn {
+  color: #64748b;
+}
+
+[data-theme="light"] .skills-cat-btn:hover {
+  color: #0f172a;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .skills-cat-btn.is-active {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #ffffff;
+}
+
+[data-theme="light"] .skills-count-pill {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #475569;
+}
+
+[data-theme="light"] .skills-recenter-btn {
+  background: #ffffff;
+  border-color: rgba(37, 99, 235, 0.25);
+  color: #2563eb;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .skills-recenter-btn:hover {
+  background: #eff6ff;
+  border-color: #2563eb;
+  color: #1d4ed8;
+}
+
+[data-theme="light"] .skills-drag-hint {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #475569;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .tech-loop-plate {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .tech-loop-label {
+  color: #334155;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .tech-loop-item.is-hovered .tech-loop-plate {
+  background: #ffffff;
+  border-color: var(--tech-color, #2563eb);
+  box-shadow: 
+    0 0 20px color-mix(in srgb, var(--tech-color, #2563eb) 35%, transparent),
+    0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .tech-loop-item.is-hovered .tech-loop-label {
+  color: #0f172a;
+  text-shadow: 0 0 10px color-mix(in srgb, var(--tech-color, #2563eb) 35%, transparent);
+}
+
+[data-theme="light"] .tech-tooltip-inner {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: color-mix(in srgb, var(--tooltip-accent, #2563eb) 45%, rgba(0, 0, 0, 0.1));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12), 0 0 20px color-mix(in srgb, var(--tooltip-accent, #2563eb) 15%, transparent);
+}
+
+[data-theme="light"] .tech-tooltip-name {
+  color: #0f172a;
+}
+
+[data-theme="light"] .tech-tooltip-desc {
+  color: #475569;
+}
+

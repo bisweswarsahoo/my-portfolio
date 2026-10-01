@@ -158,6 +158,11 @@ export const applyTheme = (themeName) => {
 	root.style.setProperty("--color-border", theme.borderPrimary);
 	root.style.setProperty("--color-link", theme.primary);
 	root.style.setProperty("--accent-rgb", "99 102 241");
+
+	root.setAttribute("data-theme", themeName);
+	if (document.body) {
+		document.body.setAttribute("data-theme", themeName);
+	}
 };
 
 export const initializeTheme = () => {
