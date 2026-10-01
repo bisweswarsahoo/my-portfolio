@@ -75,8 +75,9 @@ textarea {
 	scroll-margin-top: 85px;
 }
 
-/* Skills cloud: remove outer padding so the cloud fills the full section */
-#skills.portfolio-section {
+/* Skills & Projects: remove outer padding so the interactive canvases/showcases fill the full section */
+#skills.portfolio-section,
+#projects.portfolio-section {
 	padding: 0;
 	justify-content: stretch;
 	align-items: stretch;

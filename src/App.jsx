@@ -35,7 +35,7 @@ const hasContent = (value) => {
 };
 
 import { Routes, Route } from "react-router-dom";
-import AllProjects from "./sections/AllProjects.jsx";
+import ProjectArchive from "./sections/ProjectArchive.jsx";
 
 const Home = () => (
 	<>
@@ -58,7 +58,7 @@ function App() {
 				<Navbar />
 				<Routes>
 					<Route path="/" element={<Home />} />
-					<Route path="/projects" element={<AllProjects />} />
+					<Route path="/projects" element={<ProjectArchive />} />
 				</Routes>
 			</div>
 			<Footer />
