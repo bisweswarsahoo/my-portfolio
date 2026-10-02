@@ -1,7 +1,7 @@
 import "../styles/CVCard.css";
 import { useState } from "react";
 import portfolioData from "../data/portfolioData.js";
-import { generateResumePdf } from "../cv/resumeTemplate.js";
+import { sanitizeUrl } from "../utils/security.js";
 
 const CVCard = ({
 	isCardHovered,
@@ -22,6 +22,7 @@ const CVCard = ({
 		setIsDownloading(true);
 		setDownloadError("");
 		try {
+			const { generateResumePdf } = await import("../cv/resumeTemplate.js");
 			await generateResumePdf(portfolioData);
 		} catch (error) {
 			console.error("CV download failed", error);
@@ -196,7 +197,7 @@ const CVCard = ({
 						{/* Bottom: Refined CTA */}
 						<div className="cv-back-bottom-bar">
 							<a
-								href={`mailto:${portfolioData.email}`}
+								href={sanitizeUrl(`mailto:${portfolioData.email}`)}
 								className="cv-back-clean-cta"
 								onClick={(e) => e.stopPropagation()}
 							>

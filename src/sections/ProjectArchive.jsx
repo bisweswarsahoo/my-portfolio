@@ -17,6 +17,7 @@ import {
 } from "react-icons/fa6";
 import portfolioData from "../data/portfolioData.js";
 import { getTechIcon } from "../components/tech/TechnologyIcons.jsx";
+import { sanitizeUrl } from "../utils/security.js";
 import "../styles/ProjectArchive.css";
 
 const CATEGORIES = [
@@ -281,9 +282,11 @@ const ProjectArchive = () => {
 								const accentClass = getCategoryClass(project.category);
 								const CategoryIcon = getCategoryIcon(project.category);
 
-								const primaryLink =
+								const rawPrimary =
 									project.liveUrl || project.liveDemo || project.github || project.sourceCode;
-								const githubLink = project.github || project.sourceCode;
+								const rawGithub = project.github || project.sourceCode;
+								const primaryLink = sanitizeUrl(rawPrimary);
+								const githubLink = sanitizeUrl(rawGithub);
 								const hasLive = Boolean(project.liveUrl || project.liveDemo);
 
 								const techList =

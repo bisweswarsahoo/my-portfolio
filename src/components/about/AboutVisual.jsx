@@ -292,28 +292,79 @@ const ImpactStatement = () => (
 const AboutVisual = ({ portrait }) => {
   const containerRef = useRef(null);
 
-  // Smooth lerp (linear interpolation) physics loop for buttery 60+ FPS parallax without React re-renders
+  // Smooth lerp physics loop with visibility observer and idle sleep detection
   const targetOffset = useRef({ x: 0, y: 0 });
   const currentOffset = useRef({ x: 0, y: 0 });
   const rafId = useRef(null);
+  const isVisibleRef = useRef(false);
+  const loopRef = useRef(null);
+
+  const wakeLoop = useCallback(() => {
+    if (!rafId.current && isVisibleRef.current && loopRef.current) {
+      rafId.current = requestAnimationFrame(loopRef.current);
+    }
+  }, []);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      isVisibleRef.current = true;
+      wakeLoop();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          wakeLoop();
+        } else if (rafId.current) {
+          cancelAnimationFrame(rafId.current);
+          rafId.current = null;
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [wakeLoop]);
 
   useEffect(() => {
     const loop = () => {
+      if (!isVisibleRef.current) {
+        rafId.current = null;
+        return;
+      }
+
       // Lerp smoothing formula: current += (target - current) * factor
-      currentOffset.current.x += (targetOffset.current.x - currentOffset.current.x) * 0.08;
-      currentOffset.current.y += (targetOffset.current.y - currentOffset.current.y) * 0.08;
+      const dx = targetOffset.current.x - currentOffset.current.x;
+      const dy = targetOffset.current.y - currentOffset.current.y;
+      currentOffset.current.x += dx * 0.08;
+      currentOffset.current.y += dy * 0.08;
 
       if (containerRef.current) {
         containerRef.current.style.setProperty("--av-mx", currentOffset.current.x.toFixed(4));
         containerRef.current.style.setProperty("--av-my", currentOffset.current.y.toFixed(4));
       }
 
+      // Idle sleep: if target reached within precision limit, stop loop
+      if (Math.abs(dx) < 0.0005 && Math.abs(dy) < 0.0005) {
+        currentOffset.current.x = targetOffset.current.x;
+        currentOffset.current.y = targetOffset.current.y;
+        rafId.current = null;
+        return;
+      }
+
       rafId.current = requestAnimationFrame(loop);
     };
 
-    rafId.current = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(rafId.current);
-  }, []);
+    loopRef.current = loop;
+    wakeLoop();
+    return () => {
+      if (rafId.current) cancelAnimationFrame(rafId.current);
+    };
+  }, [wakeLoop]);
 
   const handleMouseMove = useCallback((e) => {
     if (!containerRef.current) return;
@@ -324,11 +375,13 @@ const AboutVisual = ({ portrait }) => {
       x: Math.max(-0.5, Math.min(0.5, xRel)),
       y: Math.max(-0.5, Math.min(0.5, yRel)),
     };
-  }, []);
+    wakeLoop();
+  }, [wakeLoop]);
 
   const handleMouseLeave = useCallback(() => {
     targetOffset.current = { x: 0, y: 0 };
-  }, []);
+    wakeLoop();
+  }, [wakeLoop]);
 
   return (
     <div
@@ -371,7 +424,8 @@ const AboutVisual = ({ portrait }) => {
             alt="Bisweswar Sahoo - AI Generalist & Developer"
             className="av-portrait-img"
             draggable="false"
-            loading="eager"
+            loading="lazy"
+            decoding="async"
           />
 
           {/* Smooth bottom fade-out to black so no harsh cut lines appear */}

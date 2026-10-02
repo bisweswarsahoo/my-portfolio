@@ -198,6 +198,16 @@ export default function Skills() {
     return Array.from(set);
   }, []);
 
+  const isVisibleRef = useRef(false);
+  const loopRef = useRef(null);
+
+  /* ─── Wake loop on demand ──────────────────────────────────────────────── */
+  const wakeLoop = useCallback(() => {
+    if (!rafRef.current && isVisibleRef.current && loopRef.current) {
+      rafRef.current = requestAnimationFrame(loopRef.current);
+    }
+  }, []);
+
   /* ─── Initialize canvas dimensions & toroidal positions ────────────────── */
   useEffect(() => {
     const updateSize = () => {
@@ -225,27 +235,61 @@ export default function Skills() {
         vy: 0,
       }));
       setIsReady(true);
+      wakeLoop();
     };
 
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
-  }, []);
+  }, [wakeLoop]);
 
-  /* ─── Keep hoveredIdRef in sync ────────────────────────────────────────── */
+  /* ─── Visibility Tracking: Pause rAF completely when not in view ───────── */
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      isVisibleRef.current = true;
+      wakeLoop();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          wakeLoop();
+        } else if (rafRef.current) {
+          cancelAnimationFrame(rafRef.current);
+          rafRef.current = null;
+        }
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [wakeLoop]);
+
+  /* ─── Keep hoveredIdRef in sync & wake loop ────────────────────────────── */
   useEffect(() => {
     hoveredIdRef.current = hoveredTech ? hoveredTech.id : null;
-  }, [hoveredTech]);
+    wakeLoop();
+  }, [hoveredTech, wakeLoop]);
 
   /* ─── Smooth recenter animation helper ─────────────────────────────────── */
   const handleRecenter = useCallback(() => {
     targetPanRef.current = { x: 0, y: 0 };
     inertiaRef.current = { vx: 0, vy: 0 };
-  }, []);
+    wakeLoop();
+  }, [wakeLoop]);
 
   /* ─── Physics & Animation Frame Loop (Zero React re-renders) ───────────── */
   useEffect(() => {
     const loop = () => {
+      if (!isVisibleRef.current) {
+        rafRef.current = null;
+        return;
+      }
+
       const { w: vw, h: vh } = viewportRef.current;
       const { w: dw, h: dh } = domainRef.current;
       const cx = vw / 2;
@@ -321,6 +365,7 @@ export default function Skills() {
       const hovIdx = hovId ? st.findIndex(s => s.id === hovId) : -1;
       const hovItem = hovIdx >= 0 ? st[hovIdx] : null;
 
+      let maxDisp = 0;
       for (let i = 0; i < st.length; i++) {
         const s = st[i];
         let targetDispX = 0;
@@ -347,6 +392,9 @@ export default function Skills() {
         s.vy = (s.vy + ay) * SPRING_DAMPING;
         s.dispX += s.vx;
         s.dispY += s.vy;
+
+        const dispMag = Math.hypot(s.dispX, s.dispY);
+        if (dispMag > maxDisp) maxDisp = dispMag;
 
         // Step 3: Apply direct transform to DOM node
         const el = nodeRefs.current[i];
@@ -392,12 +440,26 @@ export default function Skills() {
         tooltipRef.current.dataset.placement = isNearBottom ? "top" : "bottom";
       }
 
+      // Check if simulation can safely sleep to save 100% CPU/GPU cycles
+      const isDragging = dragRef.current.isDragging;
+      const isTargetPanning = targetPanRef.current !== null;
+      const hasInertia = Math.abs(inertiaRef.current.vx) > 0.01 || Math.abs(inertiaRef.current.vy) > 0.01;
+      const hasHover = hoveredIdRef.current !== null;
+
+      if (!isDragging && !isTargetPanning && !hasInertia && !hasHover && maxDisp < 0.1) {
+        rafRef.current = null;
+        return; // Idle sleep state reached
+      }
+
       rafRef.current = requestAnimationFrame(loop);
     };
 
-    rafRef.current = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, []);
+    loopRef.current = loop;
+    wakeLoop();
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [wakeLoop]);
 
   /* ─── Pointer Drag Handlers (Mouse, Trackpad, Touch, Stylus) ───────────── */
   const onPointerDown = useCallback((e) => {
@@ -422,16 +484,19 @@ export default function Skills() {
     };
 
     setIsGrabbing(true);
+    wakeLoop();
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
     } catch {
       // Ignore if capture fails on certain mobile webviews
     }
-  }, []);
+  }, [wakeLoop]);
 
   const onPointerMove = useCallback((e) => {
     const drag = dragRef.current;
     if (!drag.isDragging) return;
+
+    wakeLoop();
 
     const dx = e.clientX - drag.startX;
     const dy = e.clientY - drag.startY;
@@ -455,7 +520,7 @@ export default function Skills() {
       drag.lastY = e.clientY;
       drag.lastTime = now;
     }
-  }, []);
+  }, [wakeLoop]);
 
   const onPointerUp = useCallback((e) => {
     const drag = dragRef.current;
@@ -463,6 +528,7 @@ export default function Skills() {
 
     drag.isDragging = false;
     setIsGrabbing(false);
+    wakeLoop();
 
     try {
       if (e.currentTarget.hasPointerCapture(e.pointerId)) {

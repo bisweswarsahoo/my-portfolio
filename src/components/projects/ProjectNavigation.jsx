@@ -31,7 +31,7 @@ const ProjectNavigation = ({
 	return (
 		<div className="ps-nav-wrap">
 			{/* Thin Carousel Progress Bar */}
-			<CarouselProgress progress={progress} isPaused={isPaused} />
+			<CarouselProgress activeIndex={activeIndex} isPaused={isPaused} />
 
 			<div className="ps-nav-controls">
 				{/* Previous Button */}

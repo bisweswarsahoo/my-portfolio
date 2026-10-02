@@ -57,7 +57,6 @@ const INFO_BLOCKS = [
 /* ─── Developer Terminal Component ───────────────────────────────────────── */
 const Terminal = () => {
   const [visibleLines, setVisibleLines] = useState(0);
-  const [blink, setBlinkOn] = useState(true);
   const ref = useRef(null);
   const started = useRef(false);
 
@@ -91,12 +90,6 @@ const Terminal = () => {
     obs.observe(el);
     return () => obs.disconnect();
   }, [runSequence]);
-
-  /* Blinking cursor effect */
-  useEffect(() => {
-    const id = setInterval(() => setBlinkOn(b => !b), 530);
-    return () => clearInterval(id);
-  }, []);
 
   const handleReplay = (e) => {
     e.stopPropagation();
@@ -147,7 +140,6 @@ const Terminal = () => {
             {i === visibleLines - 1 && (
               <span
                 className="ab-terminal__cursor"
-                style={{ opacity: blink ? 1 : 0 }}
                 aria-hidden="true"
               >
                 |

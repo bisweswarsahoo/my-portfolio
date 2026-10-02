@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import portfolioData from "../data/portfolioData.js";
+import { sanitizeUrl } from "../utils/security.js";
 
 const SocialInfo = ({ activeHoverIndex, onHoverIndex, cardRefs }) => {
 	const twitterItem = portfolioData.socials.find((s) => s.key === "twitter");
@@ -19,28 +20,28 @@ const SocialInfo = ({ activeHoverIndex, onHoverIndex, cardRefs }) => {
 			id: "github",
 			name: "GitHub",
 			description: "Check out my code",
-			href: portfolioData.github || "https://github.com/bisweswarsahoo",
+			href: sanitizeUrl(portfolioData.github, "https://github.com/bisweswarsahoo"),
 			icon: FaGithub,
 		},
 		{
 			id: "linkedin",
 			name: "LinkedIn",
 			description: "Let's connect professionally",
-			href: portfolioData.linkedin || "https://linkedin.com/in/bisweswarsahoo",
+			href: sanitizeUrl(portfolioData.linkedin, "https://linkedin.com/in/bisweswarsahoo"),
 			icon: FaLinkedin,
 		},
 		{
 			id: "x",
 			name: "X",
 			description: "Thoughts & updates",
-			href: twitterItem?.href || "https://x.com/bisweswarsahoo",
+			href: sanitizeUrl(twitterItem?.href, "https://x.com/bisweswarsahoo"),
 			icon: FaXTwitter,
 		},
 		{
 			id: "email",
 			name: "Email",
 			description: "Drop me a message",
-			href: `mailto:${portfolioData.email}`,
+			href: sanitizeUrl(`mailto:${portfolioData.email}`, "mailto:bisweswarsahoo.jsg@gmail.com"),
 			icon: FaEnvelope,
 		},
 	];
@@ -48,12 +49,12 @@ const SocialInfo = ({ activeHoverIndex, onHoverIndex, cardRefs }) => {
 	const secondarySocials = [
 		discordItem && {
 			name: "Discord",
-			href: discordItem.href,
+			href: sanitizeUrl(discordItem.href, "#"),
 			icon: FaDiscord,
 		},
 		instagramItem && {
 			name: "Instagram",
-			href: instagramItem.href,
+			href: sanitizeUrl(instagramItem.href, "#"),
 			icon: FaInstagram,
 		},
 	].filter(Boolean);

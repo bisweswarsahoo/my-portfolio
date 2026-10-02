@@ -200,31 +200,68 @@ const Languages = () => {
 
 	const [activePlanet, setActivePlanet] = useState(null);
 	const [centralIndex, setCentralIndex] = useState(0);
-	const [parallax, setParallax] = useState({ x: 0, y: 0 });
 	const containerRef = useRef(null);
+	const stageRef = useRef(null);
+	const rafId = useRef(null);
+	const isInViewRef = useRef(false);
 
-	// Automatic soft vertical fade cycle inside the central orb
+	// Viewport visibility tracking
+	useEffect(() => {
+		const el = containerRef.current;
+		if (!el || typeof IntersectionObserver === "undefined") {
+			isInViewRef.current = true;
+			return;
+		}
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				isInViewRef.current = entry.isIntersecting;
+			},
+			{ threshold: 0.1 }
+		);
+
+		observer.observe(el);
+		return () => observer.disconnect();
+	}, []);
+
+	// Automatic soft vertical fade cycle inside the central orb (only when in view)
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setCentralIndex((prev) => (prev + 1) % CENTRAL_GREETINGS.length);
+			if (isInViewRef.current) {
+				setCentralIndex((prev) => (prev + 1) % CENTRAL_GREETINGS.length);
+			}
 		}, 2800);
 		return () => clearInterval(interval);
 	}, []);
 
-	// Gentle cinematic mouse parallax
+	// Gentle cinematic mouse parallax (direct DOM update with rAF, zero React re-renders)
 	const handleMouseMove = useCallback((e) => {
-		if (!containerRef.current) return;
-		const rect = containerRef.current.getBoundingClientRect();
-		const px = (e.clientX - rect.left) / rect.width - 0.5;
-		const py = (e.clientY - rect.top) / rect.height - 0.5;
-		setParallax({
-			x: Number((px * 3).toFixed(2)),
-			y: Number((py * -3).toFixed(2)),
+		if (!containerRef.current || !stageRef.current) return;
+		if (rafId.current) return;
+
+		const clientX = e.clientX;
+		const clientY = e.clientY;
+
+		rafId.current = requestAnimationFrame(() => {
+			rafId.current = null;
+			if (!containerRef.current || !stageRef.current) return;
+			const rect = containerRef.current.getBoundingClientRect();
+			const px = (clientX - rect.left) / rect.width - 0.5;
+			const py = (clientY - rect.top) / rect.height - 0.5;
+			const rotX = (py * -3).toFixed(2);
+			const rotY = (px * 3).toFixed(2);
+			stageRef.current.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
 		});
 	}, []);
 
 	const handleMouseLeave = useCallback(() => {
-		setParallax({ x: 0, y: 0 });
+		if (rafId.current) {
+			cancelAnimationFrame(rafId.current);
+			rafId.current = null;
+		}
+		if (stageRef.current) {
+			stageRef.current.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+		}
 		setActivePlanet(null);
 	}, []);
 
@@ -286,10 +323,8 @@ const Languages = () => {
 
 			{/* Main Orbital System Hero */}
 			<div
+				ref={stageRef}
 				className="orbital-stage"
-				style={{
-					transform: `perspective(1000px) rotateX(${parallax.y}deg) rotateY(${parallax.x}deg)`,
-				}}
 			>
 				{/* Background SVG for Mathematical Orbital Geometry & Orbiting Satellites */}
 				<svg

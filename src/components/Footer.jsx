@@ -78,7 +78,6 @@ const Footer = () => {
 		const t2 = setTimeout(updateBridgeCoords, 300);
 
 		window.addEventListener("resize", updateBridgeCoords);
-		window.addEventListener("scroll", updateBridgeCoords, { passive: true });
 
 		let ro;
 		if (typeof ResizeObserver !== "undefined" && stageRef.current) {
@@ -92,7 +91,6 @@ const Footer = () => {
 			clearTimeout(t1);
 			clearTimeout(t2);
 			window.removeEventListener("resize", updateBridgeCoords);
-			window.removeEventListener("scroll", updateBridgeCoords);
 			if (ro) ro.disconnect();
 		};
 	}, [updateBridgeCoords]);

@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { themes, defaultTheme, getCurrentTheme, applyTheme } from "./theme.js";
+import { safeStorageSet } from "../utils/security.js";
 
 const ThemeContext = createContext();
 
@@ -8,7 +9,7 @@ export const ThemeProvider = ({ children }) => {
 
 	useEffect(() => {
 		applyTheme(currentTheme);
-		localStorage.setItem("portfolio-theme", currentTheme);
+		safeStorageSet("portfolio-theme", currentTheme);
 	}, [currentTheme]);
 
 	useEffect(() => {

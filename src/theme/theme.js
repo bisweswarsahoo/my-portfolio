@@ -126,16 +126,18 @@ export const themes = Object.keys(themeVariants).reduce((acc, themeName) => {
 	return acc;
 }, {});
 
+import { safeStorageGet, safeStorageSet } from "../utils/security.js";
+
 export const defaultTheme = "dark";
 
 export const getCurrentTheme = () => {
-	const savedTheme = localStorage.getItem("portfolio-theme");
-	return savedTheme || defaultTheme;
+	const savedTheme = safeStorageGet("portfolio-theme");
+	return savedTheme && themes[savedTheme] ? savedTheme : defaultTheme;
 };
 
 export const setTheme = (themeName) => {
 	if (themes[themeName]) {
-		localStorage.setItem("portfolio-theme", themeName);
+		safeStorageSet("portfolio-theme", themeName);
 		applyTheme(themeName);
 	}
 };

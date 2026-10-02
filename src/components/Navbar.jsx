@@ -28,45 +28,56 @@ const Navbar = () => {
 	const [activeSection, setActiveSection] = useState("home");
 	const [isVisible, setIsVisible] = useState(true);
 	const lastScrollY = useRef(0);
+	const menuOpenRef = useRef(menuOpen);
 
 	useEffect(() => {
+		menuOpenRef.current = menuOpen;
+	}, [menuOpen]);
+
+	useEffect(() => {
+		let ticking = false;
+
 		const handleScroll = () => {
-			const currentScrollY = window.scrollY;
+			if (ticking) return;
+			ticking = true;
 
-			// Active section tracking:
-			// If near top (scrollY < 300), active is "home"
-			let currentSection = "home";
-			const scrollPos = currentScrollY + 220;
+			requestAnimationFrame(() => {
+				const currentScrollY = window.scrollY;
 
-			for (const item of menuItems) {
-				if (item.id === "home") continue;
-				const section = document.getElementById(item.id);
-				if (section && section.offsetTop <= scrollPos) {
-					currentSection = item.id;
+				// Active section tracking:
+				// If near top (scrollY < 300), active is "home"
+				let currentSection = "home";
+				const scrollPos = currentScrollY + 220;
+
+				for (const item of menuItems) {
+					if (item.id === "home") continue;
+					const section = document.getElementById(item.id);
+					if (section && section.offsetTop <= scrollPos) {
+						currentSection = item.id;
+					}
 				}
-			}
 
-			if (currentSection !== activeSection) {
-				setActiveSection(currentSection);
-			}
+				setActiveSection((prev) => (prev !== currentSection ? currentSection : prev));
 
-			// Scroll direction behavior:
-			// - Near top (< 45px): always show
-			// - Scrolling down: hide (if mobile menu not open)
-			// - Scrolling up: reappear!
-			if (currentScrollY < 45) {
-				setIsVisible(true);
-			} else if (currentScrollY > lastScrollY.current + 8) {
-				// Scrolling DOWN
-				if (!menuOpen) {
-					setIsVisible(false);
+				// Scroll direction behavior:
+				// - Near top (< 45px): always show
+				// - Scrolling down: hide (if mobile menu not open)
+				// - Scrolling up: reappear!
+				if (currentScrollY < 45) {
+					setIsVisible(true);
+				} else if (currentScrollY > lastScrollY.current + 14) {
+					// Scrolling DOWN
+					if (!menuOpenRef.current) {
+						setIsVisible(false);
+					}
+				} else if (currentScrollY < lastScrollY.current - 14) {
+					// Scrolling UP -> appear immediately!
+					setIsVisible(true);
 				}
-			} else if (currentScrollY < lastScrollY.current - 8) {
-				// Scrolling UP -> appear immediately!
-				setIsVisible(true);
-			}
 
-			lastScrollY.current = currentScrollY;
+				lastScrollY.current = currentScrollY;
+				ticking = false;
+			});
 		};
 
 		window.addEventListener("scroll", handleScroll, { passive: true });
@@ -75,7 +86,7 @@ const Navbar = () => {
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
 		};
-	}, [activeSection, menuOpen]);
+	}, []);
 
 	const scrollToSection = (id) => {
 		setMenuOpen(false);

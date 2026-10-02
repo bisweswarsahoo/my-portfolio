@@ -1,6 +1,7 @@
 import React from "react";
 import { FaArrowRight, FaArrowUpRightFromSquare, FaCheck } from "react-icons/fa6";
 import TechnologyPills from "./TechnologyPills";
+import { sanitizeUrl } from "../../utils/security.js";
 
 const ProjectInfo = ({
 	project,
@@ -12,8 +13,8 @@ const ProjectInfo = ({
 	const formattedCurrent = String(currentIndex + 1).padStart(2, "0");
 	const formattedTotal = String(totalProjects).padStart(2, "0");
 
-	const primaryUrl = project.liveUrl || project.liveDemo || project.github || project.sourceCode;
-	const githubUrl = project.github || project.sourceCode;
+	const primaryUrl = sanitizeUrl(project.liveUrl || project.liveDemo || project.github || project.sourceCode);
+	const githubUrl = sanitizeUrl(project.github || project.sourceCode);
 
 	return (
 		<div className="ps-info">

@@ -19,7 +19,7 @@ const Projects = () => {
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [direction, setDirection] = useState(1); // 1 = next, -1 = prev
 	const [isPaused, setIsPaused] = useState(false);
-	const [progress, setProgress] = useState(0);
+	const [isInView, setIsInView] = useState(false);
 
 	const sectionRef = useRef(null);
 	const touchStartX = useRef(null);
@@ -27,45 +27,52 @@ const Projects = () => {
 	const totalProjects = projects.length;
 	const totalArchived = allProjects.length;
 
+	// Viewport visibility tracking — pauses rotation when scrolled away
+	useEffect(() => {
+		const el = sectionRef.current;
+		if (!el || typeof IntersectionObserver === "undefined") {
+			setIsInView(true);
+			return;
+		}
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				setIsInView(entry.isIntersecting);
+			},
+			{ threshold: 0.1 }
+		);
+
+		observer.observe(el);
+		return () => observer.disconnect();
+	}, []);
+
 	// Navigation handlers
 	const handleNext = useCallback(() => {
 		setDirection(1);
 		setActiveIndex((prev) => (prev + 1) % totalProjects);
-		setProgress(0);
 	}, [totalProjects]);
 
 	const handlePrev = useCallback(() => {
 		setDirection(-1);
 		setActiveIndex((prev) => (prev - 1 + totalProjects) % totalProjects);
-		setProgress(0);
 	}, [totalProjects]);
 
 	const handleSelectProject = useCallback((index) => {
 		if (index === activeIndex) return;
 		setDirection(index > activeIndex ? 1 : -1);
 		setActiveIndex(index);
-		setProgress(0);
 	}, [activeIndex]);
 
-	// Auto-rotation progress timer
+	// Auto-rotation timer: single timeout instead of 50ms interval re-renders
 	useEffect(() => {
-		if (isPaused || totalProjects <= 1) return;
+		if (!isInView || isPaused || totalProjects <= 1) return;
 
-		const interval = 50; // update progress every 50ms
-		const step = (interval / AUTO_ROTATE_MS) * 100;
+		const timer = setTimeout(() => {
+			handleNext();
+		}, AUTO_ROTATE_MS);
 
-		const timer = setInterval(() => {
-			setProgress((prev) => {
-				if (prev >= 100) {
-					handleNext();
-					return 0;
-				}
-				return prev + step;
-			});
-		}, interval);
-
-		return () => clearInterval(timer);
-	}, [isPaused, handleNext, totalProjects]);
+		return () => clearTimeout(timer);
+	}, [isInView, isPaused, handleNext, totalProjects, activeIndex]);
 
 	// Keyboard arrow navigation
 	useEffect(() => {
@@ -255,8 +262,7 @@ const Projects = () => {
 						onSelectProject={handleSelectProject}
 						onPrev={handlePrev}
 						onNext={handleNext}
-						progress={progress}
-						isPaused={isPaused}
+						isPaused={isPaused || !isInView}
 					/>
 				</div>
 			</div>

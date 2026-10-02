@@ -7,10 +7,19 @@ import { initializeTheme } from "./theme/theme.js";
 
 initializeTheme();
 
-// Wrapper to attach global copy-prevention listeners once.
+// Wrapper to attach global copy-prevention listeners while preserving form accessibility
 function GlobalGuards({ children }) {
 	useEffect(() => {
 		const prevent = (e) => {
+			// Do not block inputs, textareas, or editable elements
+			if (
+				e.target &&
+				(e.target.tagName === "INPUT" ||
+					e.target.tagName === "TEXTAREA" ||
+					e.target.isContentEditable)
+			) {
+				return;
+			}
 			e.preventDefault();
 			e.stopPropagation();
 		};

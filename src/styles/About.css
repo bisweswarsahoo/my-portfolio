@@ -66,12 +66,13 @@
   width: 100%;
   max-width: 1380px;
   margin: 0 auto;
-  padding: 4.5rem 2.5rem;
+  padding: clamp(2.5rem, 5vh, 4rem) clamp(1.2rem, 3vw, 2.5rem);
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 3.5rem;
+  gap: clamp(2rem, 3.5vw, 3.5rem);
   box-sizing: border-box;
+  min-width: 0;
 }
 
 /* ── Left Side: Finished Artwork ─────────────────────────────────────────── */
@@ -81,6 +82,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  min-width: 0;
 }
 
 .ab-artwork-wrapper {
@@ -119,8 +121,11 @@
 .ab-right {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1.25rem;
   max-width: 620px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   z-index: 3;
 }
 
@@ -329,35 +334,46 @@
   font-weight: 500;
 }
 
+@keyframes abCursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .ab-terminal__cursor {
   color: #38bdf8;
   font-weight: 700;
   margin-left: 2px;
+  animation: abCursorBlink 1.05s step-end infinite;
 }
 
 /* ── Bottom Information Bar ──────────────────────────────────────────────── */
 .ab-infobar {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  align-items: center;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
   gap: 0.75rem;
-  padding: 0.9rem 1.15rem;
+  padding: 0.85rem 1rem;
   background: rgba(15, 23, 42, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .ab-infobar__block {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   position: relative;
-  padding: 4px 6px;
+  padding: 6px 8px;
   border-radius: 8px;
   transition: transform 0.22s ease, background-color 0.22s ease;
   cursor: default;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .ab-infobar__block:hover {
@@ -402,12 +418,15 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  flex: 1 1 0%;
+  overflow: hidden;
 }
 
 .ab-infobar__title {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: #f1f5f9;
+  line-height: 1.25;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -416,6 +435,7 @@
 .ab-infobar__sub {
   font-size: 0.72rem;
   color: #94a3b8;
+  line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -426,6 +446,18 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Tablet & medium desktops */
+@media (max-width: 1180px) and (min-width: 961px) {
+  .ab-infobar {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .ab-infobar__divider {
+    display: none;
+  }
+}
+
 @media (max-width: 1080px) {
   .ab-container {
     gap: 2rem;
@@ -438,12 +470,6 @@
 
   .ab-terminal__body {
     font-size: 0.8rem;
-  }
-
-  .ab-infobar {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.6rem;
-    padding: 0.75rem 0.9rem;
   }
 }
 
@@ -465,7 +491,12 @@
   }
 
   .ab-infobar {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .ab-infobar__divider {
+    display: block;
   }
 }
 

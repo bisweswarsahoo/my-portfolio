@@ -70,7 +70,7 @@
 
 .ps-bg__line--top {
 	top: 0;
-	background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.15) 30%, rgba(168, 85, 247, 0.15) 70%, transparent);
+	display: none;
 }
 
 .ps-bg__line--bottom {
@@ -95,53 +95,29 @@
 
 /* ── Section Header ──────────────────────────────────────────────────────── */
 .ps-header {
+	position: relative;
 	display: flex;
-	align-items: flex-end;
-	justify-content: space-between;
+	align-items: center;
+	justify-content: center;
 	width: 100%;
 	margin-bottom: 1.5rem;
 }
 
-.ps-header__left {
+.ps-header__center {
 	display: flex;
 	flex-direction: column;
-}
-
-.ps-indicator {
-	display: flex;
 	align-items: center;
-	gap: 0.75rem;
-	margin-bottom: 0.5rem;
-}
-
-.ps-indicator__num {
-	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-	font-size: 0.85rem;
-	font-weight: 600;
-	color: #64748b;
-	letter-spacing: 0.05em;
-}
-
-.ps-indicator__label {
-	font-size: 0.82rem;
-	font-weight: 700;
-	letter-spacing: 0.2em;
-	color: #94a3b8;
-	text-transform: uppercase;
-}
-
-.ps-indicator__line {
-	width: 44px;
-	height: 1px;
-	background: linear-gradient(90deg, #38bdf8 0%, rgba(56, 189, 248, 0) 100%);
+	text-align: center;
+	max-width: 640px;
 }
 
 .ps-header__title {
 	font-size: clamp(2.2rem, 3.8vw, 3.4rem);
 	font-weight: 800;
-	letter-spacing: -0.03em;
-	line-height: 1.1;
+	letter-spacing: -0.025em;
+	line-height: 1.15;
 	margin: 0;
+	text-align: center;
 	background: linear-gradient(135deg, #ffffff 40%, #c7d2fe 100%);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
@@ -154,9 +130,14 @@
 	margin: 0.4rem 0 0;
 	font-weight: 400;
 	letter-spacing: -0.01em;
+	text-align: center;
 }
 
 .ps-header__right {
+	position: absolute;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
 	display: flex;
 	align-items: center;
 }
@@ -1929,13 +1910,24 @@
 	overflow: hidden;
 }
 
+@keyframes psProgressAnimation {
+	from {
+		width: 0%;
+	}
+	to {
+		width: 100%;
+	}
+}
+
 .ps-progress-bar-fill {
 	height: 100%;
 	background: linear-gradient(90deg, #38bdf8, #818cf8);
-	transition: width 0.05s linear;
+	animation: psProgressAnimation 7.5s linear forwards;
+	will-change: width;
 }
 
 .ps-progress-bar-fill--paused {
+	animation-play-state: paused;
 	opacity: 0.5;
 }
 
@@ -1997,7 +1989,8 @@
 	overflow-x: auto;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
-	padding: 0.4rem 0.2rem;
+	padding: 0.5rem 0.65rem;
+	margin: -0.25rem -0.65rem;
 	-webkit-overflow-scrolling: touch;
 }
 
@@ -2020,6 +2013,7 @@
 	transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 	position: relative;
 	overflow: hidden;
+	box-sizing: border-box;
 }
 
 .ps-thumb:hover {
@@ -2031,8 +2025,8 @@
 .ps-thumb--active {
 	background: rgba(15, 23, 42, 0.9);
 	border-color: #38bdf8;
-	box-shadow: 0 4px 20px rgba(56, 189, 248, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-	transform: scale(1.02);
+	box-shadow: 0 4px 18px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+	transform: translateY(-2px);
 }
 
 .ps-thumb__screen {
@@ -2174,6 +2168,18 @@
 		max-width: 100%;
 		overflow-x: hidden;
 		box-sizing: border-box;
+	}
+
+	.ps-header {
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.ps-header__right {
+		position: static;
+		transform: none;
 	}
 
 	.ps-showcase {
@@ -2333,7 +2339,7 @@
 
 	.ps-header {
 		flex-direction: column;
-		align-items: flex-start;
+		align-items: center;
 		gap: 0.75rem;
 		margin-bottom: 1.2rem;
 	}

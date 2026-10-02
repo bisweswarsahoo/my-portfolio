@@ -7,13 +7,7 @@ const ProjectsHeader = ({ totalProjects = 5 }) => {
 
 	return (
 		<header className="ps-header">
-			<div className="ps-header__left">
-				<div className="ps-indicator">
-					<span className="ps-indicator__num">03</span>
-					<span className="ps-indicator__label">PROJECTS</span>
-					<div className="ps-indicator__line" />
-				</div>
-
+			<div className="ps-header__center">
 				<h2 className="ps-header__title">
 					Projects
 				</h2>

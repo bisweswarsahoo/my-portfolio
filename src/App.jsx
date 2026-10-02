@@ -34,8 +34,10 @@ const hasContent = (value) => {
 	});
 };
 
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import ProjectArchive from "./sections/ProjectArchive.jsx";
+
+const ProjectArchive = lazy(() => import("./sections/ProjectArchive.jsx"));
 
 const Home = () => (
 	<>
@@ -51,6 +53,12 @@ const Home = () => (
 	</>
 );
 
+const ArchiveLoadingFallback = () => (
+	<div style={{ minHeight: "80vh", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-secondary)", fontSize: "1rem" }}>
+		Loading Archive...
+	</div>
+);
+
 function App() {
 	return (
 		<ThemeProvider>
@@ -59,7 +67,14 @@ function App() {
 				<Navbar />
 				<Routes>
 					<Route path="/" element={<Home />} />
-					<Route path="/projects" element={<ProjectArchive />} />
+					<Route
+						path="/projects"
+						element={
+							<Suspense fallback={<ArchiveLoadingFallback />}>
+								<ProjectArchive />
+							</Suspense>
+						}
+					/>
 				</Routes>
 			</div>
 			<Footer />
