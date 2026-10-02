@@ -1,6 +1,6 @@
 import React from "react";
 import { FaCode, FaCheck, FaServer, FaBolt, FaLayerGroup } from "react-icons/fa6";
-import { getTechIcon } from "./techIcons";
+import { getTechIcon } from "../tech/TechnologyIcons";
 
 const ProjectPlaceholder = ({ project }) => {
 	if (!project) return null;

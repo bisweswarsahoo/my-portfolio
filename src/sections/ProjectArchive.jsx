@@ -16,7 +16,7 @@ import {
 	FaFlask
 } from "react-icons/fa6";
 import portfolioData from "../data/portfolioData.js";
-import { getTechIcon } from "../components/projects/techIcons.jsx";
+import { getTechIcon } from "../components/tech/TechnologyIcons.jsx";
 import "../styles/ProjectArchive.css";
 
 const CATEGORIES = [

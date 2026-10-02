@@ -1,5 +1,5 @@
 import React from "react";
-import { getTechIcon } from "./techIcons";
+import { getTechIcon } from "../tech/TechnologyIcons";
 
 const TechnologyPills = ({ technologies = [] }) => {
 	if (!technologies || !technologies.length) return null;
