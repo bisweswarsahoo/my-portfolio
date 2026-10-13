@@ -106,8 +106,8 @@ const CVCard = ({
 										{/* Default down arrow */}
 										<svg
 											className="download-icon icon-default"
-											height="18"
-											width="18"
+											height="16"
+											width="16"
 											viewBox="0 0 24 24"
 											fill="none"
 											stroke="currentColor"
@@ -122,8 +122,8 @@ const CVCard = ({
 										{/* Hover diagonal arrow */}
 										<svg
 											className="download-icon icon-hover"
-											height="18"
-											width="18"
+											height="16"
+											width="16"
 											viewBox="0 0 24 24"
 											fill="none"
 											stroke="currentColor"

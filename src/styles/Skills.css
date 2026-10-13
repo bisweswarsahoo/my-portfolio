@@ -8,9 +8,10 @@
   width: 100%;
   height: 100vh;
   height: 100dvh;
-  min-height: 640px;
-  overflow: visible;
-  overflow-x: clip;
+  max-height: 100vh;
+  max-height: 100dvh;
+  min-height: unset;
+  overflow: hidden;
   box-sizing: border-box;
   background: transparent !important;
   user-select: none;
@@ -223,20 +224,20 @@
    ═══════════════════════════════════════════════════════════════════════ */
 .skills-canvas-viewport {
   position: absolute;
-  inset: -60px 0;
-  overflow: visible;
+  inset: 0;
+  overflow: hidden;
   cursor: grab;
   touch-action: none;
   /* Prevents mobile browser gesture fighting */
   mask-image: linear-gradient(to bottom,
       transparent 0%,
-      black 60px,
-      black calc(100% - 60px),
+      black 50px,
+      black calc(100% - 50px),
       transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom,
       transparent 0%,
-      black 60px,
-      black calc(100% - 60px),
+      black 50px,
+      black calc(100% - 50px),
       transparent 100%);
 }
 
@@ -721,7 +722,11 @@
 /* Small Mobile (<= 480px) */
 @media (max-width: 480px) {
   .skills-loop-wrapper {
-    min-height: 480px;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    min-height: unset;
   }
 
   .skills-badge {

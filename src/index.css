@@ -89,7 +89,8 @@ textarea {
 	z-index: 1;
 }
 
-/* Skills, Projects, About, Languages: full viewport immersive layout with transparent backgrounds */
+/* Journey, Skills, Projects, About, Languages: full viewport immersive layout with transparent backgrounds */
+#journey.portfolio-section,
 #skills.portfolio-section,
 #projects.portfolio-section,
 #about.portfolio-section,
@@ -99,6 +100,15 @@ textarea {
 	align-items: stretch;
 	min-height: 100vh;
 	background: transparent !important;
+}
+
+#skills.portfolio-section {
+	height: 100vh;
+	height: 100dvh;
+	max-height: 100vh;
+	max-height: 100dvh;
+	min-height: unset;
+	overflow: hidden;
 }
 
 /* ── Seamless Timeline & Headings ────────────────────────────────────────── */
@@ -122,5 +132,24 @@ textarea {
 .vertical-timeline::before {
 	background: linear-gradient(180deg, rgba(56, 189, 248, 0.45) 0%, rgba(99, 102, 241, 0.35) 50%, rgba(168, 85, 247, 0.25) 100%) !important;
 	width: 2px !important;
+}
+
+.horizontal-timeline {
+	display: flex;
+	flex-direction: row;
+	gap: 2rem;
+	overflow-x: auto;
+	padding: 1.5rem 1rem 2.5rem 1rem;
+	margin: 0 auto;
+	max-width: 1400px;
+	scroll-snap-type: x mandatory;
+	-webkit-overflow-scrolling: touch;
+}
+
+.horizontal-timeline-element {
+	flex: 0 0 clamp(320px, 28vw, 420px);
+	scroll-snap-align: start;
+	display: flex;
+	flex-direction: column;
 }
 

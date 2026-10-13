@@ -1,8 +1,7 @@
 import "./App.css";
 import Navbar from "./components/Navbar.jsx";
 
-import Education from "./sections/Education.jsx";
-import Work from "./sections/Work.jsx";
+import Journey from "./sections/Journey.jsx";
 
 import About from "./sections/About.jsx";
 import Skills from "./sections/Skills.jsx";
@@ -14,8 +13,7 @@ import { ThemeProvider } from "./theme/ThemeProvider.jsx";
 import portfolioData from "./data/portfolioData.js";
 
 const sections = [
-	{ id: "education", Component: Education, dataKey: "education" },
-	{ id: "work", Component: Work, dataKey: "experience" },
+	{ id: "journey", Component: Journey, dataKey: "journey" },
 	{ id: "skills", Component: Skills, dataKey: "skills" },
 	{ id: "projects", Component: Projects, dataKey: "projects" },
 	{ id: "about", Component: About, dataKey: "about" },

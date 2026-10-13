@@ -169,7 +169,9 @@
 .cv-action-area {
 	display: flex;
 	flex-direction: column;
+	align-items: flex-start;
 	gap: 0.4rem;
+	width: fit-content;
 }
 
 /* Upgraded Download Button */
@@ -177,17 +179,20 @@
 	position: relative;
 	display: inline-flex;
 	align-items: center;
-	gap: 0.65rem;
+	justify-content: center;
+	width: fit-content;
+	max-width: fit-content;
+	gap: 0.5rem;
 	background: #0f172a;
 	color: #ffffff;
 	font-weight: 600;
-	padding: 0.55rem 1.1rem;
+	padding: 0.45rem 0.9rem;
 	border: 1px solid rgba(56, 189, 248, 0.35);
-	border-radius: 9px;
+	border-radius: 8px;
 	cursor: pointer;
 	transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 	user-select: none;
-	font-size: 0.86rem;
+	font-size: 0.82rem;
 	letter-spacing: 0.01em;
 	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 10px rgba(56, 189, 248, 0.1);
 }
@@ -214,8 +219,8 @@
 /* Download Button Icon Morph / Slide */
 .cv-download-icon-wrap {
 	position: relative;
-	width: 18px;
-	height: 18px;
+	width: 16px;
+	height: 16px;
 	display: flex;
 	align-items: center;
 	justify-content: center;

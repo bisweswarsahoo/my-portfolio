@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import {
 	LuHouse,
+	LuMilestone,
 	LuCpu,
 	LuLayoutGrid,
 	LuUser,
@@ -11,6 +12,7 @@ import portfolioData from "../data/portfolioData.js";
 
 const menuItems = [
 	{ name: "Home", id: "home" },
+	{ name: "Journey", id: "journey" },
 	{ name: "Skills", id: "skills" },
 	{ name: "Projects", id: "projects" },
 	{ name: "About", id: "about" },
@@ -18,6 +20,7 @@ const menuItems = [
 
 const iconMap = {
 	Home: LuHouse,
+	Journey: LuMilestone,
 	Skills: LuCpu,
 	Projects: LuLayoutGrid,
 	About: LuUser,
@@ -109,58 +112,64 @@ const Navbar = () => {
 			role="navigation"
 			aria-label="Main Navigation"
 		>
-			<div
-				className="navbar-profile"
-				onClick={() => scrollToSection("home")}
-				role="button"
-				tabIndex={0}
-				title="Back to top (Home)"
-				onKeyDown={(e) => {
-					if (e.key === "Enter" || e.key === " ") {
-						e.preventDefault();
-						scrollToSection("home");
-					}
-				}}
-			>
-				<img
-					className="navbar-profile-img"
-					src={portfolioData.profileImage}
-					alt={`${portfolioData.name} profile`}
-				/>
-				<div className="navbar-profile-info">
-					<span className="navbar-profile-name">{portfolioData.name}</span>
-					<span className="navbar-profile-role">{portfolioData.role}</span>
-				</div>
-				<div onClick={(e) => e.stopPropagation()}>
-					<ThemeToggle />
-				</div>
-			</div>
-
-			<label
-				className="hamburger"
-				aria-label="Open menu"
-			>
-				<input
-					type="checkbox"
-					checked={menuOpen}
-					onChange={() => setMenuOpen((open) => !open)}
-					aria-checked={menuOpen}
-					aria-label="Toggle navigation menu"
-				/>
-				<svg
-					viewBox="0 0 32 32"
-					width="40"
+			<div className="navbar-top-row">
+				<div
+					className="navbar-profile"
+					onClick={() => scrollToSection("home")}
+					role="button"
+					tabIndex={0}
+					title="Back to top (Home)"
+					onKeyDown={(e) => {
+						if (e.key === "Enter" || e.key === " ") {
+							e.preventDefault();
+							scrollToSection("home");
+						}
+					}}
 				>
-					<path
-						className="line line-top-bottom"
-						d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
-					></path>
-					<path
-						className="line"
-						d="M7 16 27 16"
-					></path>
-				</svg>
-			</label>
+					<img
+						className="navbar-profile-img"
+						src={portfolioData.profileImage}
+						alt={`${portfolioData.name} profile`}
+					/>
+					<div className="navbar-profile-info">
+						<span className="navbar-profile-name">{portfolioData.name}</span>
+						<span className="navbar-profile-role">{portfolioData.role}</span>
+					</div>
+
+					<div
+						className="navbar-theme-toggle-wrap"
+						onClick={(e) => e.stopPropagation()}
+					>
+						<ThemeToggle />
+					</div>
+				</div>
+
+				<label
+					className="hamburger"
+					aria-label="Open menu"
+				>
+					<input
+						type="checkbox"
+						checked={menuOpen}
+						onChange={() => setMenuOpen((open) => !open)}
+						aria-checked={menuOpen}
+						aria-label="Toggle navigation menu"
+					/>
+					<svg
+						viewBox="0 0 32 32"
+						width="40"
+					>
+						<path
+							className="line line-top-bottom"
+							d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
+						></path>
+						<path
+							className="line"
+							d="M7 16 27 16"
+						></path>
+					</svg>
+				</label>
+			</div>
 
 			<ul className={`navbar-menu${menuOpen ? " open" : ""}`}>
 				{menuItems.map((item, index) => {

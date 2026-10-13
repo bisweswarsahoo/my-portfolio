@@ -267,6 +267,9 @@ const portfolioData = {
 		{ degree: "Senior Secondary School (Class XII)", institution: "Adyant Higher Secondary School, Bhubaneswar, India", years: "2020 - 2022", grade: "Percentage: 81%" },
 		{ degree: "Secondary School (Class X)", institution: "C.A.M.I.E & R Matrujyoti, Jharsuguda, India", years: "2020", grade: "Percentage: 78.6%" },
 	],
+	get journey() {
+		return [...(this.experience || []), ...(this.competitions || []), ...(this.education || [])];
+	},
 	skills: [
 		{
 			category: "Programming Languages",

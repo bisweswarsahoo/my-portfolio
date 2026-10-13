@@ -4,7 +4,7 @@ import "../styles/CentralizedBackground.css";
 /**
  * CentralizedBackground
  * Single, unified, stationary background system providing a seamless
- * visual foundation across all sections (Education, Work, Skills,
+ * visual foundation across all sections (Journey, Skills,
  * Projects, About, Languages, Footer) in both light and dark themes.
  */
 const CentralizedBackground = () => {
