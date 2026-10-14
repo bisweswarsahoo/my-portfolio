@@ -44,6 +44,21 @@ import {
 	CodeSvg
 } from "../components/tech/TechnologyIcons";
 
+import jabszLogo from "../assets/jabsz-logo.png";
+import jabszBg from "../assets/jabsz-bg.webp";
+import orivaneLogo from "../assets/orivane-studios.png";
+import amityLogo from "../assets/amity-university-logo.png";
+import amityNoidaBg from "../assets/amity_noida_bg.jpg";
+import adyantLogo from "../assets/adyant-logo.png";
+import adyantCampusBg from "../assets/adyant-campus-aerial-bg.jpeg";
+import schoolLogo from "../assets/sri-aurobindo-integral-education-logo.png";
+import ietLogo from "../assets/IET_on_campus.png";
+import gdgLogo from "../assets/gdg-logo.png";
+import ieeeLogo from "../assets/IEEE-logo.png";
+import vrgdLogo from "../assets/VRGD-logo.png";
+import orivaneBg from "../assets/Orivane_Studios_BG.png";
+import schoolBG from "../assets/sri-aurobindo-integral-education-bg.png"
+
 const skill = (name, icon, color = "currentColor", desc = "") => ({ name, icon, color, desc });
 
 const portfolioData = {
@@ -270,6 +285,8 @@ const portfolioData = {
 			website: "https://bisweswarsahoo.github.io/orivane-studios/",
 			proofUrl: "https://bisweswarsahoo.github.io/orivane-studios/",
 			categoryLabel: "STARTUP",
+			icon: orivaneLogo,
+			bgImage: orivaneBg,
 			details: [
 				"Founded Orivane Studios, a digital design studio creating bespoke website concepts, private client presentations, and delivered live work.",
 				"Directed brand identity, visual aesthetics, and frontend architecture across bespoke web experiences.",
@@ -283,6 +300,8 @@ const portfolioData = {
 			duration: "May 2025 - July 2025",
 			categoryLabel: "INTERNSHIP",
 			tags: ["TypeScript", "Phaser.js", "Behavior Trees", "Game Dev"],
+			icon: jabszLogo,
+			bgImage: jabszBg,
 			details: [
 				"Engineered and optimized gameplay mechanics using TypeScript and Phaser.js for the 2D arcade title Engulf.",
 				"Architected interactive bot opponents with behavior trees to improve challenge dynamics.",
@@ -293,9 +312,30 @@ const portfolioData = {
 		}
 	],
 	education: [
-		{ degree: "Bachelor of Technology (B. Tech.) in Computer Science & Engineering", institution: "Amity University, Noida, India", years: "2022 - 2026", grade: "CGPA: 8.27" },
-		{ degree: "Senior Secondary School (Class XII)", institution: "Adyant Higher Secondary School, Bhubaneswar, India", years: "2020 - 2022", grade: "Percentage: 81%" },
-		{ degree: "Secondary School (Class X)", institution: "C.A.M.I.E & R Matrujyoti, Jharsuguda, India", years: "2020", grade: "Percentage: 78.6%" },
+		{
+			degree: "Bachelor of Technology (B. Tech.) in Computer Science & Engineering",
+			institution: "Amity University, Noida, India",
+			years: "2022 - 2026",
+			grade: "CGPA: 8.27",
+			icon: amityLogo,
+			bgImage: amityNoidaBg,
+		},
+		{
+			degree: "Senior Secondary School (Class XII)",
+			institution: "Adyant Higher Secondary School, Bhubaneswar, India",
+			years: "2020 - 2022",
+			grade: "Percentage: 81%",
+			icon: adyantLogo,
+			bgImage: adyantCampusBg,
+		},
+		{
+			degree: "Secondary School (Class X)",
+			institution: "C.A.M.I.E & R Matrujyoti, Jharsuguda, India",
+			years: "2020",
+			grade: "Percentage: 78.6%",
+			icon: schoolLogo,
+			bgImage: schoolBG,
+		},
 	],
 	get journey() {
 		return [...(this.experience || []), ...(this.competitions || []), ...(this.education || [])];
@@ -379,9 +419,47 @@ const portfolioData = {
 		},
 	],
 	competitions: [
-		{ name: "404: Treasure Not Found!", organizer: "IET On Campus - Amity Student Chapter", date: "March 2025", result: "2nd place", proofUrl: "https://www.linkedin.com/posts/iet-on-campus-amity-university-uttar-pradesh_404treasurenotfound-solvethepuzzle-techadventure-activity-7310696163857317891-0fP5", description: ["Secured 2nd place in a high-intensity puzzle solving event.", "Demonstrated rapid problem-solving and tackled cryptic code puzzles under tight time constraints.", "Used team-based strategies to decipher clues, debug scripts, and unlock progressive stages."] },
-		{ name: "The Squid Game Code", organizer: "Amity Institute of Information Technology & Amity School of Engineering and Technology", date: "October 2024", result: "2nd place", proofUrl: "https://www.instagram.com/p/DBZT6Xizjvp/", description: ["Secured 2nd place in a competitive coding event featuring algorithmic challenges.", "Demonstrated problem-solving skills and algorithmic efficiency under time constraints."] },
-		{ name: "Code Wars 2024", organizer: "GDG, VRGD in collaboration with IEEE", date: "September 2024", result: "4th place (overall)", proofUrl: "", description: ["Competed as Team BugBusters in a three-level coding and tech recognition quiz.", "Achieved strong results across multiple rounds and secured an overall 4th place."] },
+		{
+			name: "404: Treasure Not Found!",
+			organizer: "IET On Campus - Amity Student Chapter",
+			date: "March 2025",
+			result: "2nd place",
+			proofUrl: "https://www.linkedin.com/posts/iet-on-campus-amity-university-uttar-pradesh_404treasurenotfound-solvethepuzzle-techadventure-activity-7310696163857317891-0fP5",
+			icon: ietLogo,
+			bgImage: amityNoidaBg,
+			description: [
+				"Secured 2nd place in a high-intensity puzzle solving event.",
+				"Demonstrated rapid problem-solving and tackled cryptic code puzzles under tight time constraints.",
+				"Used team-based strategies to decipher clues, debug scripts, and unlock progressive stages."
+			]
+		},
+		{
+			name: "The Squid Game Code",
+			organizer: "Amity Institute of Information Technology & Amity School of Engineering and Technology",
+			date: "October 2024",
+			result: "2nd place",
+			proofUrl: "https://www.instagram.com/p/DBZT6Xizjvp/",
+			icon: amityLogo,
+			bgImage: amityNoidaBg,
+			description: [
+				"Secured 2nd place in a competitive coding event featuring algorithmic challenges.",
+				"Demonstrated problem-solving skills and algorithmic efficiency under time constraints."
+			]
+		},
+		{
+			name: "Code Wars 2024",
+			organizer: "GDG, VRGD in collaboration with IEEE",
+			date: "September 2024",
+			result: "4th place (overall)",
+			proofUrl: "",
+			icon: gdgLogo,
+			partnerLogos: [vrgdLogo],
+			bgImage: amityNoidaBg,
+			description: [
+				"Competed as Team BugBusters in a three-level coding and tech recognition quiz.",
+				"Achieved strong results across multiple rounds and secured an overall 4th place."
+			]
+		},
 	],
 	languages: [
 		{ name: "English", level: "Fluent", greeting: "Hi, I am Bisweswar Sahoo." },

@@ -94,8 +94,10 @@ const Journey = () => {
 					location: item.location,
 					duration: item.duration,
 					icon: expIcon,
+					partnerLogos: item.partnerLogos || [],
 					tags: item.tags || [],
 					proofUrl: item.website || item.proofUrl || item.link || item.url || "",
+					bgImage: item.bgImage || item.image || item.backgroundImage,
 					sortScore: parseDateScore(item),
 				};
 			}),
@@ -118,6 +120,9 @@ const Journey = () => {
 					duration: item.date,
 					result: item.result,
 					proofUrl: item.proofUrl || "",
+					icon: item.icon || item.logo,
+					partnerLogos: item.partnerLogos || [],
+					bgImage: item.bgImage || item.image || item.backgroundImage,
 					sortScore: parseDateScore(item),
 				};
 			}),
@@ -126,7 +131,7 @@ const Journey = () => {
 			...visibleEducation.map((item, idx) => {
 				const isCollege = item.degree?.toLowerCase().includes("bachelor") || item.years?.includes("2026");
 				const isHighSchool = item.degree?.toLowerCase().includes("senior") || item.years?.includes("2022");
-				const eduIcon = isCollege ? amitylogo : isHighSchool ? adyantlogo : schoollogo;
+				const eduIcon = item.icon || (isCollege ? amitylogo : isHighSchool ? adyantlogo : schoollogo);
 
 				return {
 					id: `edu-${idx}`,
@@ -138,6 +143,8 @@ const Journey = () => {
 					duration: item.years,
 					grade: item.grade,
 					icon: eduIcon,
+					partnerLogos: item.partnerLogos || [],
+					bgImage: item.bgImage || item.image || item.backgroundImage,
 					sortScore: parseDateScore(item),
 				};
 			}),

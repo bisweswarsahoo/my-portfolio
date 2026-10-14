@@ -1,4 +1,5 @@
 import React from "react";
+import defaultMilestoneBg from "../assets/Futuristic AI Developer with Holographic UI.png";
 import {
 	LuTrophy,
 	LuGraduationCap,
@@ -11,7 +12,7 @@ import {
 /**
  * MilestoneCard
  * Renders an individual milestone on the horizontal timeline.
- * Compact, sleek card without lengthy description bodies for high visual clarity.
+ * Features cinematic blended background image with directional gradients.
  */
 const MilestoneCard = ({
 	type = "general",
@@ -23,10 +24,12 @@ const MilestoneCard = ({
 	grade,
 	result,
 	icon,
+	partnerLogos = [],
 	proofUrl,
 	tags = [],
 	isActive = false,
 	position = "bottom",
+	bgImage,
 }) => {
 	const getCategoryClass = () => {
 		switch (type) {
@@ -45,33 +48,60 @@ const MilestoneCard = ({
 		}
 	};
 
+	const cardBackground = bgImage || defaultMilestoneBg;
+
 	return (
 		<div
 			className={`journey-card journey-card--${position} ${isActive ? "is-active" : ""}`}
 			role="article"
 			aria-label={`${title} at ${organization || "portfolio"}`}
 		>
-			{/* Top Header: Category Tag & Icon / Logo */}
-			<div className="journey-card__header">
-				<span className={`journey-card__category ${getCategoryClass()}`}>
-					{categoryLabel || (type === "experience" ? "INTERNSHIP" : type === "competition" ? "COMPETITION" : "EDUCATION")}
-				</span>
+			{/* 1. Base Layer: Cinematic Background Image */}
+			<div
+				className="journey-card__bg-image"
+				style={cardBackground ? { backgroundImage: `url("${cardBackground}")` } : undefined}
+				aria-hidden="true"
+			/>
 
-				{icon ? (
-					<img
-						src={icon}
-						alt={organization || title || "logo"}
-						className="journey-card__logo"
-						loading="lazy"
-					/>
-				) : type === "competition" ? (
-					<LuTrophy className="journey-card__trophy-icon" aria-hidden="true" />
-				) : type === "education" ? (
-					<LuGraduationCap className="journey-card__edu-icon" aria-hidden="true" />
-				) : (
-					<LuBriefcase className="journey-card__edu-icon" aria-hidden="true" />
-				)}
-			</div>
+			{/* 2. Directional Gradient Blending & Atmospheric Tint Layer */}
+			<div className="journey-card__bg-overlay" aria-hidden="true" />
+
+			{/* 3. Foreground Card Content Layer */}
+			<div className="journey-card__content">
+				{/* Top Header: Category Tag & Icon / Logos */}
+				<div className="journey-card__header">
+					<span className={`journey-card__category ${getCategoryClass()}`}>
+						{categoryLabel || (type === "experience" ? "INTERNSHIP" : type === "competition" ? "COMPETITION" : "EDUCATION")}
+					</span>
+
+					{icon || (partnerLogos && partnerLogos.length > 0) ? (
+						<div className="journey-card__logos-group">
+							{icon && (
+								<img
+									src={icon}
+									alt={organization || title || "logo"}
+									className="journey-card__logo"
+									loading="lazy"
+								/>
+							)}
+							{partnerLogos && partnerLogos.map((pLogo, pIdx) => (
+								<img
+									key={pIdx}
+									src={pLogo}
+									alt="partner logo"
+									className="journey-card__logo journey-card__logo--partner"
+									loading="lazy"
+								/>
+							))}
+						</div>
+					) : type === "competition" ? (
+						<LuTrophy className="journey-card__trophy-icon" aria-hidden="true" />
+					) : type === "education" ? (
+						<LuGraduationCap className="journey-card__edu-icon" aria-hidden="true" />
+					) : (
+						<LuBriefcase className="journey-card__edu-icon" aria-hidden="true" />
+					)}
+				</div>
 
 			{/* Body: Title, Org, Duration / Badges */}
 			<div className="journey-card__body">
@@ -133,6 +163,7 @@ const MilestoneCard = ({
 					)}
 				</div>
 			)}
+			</div>
 		</div>
 	);
 };
