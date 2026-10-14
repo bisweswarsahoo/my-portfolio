@@ -261,7 +261,37 @@ const portfolioData = {
 			liveDemo: "",
 		},
 	],
-	experience: [{ title: "Web Development Intern", organization: "Jabsz Gaming Studios LLP", location: "Gurugram, India", duration: "May 2025 - July 2025", details: ["Engineered and optimized gameplay mechanics using TypeScript and Phaser.js for the 2D arcade title Engulf.", "Architected interactive bot opponents with behavior trees to improve challenge dynamics.", "Designed and integrated pause, main menu, and game-over UI flows with consistent scene transitions.", "Refined asset management pipelines and enforced GitHub pull-request and code-review standards.", "Developed player controls, collision detection, and arena logic for the game Engulf: Consume. Survive. Dominate."] }],
+	experience: [
+		{
+			title: "Founder",
+			organization: "Orivane Studios",
+			location: "India",
+			duration: "Oct 2026 - Present",
+			website: "https://bisweswarsahoo.github.io/orivane-studios/",
+			proofUrl: "https://bisweswarsahoo.github.io/orivane-studios/",
+			categoryLabel: "STARTUP",
+			details: [
+				"Founded Orivane Studios, a digital design studio creating bespoke website concepts, private client presentations, and delivered live work.",
+				"Directed brand identity, visual aesthetics, and frontend architecture across bespoke web experiences.",
+				"Engineered interactive web showcases and high-performance, client-focused digital solutions."
+			]
+		},
+		{
+			title: "Web Development Intern",
+			organization: "Jabsz Gaming Studios LLP",
+			location: "Gurugram, India",
+			duration: "May 2025 - July 2025",
+			categoryLabel: "INTERNSHIP",
+			tags: ["TypeScript", "Phaser.js", "Behavior Trees", "Game Dev"],
+			details: [
+				"Engineered and optimized gameplay mechanics using TypeScript and Phaser.js for the 2D arcade title Engulf.",
+				"Architected interactive bot opponents with behavior trees to improve challenge dynamics.",
+				"Designed and integrated pause, main menu, and game-over UI flows with consistent scene transitions.",
+				"Refined asset management pipelines and enforced GitHub pull-request and code-review standards.",
+				"Developed player controls, collision detection, and arena logic for the game Engulf: Consume. Survive. Dominate."
+			]
+		}
+	],
 	education: [
 		{ degree: "Bachelor of Technology (B. Tech.) in Computer Science & Engineering", institution: "Amity University, Noida, India", years: "2022 - 2026", grade: "CGPA: 8.27" },
 		{ degree: "Senior Secondary School (Class XII)", institution: "Adyant Higher Secondary School, Bhubaneswar, India", years: "2020 - 2022", grade: "Percentage: 81%" },

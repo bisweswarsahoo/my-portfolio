@@ -185,6 +185,13 @@ export default function Skills() {
   const hoveredIdRef = useRef(null);
   const rafRef = useRef(null);
 
+  // Hold-to-drag refs & state
+  const holdTimerRef = useRef(null);
+  const releaseTimerRef = useRef(null);
+  const canDragRef = useRef(false);
+  const [holdProgress, setHoldProgress] = useState(null);
+  const [isHolding, setIsHolding] = useState(false);
+
   // React state for UI overlays & tooltips
   const [hoveredTech, setHoveredTech] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
@@ -307,12 +314,12 @@ export default function Skills() {
           targetPanRef.current = null;
         }
       } else if (!dragRef.current.isDragging) {
-        // Inertia coasting with smooth friction
+        // Inertia coasting with smooth 1-second deceleration
         if (Math.abs(inertiaRef.current.vx) > 0.01 || Math.abs(inertiaRef.current.vy) > 0.01) {
           panRef.current.x += inertiaRef.current.vx;
           panRef.current.y += inertiaRef.current.vy;
-          inertiaRef.current.vx *= 0.93;
-          inertiaRef.current.vy *= 0.93;
+          inertiaRef.current.vx *= 0.962;
+          inertiaRef.current.vy *= 0.962;
         } else {
           inertiaRef.current.vx = 0;
           inertiaRef.current.vy = 0;
@@ -442,11 +449,12 @@ export default function Skills() {
 
       // Check if simulation can safely sleep to save 100% CPU/GPU cycles
       const isDragging = dragRef.current.isDragging;
+      const isReleasing = releaseTimerRef.current !== null;
       const isTargetPanning = targetPanRef.current !== null;
       const hasInertia = Math.abs(inertiaRef.current.vx) > 0.01 || Math.abs(inertiaRef.current.vy) > 0.01;
       const hasHover = hoveredIdRef.current !== null;
 
-      if (!isDragging && !isTargetPanning && !hasInertia && !hasHover && maxDisp < 0.1) {
+      if (!isDragging && !isReleasing && !isTargetPanning && !hasInertia && !hasHover && maxDisp < 0.1) {
         rafRef.current = null;
         return; // Idle sleep state reached
       }
@@ -461,7 +469,11 @@ export default function Skills() {
     };
   }, [wakeLoop]);
 
-  /* ─── Pointer Drag Handlers (Mouse, Trackpad, Touch, Stylus) ───────────── */
+  /* ─── Hold-to-Drag Pointer Handlers (Hold required to drag canvas) ─────── */
+  const HOLD_DURATION = 260; // ms to press & hold before drag activates
+  const HOLD_RELEASE_DELAY = 1000; // 1-second delay so drag action completes smoothly on release
+  const HOLD_MOVE_THRESHOLD = 9; // px movement tolerance before hold is canceled for normal scrolling
+
   const onPointerDown = useCallback((e) => {
     // Only respond to primary button
     if (e.button !== 0 && e.pointerType === "mouse") return;
@@ -469,44 +481,166 @@ export default function Skills() {
     targetPanRef.current = null; // Cancel any active recenter animation
     inertiaRef.current = { vx: 0, vy: 0 };
 
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    const pointerId = e.pointerId;
+    const currentTarget = e.currentTarget;
+
+    // For mouse, immediately capture pointer to prevent text selection and window autoscroll
+    if (e.pointerType === "mouse") {
+      try {
+        currentTarget.setPointerCapture(pointerId);
+      } catch {
+        // Ignore
+      }
+    }
+
+    // If user presses again within the 1-second release grace period of previous drag,
+    // continue dragging immediately without having to hold for another 260ms!
+    if (releaseTimerRef.current) {
+      clearTimeout(releaseTimerRef.current);
+      releaseTimerRef.current = null;
+      canDragRef.current = true;
+      dragRef.current = {
+        isDragging: true,
+        startX: clientX,
+        startY: clientY,
+        startPanX: panRef.current.x,
+        startPanY: panRef.current.y,
+        lastX: clientX,
+        lastY: clientY,
+        lastTime: performance.now(),
+        vx: 0,
+        vy: 0,
+        hasMoved: true,
+        pointerId,
+        currentTarget,
+      };
+      setIsGrabbing(true);
+      try {
+        currentTarget.setPointerCapture(pointerId);
+      } catch {
+        // Ignore
+      }
+      wakeLoop();
+      return;
+    }
+
+    canDragRef.current = false;
+
     dragRef.current = {
-      isDragging: true,
-      startX: e.clientX,
-      startY: e.clientY,
+      isDragging: false,
+      startX: clientX,
+      startY: clientY,
       startPanX: panRef.current.x,
       startPanY: panRef.current.y,
-      lastX: e.clientX,
-      lastY: e.clientY,
+      lastX: clientX,
+      lastY: clientY,
       lastTime: performance.now(),
       vx: 0,
       vy: 0,
       hasMoved: false,
+      pointerId,
+      currentTarget,
     };
 
-    setIsGrabbing(true);
-    wakeLoop();
-    try {
-      e.currentTarget.setPointerCapture(e.pointerId);
-    } catch {
-      // Ignore if capture fails on certain mobile webviews
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
     }
+
+    // Display tactile hold ring at pointer location
+    setHoldProgress({ x: clientX, y: clientY, active: true, ready: false });
+    setIsHolding(true);
+
+    holdTimerRef.current = setTimeout(() => {
+      canDragRef.current = true;
+      dragRef.current.isDragging = true;
+      // Anchor pan calculation to current pointer position
+      dragRef.current.startX = dragRef.current.lastX;
+      dragRef.current.startY = dragRef.current.lastY;
+      dragRef.current.startPanX = panRef.current.x;
+      dragRef.current.startPanY = panRef.current.y;
+
+      setIsGrabbing(true);
+      setHoldProgress((prev) => (prev ? { ...prev, ready: true } : null));
+
+      if (typeof navigator !== "undefined" && navigator.vibrate) {
+        try {
+          navigator.vibrate(35);
+        } catch {
+          // Ignore
+        }
+      }
+
+      try {
+        currentTarget.setPointerCapture(pointerId);
+      } catch {
+        // Ignore if pointer capture fails
+      }
+
+      wakeLoop();
+    }, HOLD_DURATION);
   }, [wakeLoop]);
 
   const onPointerMove = useCallback((e) => {
     const drag = dragRef.current;
-    if (!drag.isDragging) return;
-
-    wakeLoop();
+    drag.lastX = e.clientX;
+    drag.lastY = e.clientY;
 
     const dx = e.clientX - drag.startX;
     const dy = e.clientY - drag.startY;
 
-    if (!drag.hasMoved && Math.hypot(dx, dy) > 5) {
-      drag.hasMoved = true;
+    // While waiting for hold to activate:
+    if (!canDragRef.current) {
+      // If user moved finger/cursor beyond threshold before hold completed,
+      // it is a swipe or scroll intent — cancel hold so page can scroll naturally!
+      if (Math.hypot(dx, dy) > HOLD_MOVE_THRESHOLD) {
+        if (holdTimerRef.current) {
+          clearTimeout(holdTimerRef.current);
+          holdTimerRef.current = null;
+        }
+        setHoldProgress(null);
+        setIsHolding(false);
+
+        // If pointer was captured on mouse, release it so scrolling works
+        try {
+          if (e.currentTarget && e.currentTarget.hasPointerCapture && e.currentTarget.hasPointerCapture(e.pointerId)) {
+            e.currentTarget.releasePointerCapture(e.pointerId);
+          }
+        } catch {
+          // Ignore
+        }
+      }
+      return;
     }
 
-    panRef.current.x = drag.startPanX + dx;
-    panRef.current.y = drag.startPanY + dy;
+    // Hold is active! Ensure pointer capture is locked to container
+    try {
+      if (e.currentTarget && e.currentTarget.setPointerCapture && (!e.currentTarget.hasPointerCapture || !e.currentTarget.hasPointerCapture(e.pointerId))) {
+        e.currentTarget.setPointerCapture(e.pointerId);
+      }
+    } catch {
+      // Ignore
+    }
+
+    // Crucial: Stop browser from scrolling the window upwards/downwards
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    e.stopPropagation();
+
+    if (!drag.isDragging) return;
+
+    wakeLoop();
+
+    if (!drag.hasMoved && Math.hypot(dx, dy) > 4) {
+      drag.hasMoved = true;
+      // Fade out hold indicator once movement begins
+      setHoldProgress(null);
+    }
+
+    panRef.current.x = drag.startPanX + (e.clientX - drag.startX);
+    panRef.current.y = drag.startPanY + (e.clientY - drag.startY);
 
     // Track instantaneous release velocity (pixels per frame normalized to ~60fps)
     const now = performance.now();
@@ -516,30 +650,34 @@ export default function Skills() {
       const instVy = ((e.clientY - drag.lastY) / dt) * 16.6;
       drag.vx = drag.vx * 0.4 + instVx * 0.6;
       drag.vy = drag.vy * 0.4 + instVy * 0.6;
-      drag.lastX = e.clientX;
-      drag.lastY = e.clientY;
       drag.lastTime = now;
     }
   }, [wakeLoop]);
 
   const onPointerUp = useCallback((e) => {
-    const drag = dragRef.current;
-    if (!drag.isDragging) return;
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = null;
+    }
+    setHoldProgress(null);
+    setIsHolding(false);
 
+    const drag = dragRef.current;
+    const wasDragging = drag.isDragging;
+
+    // End active pointer tracking
     drag.isDragging = false;
-    setIsGrabbing(false);
-    wakeLoop();
 
     try {
-      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      if (e.currentTarget && e.currentTarget.hasPointerCapture && e.currentTarget.hasPointerCapture(e.pointerId)) {
         e.currentTarget.releasePointerCapture(e.pointerId);
       }
     } catch {
       // Ignore
     }
 
-    // Apply inertia if dragged quickly
-    if (drag.hasMoved) {
+    // Apply inertia and 1-second delay so dragging motion completes smoothly
+    if (wasDragging && drag.hasMoved) {
       const speed = Math.hypot(drag.vx, drag.vy);
       const MAX_SPEED = 18;
       let vx = drag.vx;
@@ -547,16 +685,83 @@ export default function Skills() {
       if (speed > MAX_SPEED) {
         vx = (vx / speed) * MAX_SPEED;
         vy = (vy / speed) * MAX_SPEED;
+      } else if (speed < 1.4 && Math.hypot(drag.lastX - drag.startX, drag.lastY - drag.startY) > 5) {
+        // Provide gentle follow-through glide in the drag direction
+        // so the canvas never instantly stops like a glitch
+        const dx = drag.lastX - drag.startX;
+        const dy = drag.lastY - drag.startY;
+        const dist = Math.hypot(dx, dy) || 1;
+        vx = (dx / dist) * 2.8;
+        vy = (dy / dist) * 2.8;
       }
-      if (speed > 1.2) {
-        inertiaRef.current = { vx, vy };
+      inertiaRef.current = { vx, vy };
+
+      // Add 1-second delay so the dragging action finishes naturally
+      if (releaseTimerRef.current) {
+        clearTimeout(releaseTimerRef.current);
       }
+      releaseTimerRef.current = setTimeout(() => {
+        canDragRef.current = false;
+        setIsGrabbing(false);
+        releaseTimerRef.current = null;
+      }, HOLD_RELEASE_DELAY);
     } else {
-      // If pointer was clicked/tapped without dragging on background, clear hover
-      if (e.target.closest(".tech-loop-item") === null) {
-        setHoveredTech(null);
+      canDragRef.current = false;
+      setIsGrabbing(false);
+      if (!drag.hasMoved) {
+        // If clicked/tapped without dragging on background, clear hovered tech
+        if (e.target.closest(".tech-loop-item") === null) {
+          setHoveredTech(null);
+        }
       }
     }
+
+    wakeLoop();
+  }, [wakeLoop]);
+
+  // Non-passive touch listener to strictly prevent native page scrolling while dragging
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handleTouchMove = (e) => {
+      if (canDragRef.current) {
+        if (e.cancelable) {
+          e.preventDefault();
+        }
+      }
+    };
+
+    el.addEventListener("touchmove", handleTouchMove, { passive: false });
+    return () => {
+      el.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, []);
+
+  // Cleanup hold and release timers on window blur or unmount
+  useEffect(() => {
+    const handleBlur = () => {
+      if (holdTimerRef.current) {
+        clearTimeout(holdTimerRef.current);
+        holdTimerRef.current = null;
+      }
+      if (releaseTimerRef.current) {
+        clearTimeout(releaseTimerRef.current);
+        releaseTimerRef.current = null;
+      }
+      setHoldProgress(null);
+      setIsHolding(false);
+      canDragRef.current = false;
+      dragRef.current.isDragging = false;
+      setIsGrabbing(false);
+    };
+
+    window.addEventListener("blur", handleBlur);
+    return () => {
+      window.removeEventListener("blur", handleBlur);
+      if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+      if (releaseTimerRef.current) clearTimeout(releaseTimerRef.current);
+    };
   }, []);
 
   /* ─── Technology Item Hover & Click Handlers ───────────────────────────── */
@@ -604,11 +809,6 @@ export default function Skills() {
             Technologies <span className="skills-title-gradient">I Build With...</span>
           </h2>
 
-          {/* Subtitle */}
-          <p className="skills-subtitle">
-            Grab and drag freely in any direction to explore the looping universe of tools, frameworks and languages.
-          </p>
-
           {/* Interactive Fixed HUD Controls */}
           <div className="skills-hud-bar">
             {/* Category Filter Pills */}
@@ -649,14 +849,14 @@ export default function Skills() {
           INFINITE LOOPING CANVAS CONTAINER (Interactive grab & drag)
           ═════════════════════════════════════════════════════════════════ */}
       <div
-        className={`skills-canvas-viewport${isGrabbing ? " is-grabbing" : ""}`}
+        className={`skills-canvas-viewport${isHolding ? " is-holding" : ""}${isGrabbing ? " is-grabbing" : ""}`}
         ref={containerRef}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
         role="region"
-        aria-label="Interactive infinite technology canvas. Drag with mouse or finger to explore."
+        aria-label="Interactive infinite technology canvas. Press and hold to drag and explore."
       >
         {/* Dynamic Celestial Background (Subtle Grid & Parallax Stars) */}
         <div className="skills-bg-grid" ref={bgGridRef} aria-hidden="true" />
@@ -664,11 +864,23 @@ export default function Skills() {
         <div className="skills-bg-stars skills-bg-stars--2" ref={starsRef2} aria-hidden="true" />
         <div className="skills-ambient-glow" aria-hidden="true" />
 
-        {/* Floating Exploration Hint Banner */}
-        <div className={`skills-drag-hint${isGrabbing ? " is-hidden" : ""}`} aria-hidden="true">
-          <FaCompass className="skills-hint-compass" />
-          <span>Click & drag canvas in any direction • Hover or tap to expand</span>
-        </div>
+        {/* Hold to drag visual unlock indicator */}
+        {holdProgress && (
+          <div
+            className={`skills-hold-indicator${holdProgress.ready ? " is-ready" : ""}`}
+            style={{
+              left: `${holdProgress.x}px`,
+              top: `${holdProgress.y}px`,
+            }}
+            aria-hidden="true"
+          >
+            <svg className="skills-hold-svg" viewBox="0 0 44 44">
+              <circle className="skills-hold-track" cx="22" cy="22" r="18" />
+              <circle className="skills-hold-fill" cx="22" cy="22" r="18" />
+            </svg>
+            <span className="skills-hold-dot" />
+          </div>
+        )}
 
         {/* ─── Technology Items (Directly positioned by rAF) ──────────── */}
         {isReady && TECHNOLOGIES.map((tech, i) => {
@@ -721,6 +933,16 @@ export default function Skills() {
           )}
         </aside>
 
+      </div>
+
+      {/* Floating Exploration Hint Banner at bottom of section */}
+      <div className={`skills-drag-hint${isGrabbing ? " is-active-drag" : ""}`} aria-hidden="true">
+        <FaCompass className="skills-hint-compass" />
+        <span>
+          {isGrabbing
+            ? "Canvas Unlocked • Dragging in all directions"
+            : "Hold & drag canvas to explore • Scroll down normally"}
+        </span>
       </div>
     </div>
   );

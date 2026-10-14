@@ -133,6 +133,19 @@ export const mapResumeToLatex = (resume) => {
 	return source;
 };
 
+export const getResumeFileName = (name) => {
+	const sanitizedName = (name || "Bisweswar_Sahoo").trim().replace(/\s+/g, "_");
+	const now = new Date();
+	const day = String(now.getDate()).padStart(2, "0");
+	const month = now.toLocaleString("en-US", { month: "long" });
+	const year = now.getFullYear();
+	const hours = String(now.getHours()).padStart(2, "0");
+	const minutes = String(now.getMinutes()).padStart(2, "0");
+	const seconds = String(now.getSeconds()).padStart(2, "0");
+
+	return `${sanitizedName}_Resume_${day}_${month}_${year}_${hours}-${minutes}-${seconds}.pdf`;
+};
+
 export const generateResumePdf = async (resume) => {
 	const response = await fetch("https://latex.ytotech.com/builds/sync", {
 		method: "POST",
@@ -147,7 +160,7 @@ export const generateResumePdf = async (resume) => {
 	const url = URL.createObjectURL(blob);
 	const linkElement = document.createElement("a");
 	linkElement.href = url;
-	linkElement.download = `${resume.name.replace(/\s+/g, "-")}-CV.pdf`;
+	linkElement.download = getResumeFileName(resume?.name);
 	linkElement.click();
 	URL.revokeObjectURL(url);
 };

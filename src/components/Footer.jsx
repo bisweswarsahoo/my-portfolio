@@ -2,7 +2,7 @@ import "../styles/Footer.css";
 import { useState, useRef, useEffect, useCallback } from "react";
 import SocialInfo from "./SocialInfo";
 import portfolioData from "../data/portfolioData.js";
-import CVCard from "./CVCard";
+import ResumeCard from "./ResumeCard";
 
 const defaultFallbackCoords = {
 	width: 1100,
@@ -258,10 +258,10 @@ const Footer = () => {
 						</g>
 					</svg>
 
-					{/* Right Column: Floating CV Card + Liquid Glass Pedestal */}
+					{/* Right Column: Floating Résumé Card + Liquid Glass Pedestal */}
 					<div className="stage-cv-col">
 						<div className="cv-card-centering-wrap">
-							<CVCard
+							<ResumeCard
 								innerRef={cvCardRef}
 								isCardHovered={isCardHovered}
 								setIsCardHovered={setIsCardHovered}

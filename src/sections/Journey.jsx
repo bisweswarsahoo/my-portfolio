@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback, useMemo } from "react"
 import portfolioData from "../data/portfolioData.js";
 import MilestoneCard from "../components/MilestoneCard.jsx";
 import jabszlogo from "../assets/jabsz-logo.png";
+import orivanelogo from "../assets/orivane-studios.png";
 import amitylogo from "../assets/amity-university-logo.png";
 import adyantlogo from "../assets/adyant-logo.png";
 import schoollogo from "../assets/sri-aurobindo-integral-education-logo.png";
@@ -44,7 +45,10 @@ const parseDateScore = (item) => {
 		}
 	}
 
-	return year + month / 100;
+	const isPresent = lower.includes("present");
+	const presentBoost = isPresent ? 0.05 : 0;
+
+	return year + month / 100 + presentBoost;
 };
 
 const Journey = () => {
@@ -71,18 +75,30 @@ const Journey = () => {
 
 		const items = [
 			// Internships & Experience
-			...visibleExperience.map((item, idx) => ({
-				id: `exp-${idx}`,
-				type: "experience",
-				categoryLabel: "INTERNSHIP",
-				title: item.title,
-				organization: item.organization,
-				location: item.location,
-				duration: item.duration,
-				icon: jabszlogo,
-				tags: ["TypeScript", "Phaser.js", "Behavior Trees", "Game Dev"],
-				sortScore: parseDateScore(item),
-			})),
+			...visibleExperience.map((item, idx) => {
+				let expIcon = item.icon || item.logo;
+				if (!expIcon) {
+					if (item.organization?.toLowerCase().includes("orivane")) {
+						expIcon = orivanelogo;
+					} else if (item.organization?.toLowerCase().includes("jabsz")) {
+						expIcon = jabszlogo;
+					}
+				}
+
+				return {
+					id: `exp-${idx}`,
+					type: item.type || (item.categoryLabel?.toLowerCase().includes("founder") ? "founder" : "experience"),
+					categoryLabel: item.categoryLabel || item.category || "",
+					title: item.title,
+					organization: item.organization,
+					location: item.location,
+					duration: item.duration,
+					icon: expIcon,
+					tags: item.tags || [],
+					proofUrl: item.website || item.proofUrl || item.link || item.url || "",
+					sortScore: parseDateScore(item),
+				};
+			}),
 
 			// Hackathons & Competitions
 			...visibleCompetitions.map((item, idx) => {
@@ -133,6 +149,8 @@ const Journey = () => {
 
 	const totalMilestones = milestones.length;
 
+	const progressTrackRef = useRef(null);
+
 	// 2. Measure scroll position, progress, and EXACTLY CENTERED active milestone
 	const updateScrollState = useCallback(() => {
 		const track = trackRef.current;
@@ -140,30 +158,35 @@ const Journey = () => {
 
 		const { scrollLeft, scrollWidth, clientWidth } = track;
 		const maxScroll = scrollWidth - clientWidth;
+		const cols = track.querySelectorAll(".journey-milestone-col");
 
-		if (maxScroll > 0) {
-			const progress = Math.min(Math.max(scrollLeft / maxScroll, 0), 1);
+		if (cols.length > 0) {
+			const lastIdx = cols.length - 1;
+			const lastCol = cols[lastIdx];
+			const lastColCenter = lastCol.offsetLeft + lastCol.offsetWidth / 2;
+			const lastCenterScroll = Math.max(lastColCenter - clientWidth / 2, 1);
+
+			// Progress is strictly 0 at scrollLeft = 0, directly anchored to Pip 0
+			const progress = Math.min(Math.max(scrollLeft / lastCenterScroll, 0), 1);
 			setScrollProgress(progress);
+
+			const viewportCenter = scrollLeft + clientWidth / 2;
+			let closestIdx = 0;
+			let minDiff = Infinity;
+
+			cols.forEach((col, idx) => {
+				const colCenter = col.offsetLeft + col.offsetWidth / 2;
+				const diff = Math.abs(colCenter - viewportCenter);
+				if (diff < minDiff) {
+					minDiff = diff;
+					closestIdx = idx;
+				}
+			});
+
+			setActiveIndex(closestIdx);
 			setCanScrollLeft(scrollLeft > 6);
 			setCanScrollRight(scrollLeft < maxScroll - 6);
 		}
-
-		// Exact center coordinate of viewport
-		const viewportCenter = scrollLeft + clientWidth / 2;
-		const cols = track.querySelectorAll(".journey-milestone-col");
-		let closestIdx = 0;
-		let minDiff = Infinity;
-
-		cols.forEach((col, idx) => {
-			const colCenter = col.offsetLeft + col.offsetWidth / 2;
-			const diff = Math.abs(colCenter - viewportCenter);
-			if (diff < minDiff) {
-				minDiff = diff;
-				closestIdx = idx;
-			}
-		});
-
-		setActiveIndex(closestIdx);
 	}, []);
 
 	// 3. Attach scroll listener
@@ -221,6 +244,13 @@ const Journey = () => {
 
 		const cols = track.querySelectorAll(".journey-milestone-col");
 		if (cols[index]) {
+			if (index === 0) {
+				track.scrollTo({
+					left: 0,
+					behavior: "smooth",
+				});
+				return;
+			}
 			const targetCol = cols[index];
 			const targetCenter = targetCol.offsetLeft + targetCol.offsetWidth / 2;
 			const leftPos = targetCenter - track.clientWidth / 2;
@@ -240,6 +270,28 @@ const Journey = () => {
 		const targetIndex = Math.min(activeIndex + 1, totalMilestones - 1);
 		scrollToMilestone(targetIndex);
 	}, [activeIndex, totalMilestones, scrollToMilestone]);
+
+	const handleTrackerScrub = useCallback((clientX) => {
+		const progressEl = progressTrackRef.current;
+		if (!progressEl || totalMilestones <= 1) return;
+
+		const rect = progressEl.getBoundingClientRect();
+		if (rect.width <= 0) return;
+		const percent = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1);
+		const targetIdx = Math.round(percent * (totalMilestones - 1));
+		scrollToMilestone(targetIdx);
+	}, [totalMilestones, scrollToMilestone]);
+
+	const handleProgressPointerDown = (e) => {
+		e.currentTarget.setPointerCapture(e.pointerId);
+		handleTrackerScrub(e.clientX);
+	};
+
+	const handleProgressPointerMove = (e) => {
+		if (e.buttons === 1) {
+			handleTrackerScrub(e.clientX);
+		}
+	};
 
 	const handleResetToPresent = useCallback(() => {
 		scrollToMilestone(0);
@@ -301,7 +353,7 @@ const Journey = () => {
 						aria-label="Previous milestone (newer)"
 						title="Previous milestone"
 					>
-						<LuChevronLeft style={{ fontSize: "1.25rem" }} />
+						<LuChevronLeft className="journey-nav-icon" aria-hidden="true" />
 					</button>
 
 					<button
@@ -312,7 +364,7 @@ const Journey = () => {
 						aria-label="Next milestone (older)"
 						title="Next milestone"
 					>
-						<LuChevronRight style={{ fontSize: "1.25rem" }} />
+						<LuChevronRight className="journey-nav-icon" aria-hidden="true" />
 					</button>
 				</div>
 			</header>
@@ -418,7 +470,7 @@ const Journey = () => {
 										// 2020 • ORIGIN
 									</span>
 
-									<LuSparkles style={{ fontSize: "1.4rem", color: "#38bdf8", opacity: 0.9 }} />
+									<LuSparkles className="journey-origin-sparkle" aria-hidden="true" />
 
 									<h4 className="journey-origin-title">
 										Where the path began.
@@ -433,7 +485,7 @@ const Journey = () => {
 										}}
 										aria-label="Return to the most recent milestone"
 									>
-										<LuRotateCcw style={{ fontSize: "0.85rem" }} />
+										<LuRotateCcw className="journey-origin-btn-icon" aria-hidden="true" />
 										<span>Return to Present</span>
 									</button>
 								</div>
@@ -443,15 +495,15 @@ const Journey = () => {
 							<div className="journey-node-anchor">
 								<div className="journey-node">
 									<div className="journey-node__halo" />
-									<div className="journey-node__circle" style={{ borderColor: "#64748b" }}>
-										<div className="journey-node__core" style={{ background: "#94a3b8" }} />
+									<div className="journey-node__circle journey-node__circle--origin">
+										<div className="journey-node__core journey-node__core--origin" />
 									</div>
 								</div>
 							</div>
 
 							<div className="journey-slot journey-slot--bottom">
 								<div className="journey-stem journey-stem--bottom" aria-hidden="true" />
-								<span className="journey-node-date journey-node-date--bottom" style={{ color: "#64748b" }}>
+								<span className="journey-node-date journey-node-date--bottom journey-node-date--origin">
 									GENESIS
 								</span>
 							</div>
@@ -468,13 +520,10 @@ const Journey = () => {
 					</span>
 
 					<div
+						ref={progressTrackRef}
 						className="journey-progress-track"
-						onClick={(e) => {
-							const rect = e.currentTarget.getBoundingClientRect();
-							const clickPercent = (e.clientX - rect.left) / rect.width;
-							const targetIdx = Math.round(clickPercent * (totalMilestones - 1));
-							scrollToMilestone(targetIdx);
-						}}
+						onPointerDown={handleProgressPointerDown}
+						onPointerMove={handleProgressPointerMove}
 						role="progressbar"
 						aria-valuenow={Math.round(scrollProgress * 100)}
 						aria-valuemin={0}
@@ -483,21 +532,30 @@ const Journey = () => {
 					>
 						<div
 							className="journey-progress-fill"
-							style={{ width: `${Math.max(scrollProgress * 100, 3)}%` }}
+							style={{
+								width: scrollProgress > 0 ? `calc(${Math.min(Math.max(scrollProgress * 100, 0), 100)}% + ${scrollProgress >= 0.99 ? 8 : 4}px)` : "0%",
+								opacity: scrollProgress > 0.005 ? 1 : 0,
+							}}
 						/>
 
 						<div className="journey-progress-pips">
-							{milestones.map((m, idx) => (
-								<div
-									key={m.id}
-									className={`journey-pip ${idx === activeIndex ? "is-active" : ""}`}
-									onClick={(e) => {
-										e.stopPropagation();
-										scrollToMilestone(idx);
-									}}
-									title={`${m.duration}: ${m.title}`}
-								/>
-							))}
+							{milestones.map((m, idx) => {
+								const pipPercent = totalMilestones > 1 ? (idx / (totalMilestones - 1)) * 100 : 0;
+								const isActive = idx === activeIndex;
+								const isPassed = idx < activeIndex;
+								return (
+									<div
+										key={m.id}
+										className={`journey-pip ${isActive ? "is-active" : ""} ${isPassed ? "is-passed" : ""}`}
+										style={{ left: `${pipPercent}%` }}
+										onClick={(e) => {
+											e.stopPropagation();
+											scrollToMilestone(idx);
+										}}
+										title={`${m.duration}: ${m.title}`}
+									/>
+								);
+							})}
 						</div>
 					</div>
 

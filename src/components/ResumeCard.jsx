@@ -1,9 +1,9 @@
-import "../styles/CVCard.css";
+import "../styles/ResumeCard.css";
 import { useState } from "react";
 import portfolioData from "../data/portfolioData.js";
 import { sanitizeUrl } from "../utils/security.js";
 
-const CVCard = ({
+const ResumeCard = ({
 	isCardHovered,
 	setIsCardHovered,
 	isFlippedControlled,
@@ -22,10 +22,10 @@ const CVCard = ({
 		setIsDownloading(true);
 		setDownloadError("");
 		try {
-			const { generateResumePdf } = await import("../cv/resumeTemplate.js");
+			const { generateResumePdf } = await import("../resume/resumeTemplate.js");
 			await generateResumePdf(portfolioData);
 		} catch (error) {
-			console.error("CV download failed", error);
+			console.error("Résumé download failed", error);
 			setDownloadError(
 				error instanceof Error
 					? `PDF error: ${error.message}`
@@ -83,7 +83,7 @@ const CVCard = ({
 							: "Business card front. Click or press Enter to flip to back."
 					}
 				>
-					{/* ================= FRONT: PHYSICAL WHITE CV CARD ================= */}
+					{/* ================= FRONT: PHYSICAL WHITE RÉSUMÉ CARD ================= */}
 					<div className="cv-card-face cv-card-front">
 						<div className="cv-card-content">
 							<div className="cv-info">
@@ -97,10 +97,10 @@ const CVCard = ({
 									onClick={handleDownload}
 									disabled={isDownloading}
 									type="button"
-									aria-label="Download CV as PDF"
+									aria-label="Download Résumé as PDF"
 								>
 									<span className="cv-download-text">
-										{isDownloading ? "Preparing PDF..." : "Download CV"}
+										{isDownloading ? "Preparing PDF..." : "Download Résumé"}
 									</span>
 									<span className="cv-download-icon-wrap" aria-hidden="true">
 										{/* Default down arrow */}
@@ -215,4 +215,4 @@ const CVCard = ({
 	);
 };
 
-export default CVCard;
+export default ResumeCard;

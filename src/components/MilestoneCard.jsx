@@ -30,6 +30,9 @@ const MilestoneCard = ({
 }) => {
 	const getCategoryClass = () => {
 		switch (type) {
+			case "founder":
+			case "startup":
+				return "journey-card__category--founder";
 			case "experience":
 			case "internship":
 				return "journey-card__category--internship";
@@ -45,7 +48,6 @@ const MilestoneCard = ({
 	return (
 		<div
 			className={`journey-card journey-card--${position} ${isActive ? "is-active" : ""}`}
-			tabIndex={0}
 			role="article"
 			aria-label={`${title} at ${organization || "portfolio"}`}
 		>
@@ -55,22 +57,20 @@ const MilestoneCard = ({
 					{categoryLabel || (type === "experience" ? "INTERNSHIP" : type === "competition" ? "COMPETITION" : "EDUCATION")}
 				</span>
 
-				<div className="journey-card__icon-box">
-					{icon ? (
-						<img
-							src={icon}
-							alt={organization || title || "logo"}
-							className="journey-card__logo"
-							loading="lazy"
-						/>
-					) : type === "competition" ? (
-						<LuTrophy className="journey-card__trophy-icon" aria-hidden="true" />
-					) : type === "education" ? (
-						<LuGraduationCap className="journey-card__edu-icon" aria-hidden="true" />
-					) : (
-						<LuBriefcase className="journey-card__edu-icon" aria-hidden="true" />
-					)}
-				</div>
+				{icon ? (
+					<img
+						src={icon}
+						alt={organization || title || "logo"}
+						className="journey-card__logo"
+						loading="lazy"
+					/>
+				) : type === "competition" ? (
+					<LuTrophy className="journey-card__trophy-icon" aria-hidden="true" />
+				) : type === "education" ? (
+					<LuGraduationCap className="journey-card__edu-icon" aria-hidden="true" />
+				) : (
+					<LuBriefcase className="journey-card__edu-icon" aria-hidden="true" />
+				)}
 			</div>
 
 			{/* Body: Title, Org, Duration / Badges */}
@@ -86,14 +86,14 @@ const MilestoneCard = ({
 				<div className="journey-card__meta-bar">
 					{location && (
 						<span className="journey-card__pill">
-							<LuMapPin style={{ fontSize: "0.8rem", color: "#64748b" }} />
+							<LuMapPin className="journey-card__pill-icon" aria-hidden="true" />
 							{location}
 						</span>
 					)}
 
 					{result && (
 						<span className="journey-card__pill journey-card__pill--result">
-							<LuAward style={{ fontSize: "0.85rem" }} />
+							<LuAward className="journey-card__pill-icon journey-card__pill-icon--award" aria-hidden="true" />
 							{result}
 						</span>
 					)}
@@ -125,10 +125,10 @@ const MilestoneCard = ({
 							target="_blank"
 							rel="noopener noreferrer"
 							className="journey-card__link"
-							aria-label={`Verify milestone: ${title}`}
+							aria-label={`Visit / verify milestone: ${title}`}
 						>
-							<span>Verify / View Post</span>
-							<LuExternalLink style={{ fontSize: "0.8rem" }} />
+							<span>{type === "founder" || categoryLabel?.toLowerCase().includes("founder") || categoryLabel?.toLowerCase().includes("studio") ? "Visit Studio Website" : "Verify / View Post"}</span>
+							<LuExternalLink className="journey-card__link-icon" aria-hidden="true" />
 						</a>
 					)}
 				</div>

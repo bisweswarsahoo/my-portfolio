@@ -1,3 +1,10 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent !important;
+}
+
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
 	display: none !important;
