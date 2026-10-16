@@ -11,6 +11,7 @@ import {
 	LuChevronRight,
 	LuRotateCcw,
 	LuSparkles,
+	LuGraduationCap,
 } from "react-icons/lu";
 import "../styles/Journey.css";
 
@@ -21,10 +22,6 @@ import "../styles/Journey.css";
 const parseDateScore = (item) => {
 	const str = item.duration || item.years || item.date || "";
 	const lower = str.toLowerCase();
-
-	if (lower.includes("2022") && lower.includes("2026")) {
-		return 2022.08;
-	}
 
 	const years = str.match(/\b(20\d\d)\b/g);
 	let year = 2020;
@@ -85,9 +82,19 @@ const Journey = () => {
 					}
 				}
 
+				const isDuringUndergrad = item.duration?.includes("2024") || item.duration?.includes("2025") || item.duration?.includes("2023");
+
+				const isFounderOrStartup =
+					item.type === "founder" ||
+					item.categoryLabel?.toLowerCase().includes("startup") ||
+					item.categoryLabel?.toLowerCase().includes("founder") ||
+					item.organization?.toLowerCase().includes("orivane") ||
+					item.title?.toLowerCase().includes("founder") ||
+					item.duration?.toLowerCase().includes("present");
+
 				return {
 					id: `exp-${idx}`,
-					type: item.type || (item.categoryLabel?.toLowerCase().includes("founder") ? "founder" : "experience"),
+					type: item.type || (isFounderOrStartup ? "founder" : "experience"),
 					categoryLabel: item.categoryLabel || item.category || "",
 					title: item.title,
 					organization: item.organization,
@@ -98,6 +105,8 @@ const Journey = () => {
 					tags: item.tags || [],
 					proofUrl: item.website || item.proofUrl || item.link || item.url || "",
 					bgImage: item.bgImage || item.image || item.backgroundImage,
+					isUndergradEra: isDuringUndergrad && !isFounderOrStartup,
+					eraBadge: isFounderOrStartup ? undefined : (isDuringUndergrad ? "Amity CSE (2022–2026)" : undefined),
 					sortScore: parseDateScore(item),
 				};
 			}),
@@ -123,30 +132,168 @@ const Journey = () => {
 					icon: item.icon || item.logo,
 					partnerLogos: item.partnerLogos || [],
 					bgImage: item.bgImage || item.image || item.backgroundImage,
+					isUndergradEra: true,
+					eraBadge: "Amity CSE (2022–2026)",
 					sortScore: parseDateScore(item),
 				};
 			}),
 
-			// Academic Degrees & Schools
-			...visibleEducation.map((item, idx) => {
+			// Academic Degrees & Schools (Synchronized Degree Milestone & Commencement Anchor for each level)
+			...visibleEducation.flatMap((item, idx) => {
 				const isCollege = item.degree?.toLowerCase().includes("bachelor") || item.years?.includes("2026");
 				const isHighSchool = item.degree?.toLowerCase().includes("senior") || item.years?.includes("2022");
 				const eduIcon = item.icon || (isCollege ? amitylogo : isHighSchool ? adyantlogo : schoollogo);
 
-				return {
-					id: `edu-${idx}`,
+				if (isCollege) {
+					// 1. Primary Degree Milestone (graduating/current expected: 2026)
+					const mainDegree = {
+						id: `edu-${idx}-degree`,
+						refKey: "btech-degree",
+						isCollegeDegree: true,
+						isUndergradEra: true,
+						type: "education",
+						categoryLabel: "UNDERGRADUATE DEGREE",
+						title: item.degree,
+						organization: item.institution ? item.institution.split(", ")[0] : "Amity University",
+						location: item.institution ? item.institution.split(", ").slice(1).join(", ") : "Noida, India",
+						duration: "2026",
+						grade: item.grade,
+						details: item.details || [],
+						icon: eduIcon,
+						partnerLogos: item.partnerLogos || [],
+						bgImage: item.bgImage || item.image || item.backgroundImage,
+						sortScore: 2026.06,
+						referenceBadge: {
+							label: "Commenced Sep 2022",
+							targetKey: "btech-start",
+						},
+					};
+
+					// 2. Linked Commencement Anchor at Sep 2022 (same original card data)
+					const commencementAnchor = {
+						id: `edu-${idx}-commencement`,
+						refKey: "btech-start",
+						isCommencementAnchor: true,
+						isUndergradEra: true,
+						type: "education",
+						categoryLabel: "UNDERGRADUATE DEGREE",
+						title: item.degree,
+						organization: item.institution ? item.institution.split(", ")[0] : "Amity University",
+						location: item.institution ? item.institution.split(", ").slice(1).join(", ") : "Noida, India",
+						duration: "SEP 2022",
+						grade: item.grade,
+						details: item.details || [],
+						icon: eduIcon,
+						partnerLogos: item.partnerLogos || [],
+						bgImage: item.bgImage || item.image || item.backgroundImage,
+						sortScore: 2022.09,
+						referenceBadge: {
+							label: "Passed Out 2026",
+							targetKey: "btech-degree",
+						},
+					};
+
+					return [mainDegree, commencementAnchor];
+				}
+
+				if (isHighSchool) {
+					// 1. Senior Secondary Passed Out Point (2022)
+					const seniorPassedOut = {
+						id: `edu-${idx}-end`,
+						refKey: "senior-secondary-end",
+						isSeniorSecondary: true,
+						type: "education",
+						categoryLabel: "SENIOR SECONDARY",
+						title: item.degree,
+						organization: item.institution ? item.institution.split(", ")[0] : "Adyant Higher Secondary School",
+						location: item.institution ? item.institution.split(", ").slice(1).join(", ") : "Bhubaneswar, India",
+						duration: "2022",
+						grade: item.grade,
+						details: item.details || [],
+						icon: eduIcon,
+						partnerLogos: item.partnerLogos || [],
+						bgImage: item.bgImage || item.image || item.backgroundImage,
+						sortScore: 2022.05,
+						referenceBadge: {
+							label: "Commenced 2020",
+							targetKey: "senior-secondary-start",
+						},
+					};
+
+					// 2. Senior Secondary Commencement Point (2020) - same original card data
+					const seniorCommenced = {
+						id: `edu-${idx}-start`,
+						refKey: "senior-secondary-start",
+						isSeniorSecondary: true,
+						type: "education",
+						categoryLabel: "SENIOR SECONDARY",
+						title: item.degree,
+						organization: item.institution ? item.institution.split(", ")[0] : "Adyant Higher Secondary School",
+						location: item.institution ? item.institution.split(", ").slice(1).join(", ") : "Bhubaneswar, India",
+						duration: "2020",
+						grade: item.grade,
+						details: item.details || [],
+						icon: eduIcon,
+						partnerLogos: item.partnerLogos || [],
+						bgImage: item.bgImage || item.image || item.backgroundImage,
+						sortScore: 2020.07,
+						referenceBadge: {
+							label: "Passed Out 2022",
+							targetKey: "senior-secondary-end",
+						},
+					};
+
+					return [seniorPassedOut, seniorCommenced];
+				}
+
+				// Secondary School & Complete Schooling (2008 - 2020)
+				// 1. Secondary Passed Out Point (2020)
+				const secondaryPassedOut = {
+					id: `edu-${idx}-end`,
+					refKey: "secondary-end",
+					isSecondary: true,
 					type: "education",
-					categoryLabel: isCollege ? "UNDERGRADUATE DEGREE" : isHighSchool ? "SENIOR SECONDARY" : "SECONDARY EDUCATION",
+					categoryLabel: "SCHOOLING",
 					title: item.degree,
-					organization: item.institution ? item.institution.split(", ")[0] : "",
-					location: item.institution ? item.institution.split(", ").slice(1).join(", ") : "",
-					duration: item.years,
+					organization: item.institution ? item.institution.split(", ")[0] : "C.A.M.I.E & R Matrujyoti",
+					location: item.institution ? item.institution.split(", ").slice(1).join(", ") : "Jharsuguda, India",
+					duration: "2020",
 					grade: item.grade,
+					details: item.details || [],
 					icon: eduIcon,
 					partnerLogos: item.partnerLogos || [],
 					bgImage: item.bgImage || item.image || item.backgroundImage,
-					sortScore: parseDateScore(item),
+					sortScore: 2020.03,
+					referenceBadge: {
+						label: "Commenced 2008",
+						targetKey: "secondary-start",
+					},
 				};
+
+				// 2. Secondary / Complete Schooling Commencement Point (2008) - same original card data
+				const secondaryCommenced = {
+					id: `edu-${idx}-start`,
+					refKey: "secondary-start",
+					isSecondary: true,
+					type: "education",
+					categoryLabel: "SCHOOLING",
+					title: item.degree,
+					organization: item.institution ? item.institution.split(", ")[0] : "C.A.M.I.E & R Matrujyoti",
+					location: item.institution ? item.institution.split(", ").slice(1).join(", ") : "Jharsuguda, India",
+					duration: "2008",
+					grade: item.grade,
+					details: item.details || [],
+					icon: eduIcon,
+					partnerLogos: item.partnerLogos || [],
+					bgImage: item.bgImage || item.image || item.backgroundImage,
+					sortScore: 2008.06,
+					referenceBadge: {
+						label: "Passed Out 2020",
+						targetKey: "secondary-end",
+					},
+				};
+
+				return [secondaryPassedOut, secondaryCommenced];
 			}),
 		];
 
@@ -278,6 +425,66 @@ const Journey = () => {
 		scrollToMilestone(targetIndex);
 	}, [activeIndex, totalMilestones, scrollToMilestone]);
 
+	// Degree index and commencement index for jumping between linked milestones
+	const degreeIndex = useMemo(() => milestones.findIndex((m) => m.refKey === "btech-degree"), [milestones]);
+	const commencementIndex = useMemo(() => milestones.findIndex((m) => m.refKey === "btech-start"), [milestones]);
+
+	const handleReferenceJump = useCallback((targetKey) => {
+		if (!targetKey) return;
+		const targetIndex = milestones.findIndex((m) => m.refKey === targetKey);
+		if (targetIndex !== -1) {
+			scrollToMilestone(targetIndex);
+		}
+	}, [milestones, scrollToMilestone]);
+
+	// Calculate the exact horizontal pixel span of each educational era
+	const [eraSpans, setEraSpans] = useState({
+		undergrad: null,
+		senior: null,
+		schooling: null,
+	});
+
+	const updateEraSpans = useCallback(() => {
+		const track = trackRef.current;
+		if (!track) return;
+		const cols = track.querySelectorAll(".journey-milestone-col");
+		if (!cols || cols.length === 0) return;
+
+		const getSpan = (key1, key2) => {
+			const idx1 = milestones.findIndex((m) => m.refKey === key1);
+			const idx2 = milestones.findIndex((m) => m.refKey === key2);
+			if (idx1 !== -1 && idx2 !== -1 && cols[idx1] && cols[idx2]) {
+				const c1 = cols[idx1].offsetLeft + cols[idx1].offsetWidth / 2;
+				const c2 = cols[idx2].offsetLeft + cols[idx2].offsetWidth / 2;
+				return {
+					left: Math.min(c1, c2),
+					width: Math.abs(c2 - c1),
+					startIdx: Math.min(idx1, idx2),
+					endIdx: Math.max(idx1, idx2),
+				};
+			}
+			return null;
+		};
+
+		setEraSpans({
+			undergrad: getSpan("btech-degree", "btech-start"),
+			senior: getSpan("senior-secondary-end", "senior-secondary-start"),
+			schooling: getSpan("secondary-end", "secondary-start"),
+		});
+	}, [milestones]);
+
+	useEffect(() => {
+		updateEraSpans();
+		const onResize = () => updateEraSpans();
+		window.addEventListener("resize", onResize);
+		const timer = setTimeout(updateEraSpans, 150);
+
+		return () => {
+			window.removeEventListener("resize", onResize);
+			clearTimeout(timer);
+		};
+	}, [updateEraSpans]);
+
 	const handleTrackerScrub = useCallback((clientX) => {
 		const progressEl = progressTrackRef.current;
 		if (!progressEl || totalMilestones <= 1) return;
@@ -322,6 +529,84 @@ const Journey = () => {
 
 	const activeMilestone = milestones[activeIndex] || milestones[0];
 
+	// Dynamically compute the active/selected era to update the header era pill
+	const currentEra = useMemo(() => {
+		if (!activeMilestone) {
+			return {
+				id: "undergrad",
+				label: "2022 — 2026 • UNDERGRADUATE DEGREE ERA",
+				type: "undergrad",
+				targetIndex: degreeIndex,
+			};
+		}
+
+		const isStartup =
+			activeMilestone.type === "founder" ||
+			activeMilestone.categoryLabel?.toLowerCase().includes("startup") ||
+			activeMilestone.categoryLabel?.toLowerCase().includes("founder") ||
+			activeMilestone.organization?.toLowerCase().includes("orivane") ||
+			activeMilestone.title?.toLowerCase().includes("founder") ||
+			activeMilestone.duration?.toLowerCase().includes("present");
+
+		if (isStartup) {
+			return {
+				id: "founder",
+				label: "2026 — PRESENT • STARTUP ERA",
+				type: "founder",
+				targetIndex: 0,
+			};
+		}
+
+		if (
+			activeMilestone.isUndergradEra ||
+			activeMilestone.isCollegeDegree ||
+			activeMilestone.isCommencementAnchor
+		) {
+			return {
+				id: "undergrad",
+				label: "2022 — 2026 • UNDERGRADUATE DEGREE ERA",
+				type: "undergrad",
+				targetIndex: degreeIndex,
+			};
+		}
+
+		if (
+			activeMilestone.categoryLabel?.toLowerCase().includes("senior") ||
+			activeMilestone.isSeniorSecondary ||
+			activeMilestone.organization?.toLowerCase().includes("adyant")
+		) {
+			return {
+				id: "senior-secondary",
+				label: "2020 — 2022 • SENIOR SECONDARY ERA",
+				type: "senior",
+				targetIndex: activeIndex,
+			};
+		}
+
+		if (
+			activeMilestone.categoryLabel?.toLowerCase().includes("schooling") ||
+			activeMilestone.categoryLabel?.toLowerCase().includes("secondary") ||
+			activeMilestone.isSecondary ||
+			activeMilestone.organization?.toLowerCase().includes("matrujyoti") ||
+			activeMilestone.duration === "2008" ||
+			activeMilestone.duration === "2020"
+		) {
+			return {
+				id: "secondary",
+				label: "2008 — 2020 • SCHOOLING ERA",
+				type: "secondary",
+				targetIndex: activeIndex,
+			};
+		}
+
+		return {
+			id: "genesis",
+			label: "2008 • SCHOOLING ERA",
+			type: "origin",
+			targetIndex: totalMilestones - 1,
+		};
+	}, [activeMilestone, activeIndex, degreeIndex, totalMilestones]);
+
 	return (
 		<div
 			ref={sectionRef}
@@ -340,15 +625,24 @@ const Journey = () => {
 						The path behind what I build.
 					</p>
 
-					{/* Instruction Badges for desktop and mobile */}
-					<div className="journey-header__instructions" aria-label="Timeline navigation instructions">
-						<span className="journey-inst-desktop">
-							Use arrows <strong>[← / →]</strong>, mouse wheel, or drag to explore
+					{/* Dynamic Era Pill: Placed under the description, changes according to selected era */}
+					<button
+						type="button"
+						className={`journey-header__era-pill journey-header__era-pill--${currentEra.type}`}
+						onClick={() => currentEra.targetIndex !== undefined && scrollToMilestone(currentEra.targetIndex)}
+						title={`Jump to ${currentEra.label}`}
+						aria-label={`Selected era: ${currentEra.label}. Click to jump to milestone.`}
+					>
+						<span className="journey-header__era-pulse-dot" />
+						{currentEra.type === "founder" || currentEra.type === "origin" ? (
+							<LuSparkles className="journey-header__era-icon" aria-hidden="true" />
+						) : (
+							<LuGraduationCap className="journey-header__era-icon" aria-hidden="true" />
+						)}
+						<span className="journey-header__era-text">
+							{currentEra.label}
 						</span>
-						<span className="journey-inst-mobile">
-							Swipe horizontally or tap cards to explore
-						</span>
-					</div>
+					</button>
 				</div>
 
 				<div className="journey-header__nav-group" role="group" aria-label="Timeline navigation controls">
@@ -387,7 +681,144 @@ const Journey = () => {
 				>
 					<div className="journey-track__inner">
 						{/* Continuous glowing horizontal timeline line centered through track */}
-						<div className="journey-timeline-line" aria-hidden="true" />
+						<div className="journey-timeline-line" aria-hidden="true">
+							{/* Active Era Energy Beams on the central line */}
+							{eraSpans.undergrad && (
+								<div
+									className="journey-era-beam journey-era-beam--undergrad"
+									style={{
+										left: `${eraSpans.undergrad.left}px`,
+										width: `${eraSpans.undergrad.width}px`,
+									}}
+								/>
+							)}
+							{eraSpans.senior && (
+								<div
+									className="journey-era-beam journey-era-beam--senior"
+									style={{
+										left: `${eraSpans.senior.left}px`,
+										width: `${eraSpans.senior.width}px`,
+									}}
+								/>
+							)}
+							{eraSpans.schooling && (
+								<div
+									className="journey-era-beam journey-era-beam--schooling"
+									style={{
+										left: `${eraSpans.schooling.left}px`,
+										width: `${eraSpans.schooling.width}px`,
+									}}
+								/>
+							)}
+						</div>
+
+						{/* Undergraduate Era Bracket */}
+						{eraSpans.undergrad && (
+							<div
+								className="journey-era-bracket journey-era-bracket--undergrad"
+								style={{
+									left: `${eraSpans.undergrad.left}px`,
+									width: `${eraSpans.undergrad.width}px`,
+								}}
+								aria-label="Undergraduate Degree Academic Era (Sep 2022 to 2026)"
+							>
+								<div
+									className="journey-era-bracket__terminal journey-era-bracket__terminal--start"
+									onClick={() => scrollToMilestone(eraSpans.undergrad.startIdx)}
+									title="Click to view Undergraduate Degree Milestone"
+									role="button"
+									tabIndex={0}
+								>
+									<span className="journey-era-bracket__term-tag journey-era-bracket__term-tag--undergrad">
+										Graduate
+									</span>
+								</div>
+
+								<div
+									className="journey-era-bracket__terminal journey-era-bracket__terminal--end"
+									onClick={() => scrollToMilestone(eraSpans.undergrad.endIdx)}
+									title="Click to view Undergraduate Commencement Anchor"
+									role="button"
+									tabIndex={0}
+								>
+									<span className="journey-era-bracket__term-tag journey-era-bracket__term-tag--undergrad">
+										Commencement
+									</span>
+								</div>
+							</div>
+						)}
+
+						{/* Senior Secondary Era Bracket */}
+						{eraSpans.senior && (
+							<div
+								className="journey-era-bracket journey-era-bracket--senior"
+								style={{
+									left: `${eraSpans.senior.left}px`,
+									width: `${eraSpans.senior.width}px`,
+								}}
+								aria-label="Senior Secondary School Era (2020 to 2022)"
+							>
+								<div
+									className="journey-era-bracket__terminal journey-era-bracket__terminal--start"
+									onClick={() => scrollToMilestone(eraSpans.senior.startIdx)}
+									title="Click to view Senior Secondary Passed Out Milestone"
+									role="button"
+									tabIndex={0}
+								>
+									<span className="journey-era-bracket__term-tag journey-era-bracket__term-tag--senior">
+										High School Graduate
+									</span>
+								</div>
+
+								<div
+									className="journey-era-bracket__terminal journey-era-bracket__terminal--end"
+									onClick={() => scrollToMilestone(eraSpans.senior.endIdx)}
+									title="Click to view Senior Secondary Commencement Anchor"
+									role="button"
+									tabIndex={0}
+								>
+									<span className="journey-era-bracket__term-tag journey-era-bracket__term-tag--senior">
+										Commencement
+									</span>
+								</div>
+							</div>
+						)}
+
+						{/* Schooling Era Bracket */}
+						{eraSpans.schooling && (
+							<div
+								className="journey-era-bracket journey-era-bracket--schooling"
+								style={{
+									left: `${eraSpans.schooling.left}px`,
+									width: `${eraSpans.schooling.width}px`,
+								}}
+								aria-label="Schooling Era (2008 to 2020)"
+							>
+								<div
+									className="journey-era-bracket__terminal journey-era-bracket__terminal--start"
+									onClick={() => scrollToMilestone(eraSpans.schooling.startIdx)}
+									title="Click to view Schooling Passed Out Milestone"
+									role="button"
+									tabIndex={0}
+								>
+									<span className="journey-era-bracket__term-tag journey-era-bracket__term-tag--schooling">
+										Middle School Graduate
+									</span>
+								</div>
+
+								<div
+									className="journey-era-bracket__terminal journey-era-bracket__terminal--end"
+									onClick={() => scrollToMilestone(eraSpans.schooling.endIdx)}
+									title="Click to view Schooling Commencement Anchor"
+									role="button"
+									tabIndex={0}
+								>
+									<span className="journey-era-bracket__term-tag journey-era-bracket__term-tag--schooling">
+										Commencement
+									</span>
+								</div>
+							</div>
+						)}
 
 						{/* Milestone columns: alternating Down (even) and Up (odd) */}
 						{milestones.map((milestone, idx) => {
@@ -409,6 +840,8 @@ const Journey = () => {
 													{...milestone}
 													isActive={isActive}
 													position="top"
+													onReferenceClick={() => handleReferenceJump(milestone.referenceBadge?.targetKey)}
+													onEraClick={() => scrollToMilestone(degreeIndex)}
 												/>
 												<div className="journey-connector journey-connector--top" aria-hidden="true" />
 											</>
@@ -451,6 +884,8 @@ const Journey = () => {
 													{...milestone}
 													isActive={isActive}
 													position="bottom"
+													onReferenceClick={() => handleReferenceJump(milestone.referenceBadge?.targetKey)}
+													onEraClick={() => scrollToMilestone(degreeIndex)}
 												/>
 											</>
 										) : (
@@ -474,7 +909,7 @@ const Journey = () => {
 							<div className="journey-slot journey-slot--top">
 								<div className="journey-origin-card">
 									<span className="journey-origin-badge">
-										// 2020 • ORIGIN
+										// 2008 • ORIGIN
 									</span>
 
 									<LuSparkles className="journey-origin-sparkle" aria-hidden="true" />
@@ -567,18 +1002,11 @@ const Journey = () => {
 					</div>
 
 					<span className="journey-progress-bound">
-						2020 ORIGIN
+						2008 ORIGIN
 					</span>
 				</div>
 
 				<div className="journey-footer__meta">
-					<div className="journey-footer__active-info">
-						<span>VIEWING:</span>
-						<span className="journey-footer__active-pill">
-							{activeMilestone.duration} — {activeMilestone.title}
-						</span>
-					</div>
-
 					<div className="journey-footer__hint">
 						<span className="journey-inst-desktop">Use Mouse Wheel, Trackpad, or [← / →] to navigate</span>
 						<span className="journey-inst-mobile">Swipe or tap milestones to navigate</span>

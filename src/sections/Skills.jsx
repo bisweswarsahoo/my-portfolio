@@ -224,9 +224,10 @@ export default function Skills() {
       viewportRef.current = { w: vw, h: vh };
 
       // Ensure domain is wider and taller than viewport by at least 700px
-      // This guarantees wrapping point is ALWAYS >350px offscreen (zero pop-in!)
-      const dw = Math.max(1500, Math.round(vw + 400));
-      const dh = Math.max(1000, Math.round(vh + 250));
+      // Dynamically scale domain area so all items maintain optimal organic spacing
+      const countScale = Math.max(1, Math.sqrt(TECHNOLOGIES.length / 38));
+      const dw = Math.round(Math.max(1600, vw + 500) * countScale);
+      const dh = Math.round(Math.max(1100, vh + 350) * countScale);
       domainRef.current = { w: dw, h: dh };
 
       const pts = generateToroidalLayout(TECHNOLOGIES.length, dw, dh);
@@ -893,6 +894,7 @@ export default function Skills() {
               ref={el => { nodeRefs.current[i] = el; }}
               className={`tech-loop-item${isHovered ? " is-hovered" : ""}${!isCategoryMatch ? " is-dimmed" : ""}`}
               style={{ "--tech-color": tech.color }}
+              data-tech={tech.id.replace('tech-', '')}
               onMouseEnter={() => handleItemEnter(tech)}
               onMouseLeave={() => handleItemLeave(tech)}
               onClick={(e) => handleItemClick(tech, e)}

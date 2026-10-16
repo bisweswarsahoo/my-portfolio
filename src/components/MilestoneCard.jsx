@@ -7,6 +7,8 @@ import {
 	LuExternalLink,
 	LuMapPin,
 	LuAward,
+	LuLink,
+	LuArrowRight,
 } from "react-icons/lu";
 
 /**
@@ -30,6 +32,12 @@ const MilestoneCard = ({
 	isActive = false,
 	position = "bottom",
 	bgImage,
+	descriptionText,
+	referenceBadge,
+	onReferenceClick,
+	eraBadge,
+	onEraClick,
+	eraAnchorBadge,
 }) => {
 	const getCategoryClass = () => {
 		switch (type) {
@@ -41,6 +49,8 @@ const MilestoneCard = ({
 				return "journey-card__category--internship";
 			case "education":
 				return "journey-card__category--education";
+			case "commencement":
+				return "journey-card__category--commencement";
 			case "competition":
 				return "journey-card__category--competition";
 			default:
@@ -96,7 +106,7 @@ const MilestoneCard = ({
 						</div>
 					) : type === "competition" ? (
 						<LuTrophy className="journey-card__trophy-icon" aria-hidden="true" />
-					) : type === "education" ? (
+					) : type === "education" || type === "commencement" ? (
 						<LuGraduationCap className="journey-card__edu-icon" aria-hidden="true" />
 					) : (
 						<LuBriefcase className="journey-card__edu-icon" aria-hidden="true" />
@@ -110,6 +120,12 @@ const MilestoneCard = ({
 				{organization && (
 					<p className="journey-card__org">
 						{organization}
+					</p>
+				)}
+
+				{descriptionText && (
+					<p className="journey-card__description">
+						{descriptionText}
 					</p>
 				)}
 
@@ -132,6 +148,44 @@ const MilestoneCard = ({
 						<span className="journey-card__pill journey-card__pill--grade">
 							{grade}
 						</span>
+					)}
+
+					{eraBadge && (
+						<button
+							type="button"
+							className="journey-card__pill journey-card__pill--era"
+							onClick={(e) => {
+								e.stopPropagation();
+								onEraClick?.();
+							}}
+							title="View Undergraduate Degree Milestone"
+						>
+							<LuGraduationCap className="journey-card__pill-icon" aria-hidden="true" />
+							<span>{eraBadge}</span>
+						</button>
+					)}
+
+					{eraAnchorBadge && (
+						<span className="journey-card__pill journey-card__pill--era-anchor">
+							<LuGraduationCap className="journey-card__pill-icon" aria-hidden="true" />
+							<span>{eraAnchorBadge}</span>
+						</span>
+					)}
+
+					{referenceBadge && (
+						<button
+							type="button"
+							className="journey-card__pill journey-card__pill--reference"
+							onClick={(e) => {
+								e.stopPropagation();
+								onReferenceClick?.();
+							}}
+							title="Jump to linked degree milestone"
+						>
+							<LuLink className="journey-card__pill-icon" aria-hidden="true" />
+							<span>{referenceBadge.label}</span>
+							<LuArrowRight className="journey-card__pill-arrow" aria-hidden="true" />
+						</button>
 					)}
 				</div>
 			</div>

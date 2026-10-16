@@ -61,7 +61,7 @@ const ProjectArchive = () => {
 
 	const [searchQuery, setSearchQuery] = useState("");
 	const [activeCategory, setActiveCategory] = useState("All");
-	const [sortBy, setSortBy] = useState("latest");
+	const [sortBy, setSortBy] = useState("default");
 
 	// Scroll to top on load
 	useEffect(() => {
@@ -145,19 +145,25 @@ const ProjectArchive = () => {
 			});
 		}
 
-		// Sorting
-		list.sort((a, b) => {
-			const titleA = (a.title || a.name || "").toLowerCase();
-			const titleB = (b.title || b.name || "").toLowerCase();
-			const dateA = parseInt(a.date, 10) || 2024;
-			const dateB = parseInt(b.date, 10) || 2024;
+		// Sorting (preserves exact portfolioData.projects order when sortBy === "default")
+		if (sortBy !== "default") {
+			list.sort((a, b) => {
+				const titleA = (a.title || a.name || "").toLowerCase();
+				const titleB = (b.title || b.name || "").toLowerCase();
+				const dateA = parseInt(a.date, 10) || 2024;
+				const dateB = parseInt(b.date, 10) || 2024;
 
-			if (sortBy === "latest") return dateB - dateA;
-			if (sortBy === "oldest") return dateA - dateB;
-			if (sortBy === "az") return titleA.localeCompare(titleB);
-			if (sortBy === "za") return titleB.localeCompare(titleA);
-			return 0;
-		});
+				if (sortBy === "latest") {
+					return dateB - dateA || allProjects.indexOf(a) - allProjects.indexOf(b);
+				}
+				if (sortBy === "oldest") {
+					return dateA - dateB || allProjects.indexOf(a) - allProjects.indexOf(b);
+				}
+				if (sortBy === "az") return titleA.localeCompare(titleB);
+				if (sortBy === "za") return titleB.localeCompare(titleA);
+				return 0;
+			});
+		}
 
 		return list;
 	}, [allProjects, activeCategory, searchQuery, sortBy]);
@@ -266,6 +272,7 @@ const ProjectArchive = () => {
 							className="pa-sort-select"
 							aria-label="Sort projects"
 						>
+							<option value="default">Default Order</option>
 							<option value="latest">Latest First</option>
 							<option value="oldest">Oldest First</option>
 							<option value="az">A–Z</option>

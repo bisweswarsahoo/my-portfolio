@@ -1015,3 +1015,64 @@
 [data-theme="light"] .tech-tooltip-desc {
   color: #475569;
 }
+
+/* ─── High-Contrast Adaptive Icons for Dark & Light Themes ───────────────── */
+/* In Dark Mode: Ensure GitHub, Expo, Expo Go, Vercel, Socket.io, Flask, xAI, Grok etc. are bright luminous white */
+[data-theme="dark"] .tech-loop-item[data-tech="github"] .tech-loop-icon,
+[data-theme="dark"] .tech-loop-item[data-tech="expo"] .tech-loop-icon,
+[data-theme="dark"] .tech-loop-item[data-tech="expo-go"] .tech-loop-icon,
+[data-theme="dark"] .tech-loop-item[data-tech="socket-io"] .tech-loop-icon,
+[data-theme="dark"] .tech-loop-item[data-tech="vercel"] .tech-loop-icon,
+[data-theme="dark"] .tech-loop-item[data-tech="next-js"] .tech-loop-icon,
+[data-theme="dark"] .tech-loop-item[data-tech="express-js"] .tech-loop-icon,
+[data-theme="dark"] .tech-loop-item[data-tech="flask"] .tech-loop-icon,
+[data-theme="dark"] .tech-loop-item[data-tech="xai"] .tech-loop-icon,
+[data-theme="dark"] .tech-loop-item[data-tech="grok"] .tech-loop-icon,
+[data-theme="dark"] .tech-loop-item[data-tech="ollama"] .tech-loop-icon {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .tech-loop-item[data-tech="github"].is-hovered .tech-loop-plate,
+[data-theme="dark"] .tech-loop-item[data-tech="expo"].is-hovered .tech-loop-plate,
+[data-theme="dark"] .tech-loop-item[data-tech="expo-go"].is-hovered .tech-loop-plate,
+[data-theme="dark"] .tech-loop-item[data-tech="socket-io"].is-hovered .tech-loop-plate,
+[data-theme="dark"] .tech-loop-item[data-tech="vercel"].is-hovered .tech-loop-plate,
+[data-theme="dark"] .tech-loop-item[data-tech="next-js"].is-hovered .tech-loop-plate,
+[data-theme="dark"] .tech-loop-item[data-tech="express-js"].is-hovered .tech-loop-plate,
+[data-theme="dark"] .tech-loop-item[data-tech="flask"].is-hovered .tech-loop-plate,
+[data-theme="dark"] .tech-loop-item[data-tech="xai"].is-hovered .tech-loop-plate,
+[data-theme="dark"] .tech-loop-item[data-tech="grok"].is-hovered .tech-loop-plate,
+[data-theme="dark"] .tech-loop-item[data-tech="ollama"].is-hovered .tech-loop-plate {
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.3), 0 8px 30px rgba(0, 0, 0, 0.65);
+}
+
+/* In Light Mode: Ensure monochrome icons are deep, crisp dark-slate for maximum legibility against white plates */
+[data-theme="light"] .tech-loop-item[data-tech="github"] .tech-loop-icon,
+[data-theme="light"] .tech-loop-item[data-tech="expo"] .tech-loop-icon,
+[data-theme="light"] .tech-loop-item[data-tech="expo-go"] .tech-loop-icon,
+[data-theme="light"] .tech-loop-item[data-tech="socket-io"] .tech-loop-icon,
+[data-theme="light"] .tech-loop-item[data-tech="vercel"] .tech-loop-icon,
+[data-theme="light"] .tech-loop-item[data-tech="next-js"] .tech-loop-icon,
+[data-theme="light"] .tech-loop-item[data-tech="express-js"] .tech-loop-icon,
+[data-theme="light"] .tech-loop-item[data-tech="flask"] .tech-loop-icon,
+[data-theme="light"] .tech-loop-item[data-tech="xai"] .tech-loop-icon,
+[data-theme="light"] .tech-loop-item[data-tech="grok"] .tech-loop-icon,
+[data-theme="light"] .tech-loop-item[data-tech="ollama"] .tech-loop-icon {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .tech-loop-item[data-tech="github"].is-hovered .tech-loop-plate,
+[data-theme="light"] .tech-loop-item[data-tech="expo"].is-hovered .tech-loop-plate,
+[data-theme="light"] .tech-loop-item[data-tech="expo-go"].is-hovered .tech-loop-plate,
+[data-theme="light"] .tech-loop-item[data-tech="socket-io"].is-hovered .tech-loop-plate,
+[data-theme="light"] .tech-loop-item[data-tech="vercel"].is-hovered .tech-loop-plate,
+[data-theme="light"] .tech-loop-item[data-tech="next-js"].is-hovered .tech-loop-plate,
+[data-theme="light"] .tech-loop-item[data-tech="express-js"].is-hovered .tech-loop-plate,
+[data-theme="light"] .tech-loop-item[data-tech="flask"].is-hovered .tech-loop-plate,
+[data-theme="light"] .tech-loop-item[data-tech="xai"].is-hovered .tech-loop-plate,
+[data-theme="light"] .tech-loop-item[data-tech="grok"].is-hovered .tech-loop-plate,
+[data-theme="light"] .tech-loop-item[data-tech="ollama"].is-hovered .tech-loop-plate {
+  border-color: rgba(15, 23, 42, 0.4);
+  box-shadow: 0 0 20px rgba(15, 23, 42, 0.2), 0 8px 24px rgba(0, 0, 0, 0.12);
+}
