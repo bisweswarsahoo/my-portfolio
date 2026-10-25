@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import defaultMilestoneBg from "../assets/futuristic-milestone-bg.webp";
+import defaultMilestoneBgSm from "../assets/futuristic-milestone-bg-sm.webp";
 import {
 	LuTrophy,
 	LuGraduationCap,
@@ -38,6 +39,7 @@ const MilestoneCard = ({
 	eraBadge,
 	onEraClick,
 	eraAnchorBadge,
+	priority = false,
 }) => {
 	const getCategoryClass = () => {
 		switch (type) {
@@ -58,24 +60,61 @@ const MilestoneCard = ({
 		}
 	};
 
-	const cardBackground = bgImage || defaultMilestoneBg;
+	const [isVisible, setIsVisible] = useState(priority);
+	const cardRef = useRef(null);
+
+	useEffect(() => {
+		if (priority || isVisible) return;
+		const el = cardRef.current;
+		if (!el || typeof IntersectionObserver === "undefined") {
+			setIsVisible(true);
+			return;
+		}
+
+		// Horizontal rootMargin of 350px preloads images ahead of timeline scrolling
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					setIsVisible(true);
+					observer.disconnect();
+				}
+			},
+			{ rootMargin: "250px 350px 250px 350px" }
+		);
+
+		observer.observe(el);
+		return () => observer.disconnect();
+	}, [priority, isVisible]);
+
+	const defaultBg = {
+		src: defaultMilestoneBg,
+		srcSet: `${defaultMilestoneBgSm} 440w, ${defaultMilestoneBg} 720w`,
+	};
+	const cardBackground = bgImage || defaultBg;
+	const bgSrc = typeof cardBackground === "object" ? cardBackground.src : cardBackground;
+	const bgSrcSet = typeof cardBackground === "object" ? cardBackground.srcSet : undefined;
 
 	return (
 		<div
+			ref={cardRef}
 			className={`journey-card journey-card--${position} ${isActive ? "is-active" : ""}`}
 			role="article"
 			aria-label={`${title} at ${organization || "portfolio"}`}
 		>
 			{/* 1. Base Layer: Cinematic Background Image */}
 			<div className="journey-card__bg-image" aria-hidden="true">
-				{cardBackground && (
+				{bgSrc && isVisible && (
 					<img
-						src={cardBackground}
+						src={bgSrc}
+						srcSet={bgSrcSet}
+						sizes="(max-width: 640px) 340px, 400px"
 						alt=""
 						className="journey-card__bg-img-elem"
-						loading={isActive ? "eager" : "lazy"}
-						fetchpriority={isActive ? "high" : "low"}
-						decoding="async"
+						loading={priority ? "eager" : "lazy"}
+						fetchPriority={priority ? "high" : "low"}
+						decoding={priority ? "sync" : "async"}
+						width="380"
+						height="200"
 					/>
 				)}
 			</div>
@@ -171,7 +210,8 @@ const MilestoneCard = ({
 									e.stopPropagation();
 									onEraClick?.();
 								}}
-								title="View Undergraduate Degree Milestone"
+								title={`View era milestone: ${eraBadge}`}
+								aria-label={`View era milestone: ${eraBadge}`}
 							>
 								<LuGraduationCap className="journey-card__pill-icon" aria-hidden="true" />
 								<span>{eraBadge}</span>
@@ -191,9 +231,10 @@ const MilestoneCard = ({
 								className="journey-card__pill journey-card__pill--reference"
 								onClick={(e) => {
 									e.stopPropagation();
-									onReferenceClick?.();
+									onReferenceClick?.(referenceBadge.targetKey);
 								}}
-								title="Jump to linked degree milestone"
+								title={`Jump to linked milestone: ${referenceBadge.label}`}
+								aria-label={`Jump to linked milestone: ${referenceBadge.label}`}
 							>
 								<LuLink className="journey-card__pill-icon" aria-hidden="true" />
 								<span>{referenceBadge.label}</span>
@@ -235,4 +276,4 @@ const MilestoneCard = ({
 	);
 };
 
-export default MilestoneCard;
+export default React.memo(MilestoneCard);

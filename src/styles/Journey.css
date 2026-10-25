@@ -340,7 +340,19 @@
 	scroll-snap-stop: normal;
 	margin: 0;
 	cursor: pointer;
-	transition: opacity 0.3s ease;
+}
+
+/* Off-screen columns use content-visibility: auto for smooth scrolling containment */
+.journey-milestone-col:not(:first-child):not(.is-active) {
+	content-visibility: auto;
+	contain-intrinsic-size: 360px 520px;
+}
+
+/* First and active milestone (contains LCP candidate) renders immediately without delay */
+.journey-milestone-col:first-child,
+.journey-milestone-col.is-active {
+	content-visibility: visible !important;
+	contain-intrinsic-size: none !important;
 }
 
 /* Central Node Anchor permanently locked to horizontal line at Y = 50% */
@@ -613,10 +625,6 @@
 	flex-direction: column;
 	box-sizing: border-box;
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
-	transition: border-color 0.28s ease,
-		box-shadow 0.28s ease,
-		transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-		opacity 0.28s ease;
 	margin: 0;
 	-webkit-tap-highlight-color: transparent !important;
 	outline: none !important;
@@ -633,11 +641,13 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: right 12% center;
-	opacity: 0.65;
-	filter: saturate(1.05) contrast(1.05) brightness(0.95);
+	opacity: 0.88;
 	pointer-events: none;
-	transition: opacity 0.35s ease, filter 0.35s ease;
 	overflow: hidden;
+}
+
+.journey-milestone-col:not(.is-active) .journey-card__bg-image {
+	opacity: 0.65;
 }
 
 .journey-card__bg-img-elem {
@@ -651,14 +661,13 @@
 /* Subtle image illumination on hover */
 .journey-milestone-col:not(.is-active):hover .journey-card__bg-image {
 	opacity: 0.78;
-	filter: saturate(1.12) contrast(1.08) brightness(1.0);
+	transition: opacity 0.2s ease;
 }
 
-/* Active centered milestone: rich luminous focal point */
+/* Active centered milestone: rich luminous focal point (rendered immediately at resting state) */
 .journey-milestone-col.is-active .journey-card__bg-image,
 .journey-card.is-active .journey-card__bg-image {
 	opacity: 0.88;
-	filter: saturate(1.18) contrast(1.10) brightness(1.02);
 }
 
 /* ─── 2. Layered Directional Gradient & Atmospheric Vignette ──────────── */
@@ -982,10 +991,10 @@
 
 @keyframes journeyBeamGaze {
 	0% {
-		filter: brightness(1) drop-shadow(0 0 6px rgba(56, 189, 248, 0.6));
+		opacity: 0.65;
 	}
 	100% {
-		filter: brightness(1.25) drop-shadow(0 0 14px rgba(99, 102, 241, 0.8));
+		opacity: 1;
 	}
 }
 

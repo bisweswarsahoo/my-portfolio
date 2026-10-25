@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import portfolioData from "../data/portfolioData";
 import ProjectsHeader from "../components/projects/ProjectsHeader";
 import ProjectInfo from "../components/projects/ProjectInfo";
@@ -132,55 +131,6 @@ const Projects = () => {
 
 	const activeProject = projects[activeIndex];
 
-	// Motion variants for coordinated transitions
-	const infoVariants = {
-		initial: {
-			opacity: 0,
-			y: 15,
-		},
-		animate: {
-			opacity: 1,
-			y: 0,
-			transition: {
-				duration: 0.38,
-				ease: [0.16, 1, 0.3, 1],
-			},
-		},
-		exit: {
-			opacity: 0,
-			y: -10,
-			transition: {
-				duration: 0.24,
-				ease: [0.7, 0, 0.84, 0],
-			},
-		},
-	};
-
-	const visualVariants = {
-		initial: (dir) => ({
-			opacity: 0,
-			scale: 0.97,
-			x: dir > 0 ? 20 : -20,
-		}),
-		animate: {
-			opacity: 1,
-			scale: 1,
-			x: 0,
-			transition: {
-				duration: 0.42,
-				ease: [0.16, 1, 0.3, 1],
-			},
-		},
-		exit: {
-			opacity: 0,
-			scale: 0.97,
-			transition: {
-				duration: 0.26,
-				ease: [0.7, 0, 0.84, 0],
-			},
-		},
-	};
-
 	return (
 		<section
 			ref={sectionRef}
@@ -214,39 +164,26 @@ const Projects = () => {
 				>
 					{/* Left Column: Project Information */}
 					<div className="ps-col-info">
-						<AnimatePresence mode="wait">
-							<motion.div
-								key={`info-${activeProject.id || activeIndex}`}
-								variants={infoVariants}
-								initial="initial"
-								animate="animate"
-								exit="exit"
-								className="ps-motion-info"
-							>
-								<ProjectInfo
-									project={activeProject}
-									currentIndex={activeIndex}
-									totalProjects={totalProjects}
-								/>
-							</motion.div>
-						</AnimatePresence>
+						<div
+							key={`info-${activeProject.id || activeIndex}`}
+							className="ps-motion-info ps-fade-in"
+						>
+							<ProjectInfo
+								project={activeProject}
+								currentIndex={activeIndex}
+								totalProjects={totalProjects}
+							/>
+						</div>
 					</div>
 
 					{/* Right Column: Application Showcase Frame */}
 					<div className="ps-col-visual">
-						<AnimatePresence mode="wait" custom={direction}>
-							<motion.div
-								key={`visual-${activeProject.id || activeIndex}`}
-								custom={direction}
-								variants={visualVariants}
-								initial="initial"
-								animate="animate"
-								exit="exit"
-								className="ps-motion-visual"
-							>
-								<ProjectVisual project={activeProject} />
-							</motion.div>
-						</AnimatePresence>
+						<div
+							key={`visual-${activeProject.id || activeIndex}`}
+							className={`ps-motion-visual ${direction > 0 ? "ps-slide-next" : "ps-slide-prev"}`}
+						>
+							<ProjectVisual project={activeProject} />
+						</div>
 					</div>
 				</div>
 

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import CarouselProgress from "./CarouselProgress";
 
 const ProjectNavigation = ({
@@ -14,17 +14,27 @@ const ProjectNavigation = ({
 	const stripRef = useRef(null);
 	const activeThumbRef = useRef(null);
 
-	// Auto-scroll the thumbnail strip if needed on mobile/overflow
-	useEffect(() => {
-		if (activeThumbRef.current && stripRef.current) {
-			const strip = stripRef.current;
-			const thumb = activeThumbRef.current;
-			const thumbLeft = thumb.offsetLeft;
-			const thumbWidth = thumb.offsetWidth;
-			const stripWidth = strip.offsetWidth;
+	const isMounted = useRef(false);
 
-			const targetScroll = thumbLeft - stripWidth / 2 + thumbWidth / 2;
-			strip.scrollTo({ left: targetScroll, behavior: "smooth" });
+	// Auto-scroll the thumbnail strip if needed on user navigation (deferred to rAF, skipped on mount)
+	useEffect(() => {
+		if (!isMounted.current) {
+			isMounted.current = true;
+			return;
+		}
+		if (activeThumbRef.current && stripRef.current) {
+			const raf = requestAnimationFrame(() => {
+				const strip = stripRef.current;
+				const thumb = activeThumbRef.current;
+				if (!strip || !thumb) return;
+				const thumbLeft = thumb.offsetLeft;
+				const thumbWidth = thumb.offsetWidth;
+				const stripWidth = strip.offsetWidth;
+
+				const targetScroll = thumbLeft - stripWidth / 2 + thumbWidth / 2;
+				strip.scrollTo({ left: targetScroll, behavior: "smooth" });
+			});
+			return () => cancelAnimationFrame(raf);
 		}
 	}, [activeIndex]);
 
@@ -42,7 +52,7 @@ const ProjectNavigation = ({
 					aria-label="Previous project"
 					title="Previous project (←)"
 				>
-					<FaChevronLeft className="ps-nav-arrow__icon" />
+					<LuChevronLeft className="ps-nav-arrow__icon" />
 				</button>
 
 				{/* Horizontal Thumbnail Strip */}
@@ -107,7 +117,7 @@ const ProjectNavigation = ({
 					aria-label="Next project"
 					title="Next project (→)"
 				>
-					<FaChevronRight className="ps-nav-arrow__icon" />
+					<LuChevronRight className="ps-nav-arrow__icon" />
 				</button>
 			</div>
 		</div>

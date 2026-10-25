@@ -5,6 +5,7 @@ const ThemeToggle = ({ className = "", style = {} }) => {
 
 	return (
 		<button
+			type="button"
 			onClick={toggleTheme}
 			className={`theme-toggle ${className}`}
 			style={{
@@ -18,8 +19,9 @@ const ThemeToggle = ({ className = "", style = {} }) => {
 				...style,
 			}}
 			title={`Switch to ${currentTheme === "dark" ? "light" : "dark"} theme`}
+			aria-label={`Switch to ${currentTheme === "dark" ? "light" : "dark"} theme`}
 		>
-			{currentTheme === "dark" ? "🌙" : "☀️"}
+			<span aria-hidden="true">{currentTheme === "dark" ? "🌙" : "☀️"}</span>
 		</button>
 	);
 };

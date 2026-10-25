@@ -200,6 +200,7 @@ const ResumeCard = ({
 								href={sanitizeUrl(`mailto:${portfolioData.email}`)}
 								className="cv-back-clean-cta"
 								onClick={(e) => e.stopPropagation()}
+								aria-label={`Send email to ${portfolioData.email}`}
 							>
 								<span>LET'S BUILD TOGETHER</span>
 								<span className="cv-cta-arrow">↗</span>

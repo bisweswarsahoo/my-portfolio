@@ -1,20 +1,18 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
 import {
-	FaArrowLeft,
-	FaArrowRight,
-	FaMagnifyingGlass,
-	FaXmark,
-	FaArrowUpRightFromSquare,
-	FaFolderOpen,
-	FaCode,
-	FaMobileScreen,
-	FaBrain,
-	FaGamepad,
-	FaWrench,
-	FaFlask
-} from "react-icons/fa6";
+	LuArrowLeft,
+	LuArrowRight,
+	LuSearch,
+	LuX,
+	LuExternalLink,
+	LuFolderOpen,
+	LuCode,
+	LuSmartphone,
+	LuBrain,
+	LuGamepad2,
+	LuWrench,
+	LuFlaskConical,
+} from "react-icons/lu";
 import portfolioData from "../data/portfolioData.js";
 import { getTechIcon } from "../components/tech/TechnologyIcons.jsx";
 import { sanitizeUrl } from "../utils/security.js";
@@ -46,17 +44,16 @@ const getCategoryClass = (category = "") => {
 
 const getCategoryIcon = (category = "") => {
 	const cat = category.toLowerCase();
-	if (cat.includes("full")) return FaCode;
-	if (cat.includes("ai") || cat.includes("data")) return FaBrain;
-	if (cat.includes("mobile")) return FaMobileScreen;
-	if (cat.includes("game")) return FaGamepad;
-	if (cat.includes("tool")) return FaWrench;
-	if (cat.includes("research")) return FaFlask;
-	return FaFolderOpen;
+	if (cat.includes("full")) return LuCode;
+	if (cat.includes("ai") || cat.includes("data")) return LuBrain;
+	if (cat.includes("mobile")) return LuSmartphone;
+	if (cat.includes("game")) return LuGamepad2;
+	if (cat.includes("tool")) return LuWrench;
+	if (cat.includes("research")) return LuFlaskConical;
+	return LuFolderOpen;
 };
 
 const ProjectArchive = () => {
-	const navigate = useNavigate();
 	const searchInputRef = useRef(null);
 
 	const [searchQuery, setSearchQuery] = useState("");
@@ -183,10 +180,10 @@ const ProjectArchive = () => {
 					<button
 						type="button"
 						className="pa-back-btn"
-						onClick={() => navigate("/")}
+						onClick={() => { window.location.hash = "/"; }}
 						aria-label="Back to main portfolio"
 					>
-						<FaArrowLeft className="pa-back-btn__arrow" />
+						<LuArrowLeft className="pa-back-btn__arrow" />
 						<span>Back to Portfolio</span>
 					</button>
 
@@ -225,7 +222,7 @@ const ProjectArchive = () => {
 							className="pa-search-input"
 							aria-label="Search projects by name, category, or technology"
 						/>
-						<FaMagnifyingGlass className="pa-search-icon" aria-hidden="true" />
+						<LuSearch className="pa-search-icon" aria-hidden="true" />
 						{searchQuery ? (
 							<button
 								type="button"
@@ -233,7 +230,7 @@ const ProjectArchive = () => {
 								onClick={() => setSearchQuery("")}
 								aria-label="Clear search query"
 							>
-								<FaXmark />
+								<LuX />
 							</button>
 						) : (
 							<span className="pa-search-kbd" aria-hidden="true">/</span>
@@ -282,8 +279,7 @@ const ProjectArchive = () => {
 				</div>
 
 				{/* Projects Grid */}
-				<motion.div layout className="pa-grid">
-					<AnimatePresence mode="popLayout">
+				<div className="pa-grid">
 						{filteredProjects.length > 0 ? (
 							filteredProjects.map((project, index) => {
 								const accentClass = getCategoryClass(project.category);
@@ -303,17 +299,8 @@ const ProjectArchive = () => {
 										: []);
 
 								return (
-									<motion.article
+									<article
 										key={project.id || project.name || index}
-										layout
-										initial={{ opacity: 0, y: 20, scale: 0.98 }}
-										animate={{ opacity: 1, y: 0, scale: 1 }}
-										exit={{ opacity: 0, y: 15, scale: 0.96 }}
-										transition={{
-											duration: 0.32,
-											delay: index * 0.04,
-											ease: [0.16, 1, 0.3, 1],
-										}}
 										className={`pa-card ${accentClass}`}
 									>
 										{/* Screenshot / Visual Representation Frame */}
@@ -368,7 +355,7 @@ const ProjectArchive = () => {
 													aria-label={`Open ${project.title || project.name}`}
 													title="Open project"
 												>
-													<FaArrowUpRightFromSquare />
+													<LuExternalLink />
 												</a>
 											)}
 										</div>
@@ -423,9 +410,10 @@ const ProjectArchive = () => {
 														target="_blank"
 														rel="noopener noreferrer"
 														className="pa-action-link pa-action-link--primary"
+														aria-label={`${hasLive ? "Live demo" : "View details"} for ${project.title || project.name}`}
 													>
 														<span>{hasLive ? "Live Demo" : "View Details"}</span>
-														<FaArrowRight className="pa-action-link__arrow" />
+														<LuArrowRight className="pa-action-link__arrow" />
 													</a>
 												) : (
 													<span className="pa-action-link" style={{ opacity: 0.5, cursor: "default" }}>
@@ -442,17 +430,17 @@ const ProjectArchive = () => {
 														aria-label={`View ${project.title || project.name} source code on GitHub`}
 													>
 														<span>GitHub</span>
-														<FaArrowUpRightFromSquare className="pa-action-link__arrow" />
+														<LuExternalLink className="pa-action-link__arrow" />
 													</a>
 												)}
 											</div>
 										</div>
-									</motion.article>
+									</article>
 								);
 							})
 						) : (
 							<div className="pa-empty">
-								<FaFolderOpen className="pa-empty__icon" />
+								<LuFolderOpen className="pa-empty__icon" />
 								<h3 className="pa-empty__title">No projects found</h3>
 								<p className="pa-empty__desc">
 									No matches for "{searchQuery || activeCategory}". Try searching with different keywords.
@@ -469,8 +457,7 @@ const ProjectArchive = () => {
 								</button>
 							</div>
 						)}
-					</AnimatePresence>
-				</motion.div>
+				</div>
 			</div>
 		</div>
 	);

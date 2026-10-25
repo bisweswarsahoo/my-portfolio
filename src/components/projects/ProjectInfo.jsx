@@ -1,5 +1,5 @@
 import React from "react";
-import { FaArrowRight, FaArrowUpRightFromSquare, FaCheck } from "react-icons/fa6";
+import { LuArrowRight, LuExternalLink, LuCheck } from "react-icons/lu";
 import TechnologyPills from "./TechnologyPills";
 import { sanitizeUrl } from "../../utils/security.js";
 
@@ -66,7 +66,7 @@ const ProjectInfo = ({
 						{project.features.slice(0, 4).map((feat, idx) => (
 							<div key={idx} className="ps-feature-item">
 								<span className="ps-feature-item__check" aria-hidden="true">
-									<FaCheck />
+									<LuCheck />
 								</span>
 								<span className="ps-feature-item__text">{feat}</span>
 							</div>
@@ -86,7 +86,7 @@ const ProjectInfo = ({
 						aria-label={`View project ${project.title || project.name}`}
 					>
 						<span>View Project</span>
-						<FaArrowRight className="ps-btn-primary__arrow" />
+						<LuArrowRight className="ps-btn-primary__arrow" />
 					</a>
 				) : (
 					<button
@@ -108,7 +108,7 @@ const ProjectInfo = ({
 						aria-label={`View source code for ${project.title || project.name} on GitHub`}
 					>
 						<span>GitHub</span>
-						<FaArrowUpRightFromSquare className="ps-btn-secondary__icon" />
+						<LuExternalLink className="ps-btn-secondary__icon" />
 					</a>
 				)}
 			</div>

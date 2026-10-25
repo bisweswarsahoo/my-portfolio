@@ -1,5 +1,5 @@
 import React from "react";
-import { FaCode, FaCheck, FaServer, FaBolt, FaLayerGroup } from "react-icons/fa6";
+import { LuCode, LuServer, LuZap, LuLayers } from "react-icons/lu";
 import { getTechIcon } from "../tech/TechnologyIcons";
 
 const ProjectPlaceholder = ({ project }) => {
@@ -8,7 +8,7 @@ const ProjectPlaceholder = ({ project }) => {
 	const title = project.title || project.name || "Application Interface";
 	const category = project.category || "Full-Stack Development";
 	const technologies = project.technologies || [];
-	const PrimaryIcon = technologies.length > 0 ? getTechIcon(technologies[0]) : FaCode;
+	const PrimaryIcon = technologies.length > 0 ? getTechIcon(technologies[0]) : LuCode;
 
 	return (
 		<div className="ps-generic-ph">
@@ -64,7 +64,7 @@ const ProjectPlaceholder = ({ project }) => {
 					<div className="ps-gph__chart-card">
 						<div className="ps-gph__chart-header">
 							<div className="ps-gph__chart-title">
-								<FaBolt className="ps-gph__chart-icon" />
+								<LuZap className="ps-gph__chart-icon" />
 								<span>SYSTEM THROUGHPUT &amp; ACTIVITY</span>
 							</div>
 							<span className="ps-gph__chart-badge">LIVE STREAM</span>
@@ -125,7 +125,7 @@ const ProjectPlaceholder = ({ project }) => {
 					<div className="ps-gph__pipeline-card">
 						<div className="ps-gph__chart-header">
 							<div className="ps-gph__chart-title">
-								<FaLayerGroup className="ps-gph__chart-icon" />
+								<LuLayers className="ps-gph__chart-icon" />
 								<span>PIPELINE HEALTH</span>
 							</div>
 							<span className="ps-gph__healthy-badge">ALL SYSTEMS NORMAL</span>
@@ -168,7 +168,7 @@ const ProjectPlaceholder = ({ project }) => {
 				{/* Bottom Console Feed */}
 				<div className="ps-gph__console">
 					<div className="ps-gph__console-prompt">
-						<FaServer className="ps-gph__console-icon" />
+						<LuServer className="ps-gph__console-icon" />
 						<span>$ app --inspect --cluster=primary</span>
 					</div>
 					<div className="ps-gph__console-output">

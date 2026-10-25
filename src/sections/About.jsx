@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { FaGraduationCap, FaCode } from "react-icons/fa";
-import { FaRotateRight } from "react-icons/fa6";
-import { BsRobot } from "react-icons/bs";
+import { LuGraduationCap, LuCode, LuRotateCw, LuBot } from "react-icons/lu";
 import portraitImage from "../assets/Personal Portrait.webp";
+import portraitImageSm from "../assets/Personal Portrait-sm.webp";
 import AboutVisual from "../components/about/AboutVisual.jsx";
 import "../styles/About.css";
 import portfolioData from "../data/portfolioData.js";
@@ -37,17 +36,17 @@ const TERMINAL_LINES = [
 /* ─── Bottom info bar blocks ─────────────────────────────────────────────── */
 const INFO_BLOCKS = [
   {
-    Icon: FaGraduationCap,
+    Icon: LuGraduationCap,
     title: "Computer Science",
     sub: "B.Tech CSE",
   },
   {
-    Icon: BsRobot,
+    Icon: LuBot,
     title: "AI Generalist",
     sub: "Models • Agents • Applications",
   },
   {
-    Icon: FaCode,
+    Icon: LuCode,
     title: "Software Development",
     sub: "Full Stack • APIs • Databases",
   },
@@ -113,7 +112,7 @@ const Terminal = () => {
             type="button"
             aria-label="Re-run terminal commands"
           >
-            <FaRotateRight className="ab-terminal__replay-icon" aria-hidden="true" />
+            <LuRotateCw className="ab-terminal__replay-icon" aria-hidden="true" />
             <span>Re-run</span>
           </button>
           <span className="ab-terminal__cwd">~/about</span>
@@ -165,7 +164,7 @@ const About = () => (
     <div className="ab-container">
       {/* ── Left side: Programmatic AI Developer Planetary Ecosystem ──────── */}
       <div className="ab-left">
-        <AboutVisual portrait={portraitImage} />
+        <AboutVisual portrait={portraitImage} portraitSm={portraitImageSm} />
       </div>
 
       {/* ── Right side: Premium developer & AI generalist content ─────────── */}
@@ -193,9 +192,9 @@ const About = () => (
         <Terminal />
 
         {/* Bottom Information Blocks */}
-        <div className="ab-infobar" role="list">
+        <div className="ab-infobar">
           {INFO_BLOCKS.map(({ Icon, title, sub }, i) => (
-            <div key={title} className="ab-infobar__block" role="listitem">
+            <div key={title} className="ab-infobar__block">
               {i > 0 && <div className="ab-infobar__divider" aria-hidden="true" />}
               <div className="ab-infobar__icon-wrap">
                 <Icon className="ab-infobar__icon" aria-hidden="true" />

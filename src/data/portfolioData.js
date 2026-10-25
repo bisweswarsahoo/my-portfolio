@@ -75,18 +75,28 @@ import {
 
 import jabszLogo from "../assets/jabsz-logo.webp";
 import jabszBg from "../assets/jabsz-bg.webp";
+import jabszBgSm from "../assets/jabsz-bg-sm.webp";
 import orivaneLogo from "../assets/orivane-studios.webp";
 import amityLogo from "../assets/amity-university-logo.webp";
 import amityNoidaBg from "../assets/amity_noida_bg.webp";
+import amityNoidaBgSm from "../assets/amity_noida_bg-sm.webp";
 import adyantLogo from "../assets/adyant-logo.webp";
 import adyantCampusBg from "../assets/adyant-campus-aerial-bg.webp";
+import adyantCampusBgSm from "../assets/adyant-campus-aerial-bg-sm.webp";
 import schoolLogo from "../assets/sri-aurobindo-integral-education-logo.webp";
 import ietLogo from "../assets/IET_on_campus.webp";
 import gdgLogo from "../assets/gdg-logo.webp";
 import ieeeLogo from "../assets/IEEE-logo.webp";
 import vrgdLogo from "../assets/VRGD-logo.webp";
 import orivaneBg from "../assets/Orivane_Studios_BG.webp";
+import orivaneBgSm from "../assets/Orivane_Studios_BG-sm.webp";
 import schoolBG from "../assets/sri-aurobindo-integral-education-bg.webp";
+import schoolBGSm from "../assets/sri-aurobindo-integral-education-bg-sm.webp";
+
+const responsiveBg = (desktop, mobile) => ({
+	src: desktop,
+	srcSet: `${mobile} 440w, ${desktop} 720w`
+});
 
 const skill = (name, icon, color = "currentColor", desc = "") => ({ name, icon, color, desc });
 
@@ -510,7 +520,7 @@ const portfolioData = {
 			proofUrl: "https://bisweswarsahoo.github.io/orivane-studios/",
 			categoryLabel: "STARTUP",
 			icon: orivaneLogo,
-			bgImage: orivaneBg,
+			bgImage: responsiveBg(orivaneBg, orivaneBgSm),
 			details: [
 				"Founded Orivane Studios, a digital design studio creating bespoke website concepts, private client presentations, and delivered live work.",
 				"Directed brand identity, visual aesthetics, and frontend architecture across bespoke web experiences.",
@@ -525,7 +535,7 @@ const portfolioData = {
 			categoryLabel: "INTERNSHIP",
 			tags: ["TypeScript", "Phaser.js", "Behavior Trees", "Game Dev"],
 			icon: jabszLogo,
-			bgImage: jabszBg,
+			bgImage: responsiveBg(jabszBg, jabszBgSm),
 			details: [
 				"Engineered and optimized gameplay mechanics using TypeScript and Phaser.js for the 2D arcade title Engulf.",
 				"Architected interactive bot opponents with behavior trees to improve challenge dynamics.",
@@ -542,7 +552,7 @@ const portfolioData = {
 			years: "2022 - 2026",
 			grade: "CGPA: 8.27",
 			icon: amityLogo,
-			bgImage: amityNoidaBg,
+			bgImage: responsiveBg(amityNoidaBg, amityNoidaBgSm),
 		},
 		{
 			degree: "Senior Secondary School (Class XII)",
@@ -550,7 +560,7 @@ const portfolioData = {
 			years: "2020 - 2022",
 			grade: "Percentage: 81%",
 			icon: adyantLogo,
-			bgImage: adyantCampusBg,
+			bgImage: responsiveBg(adyantCampusBg, adyantCampusBgSm),
 		},
 		{
 			degree: "Secondary School (Class X)",
@@ -558,7 +568,7 @@ const portfolioData = {
 			years: "2020",
 			grade: "Percentage: 78.6%",
 			icon: schoolLogo,
-			bgImage: schoolBG,
+			bgImage: responsiveBg(schoolBG, schoolBGSm),
 		},
 	],
 	get journey() {
@@ -681,7 +691,7 @@ const portfolioData = {
 			result: "2nd place",
 			proofUrl: "https://www.linkedin.com/posts/iet-on-campus-amity-university-uttar-pradesh_404treasurenotfound-solvethepuzzle-techadventure-activity-7310696163857317891-0fP5",
 			icon: ietLogo,
-			bgImage: amityNoidaBg,
+			bgImage: responsiveBg(amityNoidaBg, amityNoidaBgSm),
 			description: [
 				"Secured 2nd place in a high-intensity puzzle solving event.",
 				"Demonstrated rapid problem-solving and tackled cryptic code puzzles under tight time constraints.",
@@ -695,7 +705,7 @@ const portfolioData = {
 			result: "2nd place",
 			proofUrl: "https://www.instagram.com/p/DBZT6Xizjvp/",
 			icon: amityLogo,
-			bgImage: amityNoidaBg,
+			bgImage: responsiveBg(amityNoidaBg, amityNoidaBgSm),
 			description: [
 				"Secured 2nd place in a competitive coding event featuring algorithmic challenges.",
 				"Demonstrated problem-solving skills and algorithmic efficiency under time constraints."
@@ -709,7 +719,7 @@ const portfolioData = {
 			proofUrl: "",
 			icon: gdgLogo,
 			partnerLogos: [vrgdLogo],
-			bgImage: amityNoidaBg,
+			bgImage: responsiveBg(amityNoidaBg, amityNoidaBgSm),
 			description: [
 				"Competed as Team BugBusters in a three-level coding and tech recognition quiz.",
 				"Achieved strong results across multiple rounds and secured an overall 4th place."

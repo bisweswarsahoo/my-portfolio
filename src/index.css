@@ -49,14 +49,12 @@ body {
 	cursor: default;
 	background-color: var(--background-primary);
 	color: var(--text-primary);
-	transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	overflow-x: hidden;
 }
 
 html {
 	overflow-x: hidden;
 	background-color: var(--background-primary);
-	transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html,

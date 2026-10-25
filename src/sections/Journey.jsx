@@ -306,7 +306,18 @@ const Journey = () => {
 	const progressTrackRef = useRef(null);
 	const colMetricsRef = useRef({ centers: [], lastCenterScroll: 1, maxScroll: 0 });
 
-	// Recalculate column centers on mount and window resize (avoids forced reflows on scroll)
+	// Degree index and commencement index for jumping between linked milestones
+	const degreeIndex = useMemo(() => milestones.findIndex((m) => m.refKey === "btech-degree"), [milestones]);
+	const commencementIndex = useMemo(() => milestones.findIndex((m) => m.refKey === "btech-start"), [milestones]);
+
+	// Calculate the exact horizontal pixel span of each educational era
+	const [eraSpans, setEraSpans] = useState({
+		undergrad: null,
+		senior: null,
+		schooling: null,
+	});
+
+	// Recalculate column centers and era spans in a single layout pass (avoids forced reflows)
 	const recalculateColMetrics = useCallback(() => {
 		const track = trackRef.current;
 		if (!track) return;
@@ -324,7 +335,29 @@ const Journey = () => {
 		const maxScroll = scrollWidth - clientWidth;
 
 		colMetricsRef.current = { centers, lastCenterScroll, maxScroll };
-	}, []);
+
+		const getSpan = (key1, key2) => {
+			const idx1 = milestones.findIndex((m) => m.refKey === key1);
+			const idx2 = milestones.findIndex((m) => m.refKey === key2);
+			if (idx1 !== -1 && idx2 !== -1 && centers[idx1] !== undefined && centers[idx2] !== undefined) {
+				const c1 = centers[idx1];
+				const c2 = centers[idx2];
+				return {
+					left: Math.min(c1, c2),
+					width: Math.abs(c2 - c1),
+					startIdx: Math.min(idx1, idx2),
+					endIdx: Math.max(idx1, idx2),
+				};
+			}
+			return null;
+		};
+
+		setEraSpans({
+			undergrad: getSpan("btech-degree", "btech-start"),
+			senior: getSpan("senior-secondary-end", "senior-secondary-start"),
+			schooling: getSpan("secondary-end", "secondary-start"),
+		});
+	}, [milestones]);
 
 	// Measure scroll position & active milestone without reading layout properties
 	const updateScrollState = useCallback(() => {
@@ -338,7 +371,7 @@ const Journey = () => {
 
 		const { centers, lastCenterScroll, maxScroll } = colMetricsRef.current;
 		const progress = Math.min(Math.max(scrollLeft / (lastCenterScroll || 1), 0), 1);
-		setScrollProgress(progress);
+		setScrollProgress(prev => (Math.abs(prev - progress) > 0.005 ? progress : prev));
 
 		const viewportCenter = scrollLeft + clientWidth / 2;
 		let closestIdx = 0;
@@ -352,17 +385,15 @@ const Journey = () => {
 			}
 		});
 
-		setActiveIndex(closestIdx);
-		setCanScrollLeft(scrollLeft > 6);
-		setCanScrollRight(scrollLeft < (maxScroll || 0) - 6);
+		setActiveIndex(prev => (prev !== closestIdx ? closestIdx : prev));
+		setCanScrollLeft(prev => (prev !== (scrollLeft > 6) ? scrollLeft > 6 : prev));
+		setCanScrollRight(prev => (prev !== (scrollLeft < (maxScroll || 0) - 6) ? scrollLeft < (maxScroll || 0) - 6 : prev));
 	}, [recalculateColMetrics]);
 
-	// Attach scroll & resize listeners
+	// Attach scroll & resize listeners with idle-deferred initial measurement
 	useEffect(() => {
 		const track = trackRef.current;
 		if (!track) return;
-
-		recalculateColMetrics();
 
 		let rafId = null;
 		const onScroll = () => {
@@ -377,10 +408,24 @@ const Journey = () => {
 
 		track.addEventListener("scroll", onScroll, { passive: true });
 		window.addEventListener("resize", onResize, { passive: true });
-		updateScrollState();
+
+		// Defer layout calculations to idle time so initial LCP paint is completely uninterrupted
+		let idleId = null;
+		let timerId = null;
+		if (typeof requestIdleCallback !== "undefined") {
+			idleId = requestIdleCallback(() => {
+				recalculateColMetrics();
+			}, { timeout: 1500 });
+		} else {
+			timerId = setTimeout(() => {
+				recalculateColMetrics();
+			}, 800);
+		}
 
 		return () => {
 			if (rafId) cancelAnimationFrame(rafId);
+			if (idleId && typeof cancelIdleCallback !== "undefined") cancelIdleCallback(idleId);
+			if (timerId) clearTimeout(timerId);
 			track.removeEventListener("scroll", onScroll);
 			window.removeEventListener("resize", onResize);
 		};
@@ -448,10 +493,6 @@ const Journey = () => {
 		scrollToMilestone(targetIndex);
 	}, [activeIndex, totalMilestones, scrollToMilestone]);
 
-	// Degree index and commencement index for jumping between linked milestones
-	const degreeIndex = useMemo(() => milestones.findIndex((m) => m.refKey === "btech-degree"), [milestones]);
-	const commencementIndex = useMemo(() => milestones.findIndex((m) => m.refKey === "btech-start"), [milestones]);
-
 	const handleReferenceJump = useCallback((targetKey) => {
 		if (!targetKey) return;
 		const targetIndex = milestones.findIndex((m) => m.refKey === targetKey);
@@ -460,53 +501,11 @@ const Journey = () => {
 		}
 	}, [milestones, scrollToMilestone]);
 
-	// Calculate the exact horizontal pixel span of each educational era
-	const [eraSpans, setEraSpans] = useState({
-		undergrad: null,
-		senior: null,
-		schooling: null,
-	});
-
-	const updateEraSpans = useCallback(() => {
-		const track = trackRef.current;
-		if (!track) return;
-		const cols = track.querySelectorAll(".journey-milestone-col");
-		if (!cols || cols.length === 0) return;
-
-		const getSpan = (key1, key2) => {
-			const idx1 = milestones.findIndex((m) => m.refKey === key1);
-			const idx2 = milestones.findIndex((m) => m.refKey === key2);
-			if (idx1 !== -1 && idx2 !== -1 && cols[idx1] && cols[idx2]) {
-				const c1 = cols[idx1].offsetLeft + cols[idx1].offsetWidth / 2;
-				const c2 = cols[idx2].offsetLeft + cols[idx2].offsetWidth / 2;
-				return {
-					left: Math.min(c1, c2),
-					width: Math.abs(c2 - c1),
-					startIdx: Math.min(idx1, idx2),
-					endIdx: Math.max(idx1, idx2),
-				};
-			}
-			return null;
-		};
-
-		setEraSpans({
-			undergrad: getSpan("btech-degree", "btech-start"),
-			senior: getSpan("senior-secondary-end", "senior-secondary-start"),
-			schooling: getSpan("secondary-end", "secondary-start"),
-		});
-	}, [milestones]);
-
-	useEffect(() => {
-		updateEraSpans();
-		const onResize = () => updateEraSpans();
-		window.addEventListener("resize", onResize);
-		const timer = setTimeout(updateEraSpans, 150);
-
-		return () => {
-			window.removeEventListener("resize", onResize);
-			clearTimeout(timer);
-		};
-	}, [updateEraSpans]);
+	const handleEraDegreeClick = useCallback(() => {
+		if (degreeIndex !== -1) {
+			scrollToMilestone(degreeIndex);
+		}
+	}, [degreeIndex, scrollToMilestone]);
 
 	const handleTrackerScrub = useCallback((clientX) => {
 		const progressEl = progressTrackRef.current;
@@ -749,8 +748,15 @@ const Journey = () => {
 									className="journey-era-bracket__terminal journey-era-bracket__terminal--start"
 									onClick={() => scrollToMilestone(eraSpans.undergrad.startIdx)}
 									title="Click to view Undergraduate Degree Milestone"
+									aria-label="Click to view Undergraduate Degree Milestone"
 									role="button"
 									tabIndex={0}
+									onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") {
+											e.preventDefault();
+											scrollToMilestone(eraSpans.undergrad.startIdx);
+										}
+									}}
 								>
 									<span className="journey-era-bracket__term-tag journey-era-bracket__term-tag--undergrad">
 										Graduate
@@ -761,8 +767,15 @@ const Journey = () => {
 									className="journey-era-bracket__terminal journey-era-bracket__terminal--end"
 									onClick={() => scrollToMilestone(eraSpans.undergrad.endIdx)}
 									title="Click to view Undergraduate Commencement Anchor"
+									aria-label="Click to view Undergraduate Commencement Anchor"
 									role="button"
 									tabIndex={0}
+									onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") {
+											e.preventDefault();
+											scrollToMilestone(eraSpans.undergrad.endIdx);
+										}
+									}}
 								>
 									<span className="journey-era-bracket__term-tag journey-era-bracket__term-tag--undergrad">
 										Commencement
@@ -785,8 +798,15 @@ const Journey = () => {
 									className="journey-era-bracket__terminal journey-era-bracket__terminal--start"
 									onClick={() => scrollToMilestone(eraSpans.senior.startIdx)}
 									title="Click to view Senior Secondary Passed Out Milestone"
+									aria-label="Click to view Senior Secondary Passed Out Milestone"
 									role="button"
 									tabIndex={0}
+									onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") {
+											e.preventDefault();
+											scrollToMilestone(eraSpans.senior.startIdx);
+										}
+									}}
 								>
 									<span className="journey-era-bracket__term-tag journey-era-bracket__term-tag--senior">
 										High School Graduate
@@ -797,8 +817,15 @@ const Journey = () => {
 									className="journey-era-bracket__terminal journey-era-bracket__terminal--end"
 									onClick={() => scrollToMilestone(eraSpans.senior.endIdx)}
 									title="Click to view Senior Secondary Commencement Anchor"
+									aria-label="Click to view Senior Secondary Commencement Anchor"
 									role="button"
 									tabIndex={0}
+									onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") {
+											e.preventDefault();
+											scrollToMilestone(eraSpans.senior.endIdx);
+										}
+									}}
 								>
 									<span className="journey-era-bracket__term-tag journey-era-bracket__term-tag--senior">
 										Commencement
@@ -821,8 +848,15 @@ const Journey = () => {
 									className="journey-era-bracket__terminal journey-era-bracket__terminal--start"
 									onClick={() => scrollToMilestone(eraSpans.schooling.startIdx)}
 									title="Click to view Schooling Passed Out Milestone"
+									aria-label="Click to view Schooling Passed Out Milestone"
 									role="button"
 									tabIndex={0}
+									onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") {
+											e.preventDefault();
+											scrollToMilestone(eraSpans.schooling.startIdx);
+										}
+									}}
 								>
 									<span className="journey-era-bracket__term-tag journey-era-bracket__term-tag--schooling">
 										Middle School Graduate
@@ -833,8 +867,15 @@ const Journey = () => {
 									className="journey-era-bracket__terminal journey-era-bracket__terminal--end"
 									onClick={() => scrollToMilestone(eraSpans.schooling.endIdx)}
 									title="Click to view Schooling Commencement Anchor"
+									aria-label="Click to view Schooling Commencement Anchor"
 									role="button"
 									tabIndex={0}
+									onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") {
+											e.preventDefault();
+											scrollToMilestone(eraSpans.schooling.endIdx);
+										}
+									}}
 								>
 									<span className="journey-era-bracket__term-tag journey-era-bracket__term-tag--schooling">
 										Commencement
@@ -862,9 +903,10 @@ const Journey = () => {
 												<MilestoneCard
 													{...milestone}
 													isActive={isActive}
+													priority={idx === 0}
 													position="top"
-													onReferenceClick={() => handleReferenceJump(milestone.referenceBadge?.targetKey)}
-													onEraClick={() => scrollToMilestone(degreeIndex)}
+													onReferenceClick={handleReferenceJump}
+													onEraClick={handleEraDegreeClick}
 												/>
 												<div className="journey-connector journey-connector--top" aria-hidden="true" />
 											</>
@@ -906,9 +948,10 @@ const Journey = () => {
 												<MilestoneCard
 													{...milestone}
 													isActive={isActive}
+													priority={idx === 0}
 													position="bottom"
-													onReferenceClick={() => handleReferenceJump(milestone.referenceBadge?.targetKey)}
-													onEraClick={() => scrollToMilestone(degreeIndex)}
+													onReferenceClick={handleReferenceJump}
+													onEraClick={handleEraDegreeClick}
 												/>
 											</>
 										) : (

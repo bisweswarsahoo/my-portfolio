@@ -1,9 +1,10 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { FaArrowRight } from "react-icons/fa6";
+import { LuArrowRight } from "react-icons/lu";
 
 const ProjectsHeader = ({ totalProjects = 5 }) => {
-	const navigate = useNavigate();
+	const handleNavigate = () => {
+		window.location.hash = "/projects";
+	};
 
 	return (
 		<header className="ps-header">
@@ -21,11 +22,11 @@ const ProjectsHeader = ({ totalProjects = 5 }) => {
 				<button
 					type="button"
 					className="ps-archive-btn"
-					onClick={() => navigate("/projects")}
+					onClick={handleNavigate}
 					aria-label="View all archived projects"
 				>
 					<span>Archive ({totalProjects})</span>
-					<FaArrowRight className="ps-archive-btn__icon" />
+					<LuArrowRight className="ps-archive-btn__icon" />
 				</button>
 			</div>
 		</header>

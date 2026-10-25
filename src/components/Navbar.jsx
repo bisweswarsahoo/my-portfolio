@@ -9,7 +9,7 @@ import {
 import "../styles/Navbar.css";
 import ThemeToggle from "../theme/ThemeToggle.jsx";
 import portfolioData from "../data/portfolioData.js";
-import localPortrait from "../assets/Personal Portrait.webp";
+import localPortrait from "../assets/Personal Portrait-avatar.webp";
 
 const menuItems = [
 	{ name: "Home", id: "home" },
@@ -52,7 +52,11 @@ const Navbar = () => {
 	}, [menuOpen]);
 
 	useEffect(() => {
-		updateSectionOffsets();
+		// Defer measurement so it does not compete with initial paint
+		const timer = setTimeout(() => {
+			updateSectionOffsets();
+		}, 1200);
+
 		window.addEventListener("resize", updateSectionOffsets, { passive: true });
 
 		let ticking = false;
@@ -61,6 +65,9 @@ const Navbar = () => {
 			ticking = true;
 
 			requestAnimationFrame(() => {
+				if (sectionOffsetsRef.current.length === 0) {
+					updateSectionOffsets();
+				}
 				const currentScrollY = window.scrollY;
 
 				// Active section tracking from cached offsets
@@ -95,6 +102,7 @@ const Navbar = () => {
 		handleScroll(); // initial check
 
 		return () => {
+			clearTimeout(timer);
 			window.removeEventListener("scroll", handleScroll);
 			window.removeEventListener("resize", updateSectionOffsets);
 		};
@@ -110,8 +118,7 @@ const Navbar = () => {
 		}
 		const element = document.getElementById(id);
 		if (element) {
-			const y = element.getBoundingClientRect().top + window.scrollY - 80;
-			window.scrollTo({ top: y, behavior: "smooth" });
+			element.scrollIntoView({ behavior: "smooth" });
 		}
 	};
 
@@ -128,6 +135,7 @@ const Navbar = () => {
 					role="button"
 					tabIndex={0}
 					title="Back to top (Home)"
+					aria-label="Back to top (Home)"
 					onKeyDown={(e) => {
 						if (e.key === "Enter" || e.key === " ") {
 							e.preventDefault();
@@ -157,7 +165,7 @@ const Navbar = () => {
 					</div>
 				</div>
 
-				<label className="hamburger">
+				<label className="hamburger" aria-label="Toggle navigation menu">
 					<input
 						type="checkbox"
 						checked={menuOpen}
@@ -188,8 +196,7 @@ const Navbar = () => {
 						<li
 							key={index}
 							tabIndex={0}
-							role="button"
-							aria-label={`${item.name} tab`}
+							aria-label={`Navigate to ${item.name}`}
 							onClick={() => scrollToSection(item.id)}
 							className={activeSection === item.id ? "active" : ""}
 							onKeyDown={(e) => {

@@ -28,8 +28,9 @@ const Footer = () => {
 	const cvCardRef = useRef(null);
 	const [bridgeCoords, setBridgeCoords] = useState(defaultFallbackCoords);
 
-	// Measure exact connection coordinates between Social Cards and CV Card
+	// Measure exact connection coordinates between Social Cards and CV Card (Desktop only)
 	const updateBridgeCoords = useCallback(() => {
+		if (typeof window !== "undefined" && window.innerWidth < 768) return;
 		if (!stageRef.current || !cvCardRef.current) return;
 		const stageRect = stageRef.current.getBoundingClientRect();
 		const cvRect = cvCardRef.current.getBoundingClientRect();
@@ -62,36 +63,58 @@ const Footer = () => {
 		const midX = Math.round(starts[0].x + (targetX - starts[0].x) * 0.52);
 		const midY = targetY;
 
-		setBridgeCoords({
-			width: Math.round(stageRect.width),
-			height: Math.round(stageRect.height),
-			starts,
-			mid: { x: midX, y: midY },
-			target: { x: targetX, y: targetY },
+		setBridgeCoords((prev) => {
+			if (
+				prev &&
+				prev.width === Math.round(stageRect.width) &&
+				prev.height === Math.round(stageRect.height) &&
+				prev.target?.x === targetX &&
+				prev.target?.y === targetY
+			) {
+				return prev;
+			}
+			return {
+				width: Math.round(stageRect.width),
+				height: Math.round(stageRect.height),
+				starts,
+				mid: { x: midX, y: midY },
+				target: { x: targetX, y: targetY },
+			};
 		});
 	}, []);
 
 	useEffect(() => {
-		updateBridgeCoords();
-		const raf = requestAnimationFrame(updateBridgeCoords);
-		const t1 = setTimeout(updateBridgeCoords, 80);
-		const t2 = setTimeout(updateBridgeCoords, 300);
+		if (typeof window !== "undefined" && window.innerWidth < 768) return;
 
-		window.addEventListener("resize", updateBridgeCoords);
+		let rafId = null;
+		const scheduleUpdate = () => {
+			if (rafId) cancelAnimationFrame(rafId);
+			rafId = requestAnimationFrame(updateBridgeCoords);
+		};
 
-		let ro;
-		if (typeof ResizeObserver !== "undefined" && stageRef.current) {
-			ro = new ResizeObserver(() => updateBridgeCoords());
-			ro.observe(stageRef.current);
-			if (cvCardRef.current) ro.observe(cvCardRef.current);
+		// Only measure when Footer stage intersects viewport on desktop
+		const el = stageRef.current;
+		let observer;
+		if (el && typeof IntersectionObserver !== "undefined") {
+			observer = new IntersectionObserver(
+				([entry]) => {
+					if (entry.isIntersecting) {
+						scheduleUpdate();
+					}
+				},
+				{ rootMargin: "100px" }
+			);
+			observer.observe(el);
+		} else {
+			scheduleUpdate();
 		}
 
+		window.addEventListener("resize", scheduleUpdate, { passive: true });
+
 		return () => {
-			cancelAnimationFrame(raf);
-			clearTimeout(t1);
-			clearTimeout(t2);
-			window.removeEventListener("resize", updateBridgeCoords);
-			if (ro) ro.disconnect();
+			if (rafId) cancelAnimationFrame(rafId);
+			if (observer) observer.disconnect();
+			window.removeEventListener("resize", scheduleUpdate);
 		};
 	}, [updateBridgeCoords]);
 
@@ -102,8 +125,7 @@ const Footer = () => {
 		}
 		const element = document.getElementById(id);
 		if (element) {
-			const y = element.getBoundingClientRect().top + window.scrollY - 80;
-			window.scrollTo({ top: y, behavior: "smooth" });
+			element.scrollIntoView({ behavior: "smooth" });
 		} else if (id === "contact") {
 			const footer = document.getElementById("contact");
 			footer?.scrollIntoView({ behavior: "smooth" });
@@ -354,6 +376,7 @@ const Footer = () => {
 							onClick={() => scrollToSection("home")}
 							className="footer-nav-btn"
 							type="button"
+							aria-label="Navigate to Home section"
 						>
 							Home
 						</button>
@@ -361,6 +384,7 @@ const Footer = () => {
 							onClick={() => scrollToSection("projects")}
 							className="footer-nav-btn"
 							type="button"
+							aria-label="Navigate to Projects section"
 						>
 							Projects
 						</button>
@@ -368,6 +392,7 @@ const Footer = () => {
 							onClick={() => scrollToSection("skills")}
 							className="footer-nav-btn"
 							type="button"
+							aria-label="Navigate to Skills section"
 						>
 							Skills
 						</button>
@@ -375,6 +400,7 @@ const Footer = () => {
 							onClick={() => scrollToSection("about")}
 							className="footer-nav-btn"
 							type="button"
+							aria-label="Navigate to About section"
 						>
 							About
 						</button>
@@ -382,6 +408,7 @@ const Footer = () => {
 							onClick={() => scrollToSection("contact")}
 							className="footer-nav-btn"
 							type="button"
+							aria-label="Navigate to Contact section"
 						>
 							Contact
 						</button>

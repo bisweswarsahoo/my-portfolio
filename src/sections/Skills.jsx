@@ -1,7 +1,8 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import "../styles/Skills.css";
 import portfolioData from "../data/portfolioData.js";
-import { FaCompass, FaRotateLeft } from "react-icons/fa6";
+import { LuCompass, LuRotateCcw } from "react-icons/lu";
+import { getTechIcon } from "../components/tech/TechnologyIcons.jsx";
 
 /* ─── Priority showcase ordering for balanced initial center ─────────────── */
 const PRIMARY_SHOWCASE = [
@@ -36,7 +37,7 @@ const TECHNOLOGIES = (() => {
         id: `tech-${name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
         name,
         category: group.category || "General",
-        Icon: skill.icon || null,
+        Icon: skill.icon || getTechIcon(name),
         color: skill.color || "#60A5FA",
         desc: skill.desc || `${name} — used in core applications and projects.`,
       });
@@ -66,8 +67,16 @@ function mulberry32(seed) {
   };
 }
 
-/* ─── Toroidal organic distribution generator ────────────────────────────── */
+/* ─── Toroidal organic distribution generator with aspect caching ───────── */
+const layoutCache = new Map();
+
 function generateToroidalLayout(count, W, H, seed = 53) {
+  const aspectBucket = Math.round((W / H) * 8) / 8;
+  const cacheKey = `${count}_${aspectBucket}_${seed}`;
+  if (layoutCache.has(cacheKey)) {
+    return layoutCache.get(cacheKey);
+  }
+
   const rand = mulberry32(seed);
   const pts = [];
 
@@ -86,7 +95,7 @@ function generateToroidalLayout(count, W, H, seed = 53) {
   const MIN_DIST = 95; // minimum distance in pixels
   for (let i = centerCount; i < count; i++) {
     let bestU = rand(), bestV = rand(), bestDist = -1;
-    for (let attempt = 0; attempt < 80; attempt++) {
+    for (let attempt = 0; attempt < 30; attempt++) {
       const candU = rand();
       const candV = rand();
       let dmin = Infinity;
@@ -107,7 +116,7 @@ function generateToroidalLayout(count, W, H, seed = 53) {
   }
 
   // Toroidal spring relaxation to eliminate any remaining collision
-  for (let iter = 0; iter < 45; iter++) {
+  for (let iter = 0; iter < 16; iter++) {
     for (let i = 0; i < count; i++) {
       for (let j = i + 1; j < count; j++) {
         let du = pts[j].u - pts[i].u;
@@ -135,6 +144,7 @@ function generateToroidalLayout(count, W, H, seed = 53) {
     }
   }
 
+  layoutCache.set(cacheKey, pts);
   return pts;
 }
 
@@ -207,6 +217,8 @@ export default function Skills() {
 
   const isVisibleRef = useRef(false);
   const loopRef = useRef(null);
+  const lastArrowLeftRef = useRef(-1);
+  const lastPlacementRef = useRef("");
 
   /* ─── Wake loop on demand ──────────────────────────────────────────────── */
   const wakeLoop = useCallback(() => {
@@ -215,15 +227,16 @@ export default function Skills() {
     }
   }, []);
 
-  /* ─── Initialize canvas dimensions & toroidal positions ────────────────── */
+  /* ─── Initialize canvas dimensions & toroidal positions (Zero forced reflow) ─── */
   useEffect(() => {
-    const updateSize = () => {
-      const el = containerRef.current;
-      const vw = el ? el.offsetWidth : window.innerWidth;
-      const vh = el ? el.offsetHeight : window.innerHeight;
+    const handleResize = (w, h) => {
+      const vw = Math.round(w || window.innerWidth);
+      const vh = Math.round(h || window.innerHeight);
+      if (viewportRef.current.w === vw && viewportRef.current.h === vh && physicsRef.current.length > 0) {
+        return;
+      }
       viewportRef.current = { w: vw, h: vh };
 
-      // Ensure domain is wider and taller than viewport by at least 700px
       // Dynamically scale domain area so all items maintain optimal organic spacing
       const countScale = Math.max(1, Math.sqrt(TECHNOLOGIES.length / 38));
       const dw = Math.round(Math.max(1600, vw + 500) * countScale);
@@ -241,14 +254,30 @@ export default function Skills() {
         dispY: 0,
         vx: 0,
         vy: 0,
+        hidden: false,
       }));
       setIsReady(true);
       wakeLoop();
     };
 
-    updateSize();
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
+    const el = containerRef.current;
+    if (el && typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const cr = entry.contentRect;
+          if (cr.width > 0 && cr.height > 0) {
+            handleResize(cr.width, cr.height);
+          }
+        }
+      });
+      ro.observe(el);
+      return () => ro.disconnect();
+    } else {
+      handleResize(window.innerWidth, window.innerHeight);
+      const onWinResize = () => handleResize(window.innerWidth, window.innerHeight);
+      window.addEventListener("resize", onWinResize, { passive: true });
+      return () => window.removeEventListener("resize", onWinResize);
+    }
   }, [wakeLoop]);
 
   /* ─── Visibility Tracking: Pause rAF completely when not in view ───────── */
@@ -330,21 +359,21 @@ export default function Skills() {
       const panX = panRef.current.x;
       const panY = panRef.current.y;
 
-      // Update background grid & starfield parallax positions
+      // Update background grid & starfield parallax positions with GPU-composited transforms
       if (bgGridRef.current) {
-        const gx = ((panX * 0.4) % 48 + 48) % 48;
-        const gy = ((panY * 0.4) % 48 + 48) % 48;
-        bgGridRef.current.style.backgroundPosition = `${gx}px ${gy}px`;
+        const gx = Math.round(((panX * 0.4) % 48 + 48) % 48);
+        const gy = Math.round(((panY * 0.4) % 48 + 48) % 48);
+        bgGridRef.current.style.transform = `translate3d(${gx}px, ${gy}px, 0)`;
       }
       if (starsRef1.current) {
-        const s1x = ((panX * 0.15) % 800 + 800) % 800;
-        const s1y = ((panY * 0.15) % 800 + 800) % 800;
-        starsRef1.current.style.backgroundPosition = `${s1x}px ${s1y}px`;
+        const s1x = Math.round(((panX * 0.15) % 800 + 800) % 800);
+        const s1y = Math.round(((panY * 0.15) % 800 + 800) % 800);
+        starsRef1.current.style.transform = `translate3d(${s1x}px, ${s1y}px, 0)`;
       }
       if (starsRef2.current) {
-        const s2x = ((panX * 0.25) % 800 + 800) % 800;
-        const s2y = ((panY * 0.25) % 800 + 800) % 800;
-        starsRef2.current.style.backgroundPosition = `${s2x}px ${s2y}px`;
+        const s2x = Math.round(((panX * 0.25) % 800 + 800) % 800);
+        const s2y = Math.round(((panY * 0.25) % 800 + 800) % 800);
+        starsRef2.current.style.transform = `translate3d(${s2x}px, ${s2y}px, 0)`;
       }
 
       const st = physicsRef.current;
@@ -404,12 +433,29 @@ export default function Skills() {
         const dispMag = Math.hypot(s.dispX, s.dispY);
         if (dispMag > maxDisp) maxDisp = dispMag;
 
-        // Step 3: Apply direct transform to DOM node
+        // Step 3: Apply direct transform to DOM node with offscreen culling (zero DOM read)
         const el = nodeRefs.current[i];
         if (el) {
           const finalX = Math.round(s.screenX + s.dispX - CARD_HALF);
           const finalY = Math.round(s.screenY + s.dispY - CARD_HALF);
-          el.style.transform = `translate3d(${finalX}px, ${finalY}px, 0)`;
+          const isOffscreen =
+            finalX < -CARD_SIZE ||
+            finalX > vw + CARD_SIZE ||
+            finalY < -CARD_SIZE ||
+            finalY > vh + CARD_SIZE;
+
+          if (isOffscreen) {
+            if (!s.hidden) {
+              s.hidden = true;
+              el.style.visibility = "hidden";
+            }
+          } else {
+            if (s.hidden) {
+              s.hidden = false;
+              el.style.visibility = "visible";
+            }
+            el.style.transform = `translate3d(${finalX}px, ${finalY}px, 0)`;
+          }
         }
       }
 
@@ -431,11 +477,19 @@ export default function Skills() {
         // Calculate dynamic caret arrow pointer offset pointing directly at the active item
         const rawOffset = Math.round(hovItem.screenX - (ttX - halfTooltip));
         const arrowLeft = Math.max(16, Math.min(estTooltipWidth - 16, rawOffset));
-        tooltipRef.current.style.setProperty("--arrow-left", `${arrowLeft}px`);
+        if (lastArrowLeftRef.current !== arrowLeft) {
+          lastArrowLeftRef.current = arrowLeft;
+          tooltipRef.current.style.setProperty("--arrow-left", `${arrowLeft}px`);
+        }
 
         // Check if item is in the lower portion of viewport, or close to bottom edge
         const bottomThreshold = isMobile ? vh - 150 : vh - 130;
         const isNearBottom = hovItem.screenY > bottomThreshold;
+        const placement = isNearBottom ? "top" : "bottom";
+        if (lastPlacementRef.current !== placement) {
+          lastPlacementRef.current = placement;
+          tooltipRef.current.dataset.placement = placement;
+        }
 
         // Scale vertical offsets appropriately for mobile plate dimensions
         const yOffset = isNearBottom
@@ -445,7 +499,6 @@ export default function Skills() {
         const yTranslate = isNearBottom ? "-100%" : "0";
 
         tooltipRef.current.style.transform = `translate3d(${ttX}px, ${ttY}px, 0) translate(-50%, ${yTranslate})`;
-        tooltipRef.current.dataset.placement = isNearBottom ? "top" : "bottom";
       }
 
       // Check if simulation can safely sleep to save 100% CPU/GPU cycles
@@ -838,7 +891,7 @@ export default function Skills() {
                 title="Recenter canvas to origin"
                 aria-label="Recenter canvas position"
               >
-                <FaRotateLeft className="skills-btn-icon" aria-hidden="true" />
+                <LuRotateCcw className="skills-btn-icon" aria-hidden="true" />
                 <span>Reset View</span>
               </button>
             </div>
@@ -939,7 +992,7 @@ export default function Skills() {
 
       {/* Floating Exploration Hint Banner at bottom of section */}
       <div className={`skills-drag-hint${isGrabbing ? " is-active-drag" : ""}`} aria-hidden="true">
-        <FaCompass className="skills-hint-compass" />
+        <LuCompass className="skills-hint-compass" />
         <span>
           {isGrabbing
             ? "Canvas Unlocked • Dragging in all directions"

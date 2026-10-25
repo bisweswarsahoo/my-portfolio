@@ -252,6 +252,8 @@
   mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, black 30%, transparent 95%);
   -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, black 30%, transparent 95%);
   opacity: 0.85;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 /* ── Parallax Stars Layers ───────────────────────────────────────────── */
@@ -261,6 +263,8 @@
   pointer-events: none;
   z-index: 0;
   background-repeat: repeat;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .skills-bg-stars--1 {
@@ -426,13 +430,11 @@
   0% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
-    filter: drop-shadow(0 0 8px #38bdf8);
   }
 
   40% {
     transform: translate(-50%, -50%) scale(1.4);
-    opacity: 1;
-    filter: drop-shadow(0 0 18px #60a5fa);
+    opacity: 0.9;
   }
 
   100% {
@@ -472,7 +474,7 @@
   padding: 0;
   margin: 0;
   z-index: 1;
-  will-change: transform;
+  contain: layout style;
   display: flex;
   align-items: center;
   justify-content: center;

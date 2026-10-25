@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { FaWandMagicSparkles } from "react-icons/fa6";
-import { FaBrain, FaDatabase, FaCode, FaCloud } from "react-icons/fa";
+import { LuSparkles, LuBrain, LuDatabase, LuCode, LuCloud } from "react-icons/lu";
 import "../../styles/AboutVisual.css";
 
 /* ─── Capability Cards Configuration ─────────────────────────────────────── */
@@ -8,7 +7,7 @@ const CAPABILITY_CARDS = [
   {
     id: "card-ai",
     className: "av-card--ai",
-    Icon: FaWandMagicSparkles,
+    Icon: LuSparkles,
     title: "Ideate",
     color: "#38bdf8",
     items: ["Build", "Experiment", "Iterate"],
@@ -17,7 +16,7 @@ const CAPABILITY_CARDS = [
   {
     id: "card-models",
     className: "av-card--models",
-    Icon: FaBrain,
+    Icon: LuBrain,
     title: "Models",
     color: "#a855f7",
     items: ["Prompting", "Agents", "RAG"],
@@ -26,7 +25,7 @@ const CAPABILITY_CARDS = [
   {
     id: "card-db",
     className: "av-card--db",
-    Icon: FaDatabase,
+    Icon: LuDatabase,
     title: "Databases",
     color: "#34d399",
     items: ["Scalable Systems", "APIs"],
@@ -35,7 +34,7 @@ const CAPABILITY_CARDS = [
   {
     id: "card-fullstack",
     className: "av-card--fullstack",
-    Icon: FaCode,
+    Icon: LuCode,
     title: "Full Stack",
     color: "#60a5fa",
     items: ["Product Dev", "Problem Solving"],
@@ -44,7 +43,7 @@ const CAPABILITY_CARDS = [
   {
     id: "card-cloud",
     className: "av-card--cloud",
-    Icon: FaCloud,
+    Icon: LuCloud,
     title: "Cloud",
     color: "#38bdf8",
     items: ["DevOps", "Deployment"],
@@ -289,7 +288,7 @@ const ImpactStatement = () => (
 /* ═══════════════════════════════════════════════════════════════════════════
    MAIN COMPONENT: AboutVisual
    ═══════════════════════════════════════════════════════════════════════════ */
-const AboutVisual = ({ portrait }) => {
+const AboutVisual = ({ portrait, portraitSm }) => {
   const containerRef = useRef(null);
 
   // Smooth lerp physics loop with visibility observer and idle sleep detection
@@ -421,6 +420,8 @@ const AboutVisual = ({ portrait }) => {
           {/* Genuine transparent portrait PNG asset */}
           <img
             src={portrait}
+            srcSet={portraitSm ? `${portraitSm} 320w, ${portrait} 500w` : undefined}
+            sizes="(max-width: 640px) 250px, 500px"
             alt="Bisweswar Sahoo - AI Generalist & Developer"
             className="av-portrait-img"
             draggable="false"
