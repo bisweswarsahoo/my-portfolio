@@ -1,142 +1,211 @@
-# Theme Management System Documentation
+# Centralized Theme Management System
 
-## Overview
+A robust, centralized theme engine built for the portfolio using React Context, CSS Custom Properties (Variables), and safe client-side persistence.
 
-This portfolio project now includes a comprehensive theme management system that centralizes all color and style variables. The system supports both dark and light themes and provides easy switching between them.
+---
 
-## File Structure
+## 📁 Directory Structure
 
+```text
+src/theme/
+├── theme.js           # Core theme definitions, color tokens, and DOM application logic
+├── ThemeProvider.jsx  # React Context Provider, `useTheme` hook, and `withTheme` HOC
+├── ThemeToggle.jsx    # Accessible theme switcher button component
+└── README.md          # System documentation (this file)
 ```
-src/
-├── theme/
-│   ├── theme.js           # Core theme definitions and utilities
-│   ├── ThemeProvider.jsx  # React context provider for theme state
-│   └── ThemeToggle.jsx    # Theme toggle button component
-```
 
-## Features
+---
 
-### 1. Centralized Theme Variables
+## ⚡ Key Highlights
 
-All colors and style properties are defined in `src/theme/theme.js`:
+1. **Dual Theme Support**: Pre-configured **Dark** (default) and **Light** themes with high contrast ratios, refined dark palettes, and glassmorphic variables.
+2. **Zero-Flicker Initialization**: Initialized immediately in `main.jsx` before React renders, preventing white flashes or theme jumps on page refresh.
+3. **Automatic CSS Variable Generation**: JavaScript camelCase properties are automatically converted to kebab-case CSS custom properties (e.g. `backgroundGlass` -> `--background-glass`).
+4. **Semantic CSS Aliases**: Injects unified system-wide variables like `--color-primary`, `--color-surface-glass`, and `--color-text` for easy cross-component styling.
+5. **Data Attributes on DOM**: Sets `data-theme="dark|light"` on both `<html>` (`document.documentElement`) and `document.body` for scoped CSS selectors.
+6. **Hardened Storage Integration**: Reads and writes through `../utils/security.js` (`safeStorageGet` / `safeStorageSet`) to prevent crashes in private browsing or iframe environments where `localStorage` is blocked.
 
-- **Text Colors**: Primary, secondary, tertiary text colors
-- **Background Colors**: Various background shades for different components
-- **Border Colors**: Border styles for cards, inputs, and dividers
-- **Shadow Colors**: Consistent shadow styles across components
-- **Brand Colors**: Social media colors, accent colors
-- **Interactive Colors**: Hover states, focus states
+---
 
-### 2. Automatic Theme Switching
+## 🎨 Theme Tokens Overview
 
-- **Dark Theme**: Default theme with dark backgrounds and light text
-- **Light Theme**: Clean light theme with proper contrast ratios
-- **Persistence**: Theme preference is saved to localStorage
-- **Smooth Transitions**: CSS transitions for theme changes
+Themes are configured in `src/theme/theme.js` using two layers:
 
-### 3. React Integration
+### 1. Common Properties (`commonThemeProperties`)
+Shared universally across all themes:
+- **Brand & Social Accents**: `instagram`, `twitter`, `discord`, `linkedin`, `accent`, `primary`
+- **Window Control Dots**: `macRed`, `macYellow`, `macGreen`
+- **Backdrop Blurs**: `backdropFilter: "blur(8px)"`, `backdropFilterStrong: "blur(10px)"`
 
-- **ThemeProvider**: Wraps the entire app for theme state management
-- **useTheme Hook**: Access theme functions in any component
-- **Theme Toggle**: Easy-to-use toggle button component
+### 2. Theme Variants (`themeVariants`)
+Specific to `dark` and `light` modes:
+- **Text**: `textPrimary`, `textSecondary`, `textTertiary`, `textMuted`, `github`
+- **Backgrounds**: `backgroundPrimary`, `backgroundSecondary`, `backgroundGlass`, `backgroundGlassHover`, `backgroundSurface`, `backgroundCard`, `backgroundCodeEditor`
+- **Borders**: `borderPrimary`, `borderSecondary`, `borderCode`, `borderLight`
+- **Buttons**: `buttonPrimary`, `buttonPrimaryText`, `buttonPrimaryHover`, `buttonPrimaryHoverText`
+- **Shadows**: `shadowLight`, `shadowMedium`, `shadowHeavy`, `shadowCard`, `shadowCardHover`, `shadowSmall`, `shadowNavbar`, `shadowButton`, `shadowIndicator`, `shadowIndicatorActive`
+- **Interactive UI**: `scrollbarThumb`, `skillGroupOutline`, `skillGroupOutlineHover`, `languageIndicator`, `languageIndicatorHover`, `navStroke`, `navIconFill`
 
-## Usage
+---
 
-### Basic Setup (Already Implemented)
+## 🚀 Usage Guide
 
-The theme system is already integrated into your portfolio:
-
-1. **App.jsx** - Wrapped with ThemeProvider
-2. **main.jsx** - Theme initialization on app start
-3. **NavigationBar.jsx** - Includes theme toggle button
-4. **All CSS files** - Updated to use theme variables
-
-### Using Themes in Components
+### 1. Accessing Theme State via `useTheme` Hook
 
 ```jsx
+import React from "react";
 import { useTheme } from "../theme/ThemeProvider";
 
-const MyComponent = () => {
-	const { currentTheme, toggleTheme, themeColors } = useTheme();
+const ProfileHeader = () => {
+  const { currentTheme, toggleTheme, themeColors } = useTheme();
 
-	return (
-		<div style={{ color: themeColors.textPrimary }}>
-			Current theme: {currentTheme}
-			<button onClick={toggleTheme}>Toggle Theme</button>
-		</div>
-	);
+  return (
+    <div>
+      <p style={{ color: themeColors.textPrimary }}>
+        Current Theme: <strong>{currentTheme}</strong>
+      </p>
+      <button onClick={toggleTheme}>
+        Switch to {currentTheme === "dark" ? "Light" : "Dark"}
+      </button>
+    </div>
+  );
 };
+
+export default ProfileHeader;
 ```
 
-### Adding New Theme Variables
+### 2. Full `useTheme()` API Reference
 
-To add new theme variables, edit `src/theme/theme.js`:
+| Property | Type | Description |
+| :--- | :--- | :--- |
+| `currentTheme` | `string` | The active theme name (`"dark"` or `"light"`). |
+| `themes` | `string[]` | Array of all available theme keys (`["dark", "light"]`). |
+| `toggleTheme` | `() => void` | Toggles between `"dark"` and `"light"`. |
+| `switchTheme` | `(name: string) => void` | Switches explicitly to a named theme (e.g., `switchTheme("light")`). |
+| `getThemeValue` | `(key: string) => any` | Retrieves a specific token value for the active theme with fallback. |
+| `themeColors` | `object` | The active theme's raw key-value mapping object. |
 
-```js
-export const themes = {
-	dark: {
-		// Add your new variable
-		newColor: "#ff0000",
-		// ... existing variables
-	},
-	light: {
-		// Add corresponding light theme variable
-		newColor: "#00ff00",
-		// ... existing variables
-	},
-};
+### 3. Using the Higher-Order Component (`withTheme`)
+
+For class components or non-hook wrappers:
+
+```jsx
+import React from "react";
+import { withTheme } from "../theme/ThemeProvider";
+
+class LegacyCard extends React.Component {
+  render() {
+    const { currentTheme, toggleTheme } = this.props.theme;
+    return (
+      <div className={`card card-${currentTheme}`}>
+        <button onClick={toggleTheme}>Toggle</button>
+      </div>
+    );
+  }
+}
+
+export default withTheme(LegacyCard);
 ```
 
-### Using Variables in CSS
+### 4. Drop-in Toggle Component (`ThemeToggle.jsx`)
 
-Theme variables are automatically converted to CSS custom properties:
+Include the `<ThemeToggle />` button in any component (such as [`Navbar.jsx`](../components/Navbar.jsx)):
 
-```css
-.my-component {
-	/* CamelCase to kebab-case conversion */
-	color: var(--new-color); /* from newColor */
-	background: var(--text-primary); /* from textPrimary */
-	border: 1px solid var(--border-primary);
+```jsx
+import ThemeToggle from "../theme/ThemeToggle";
+
+function HeaderActions() {
+  return (
+    <div className="header-actions">
+      <ThemeToggle className="custom-toggle" />
+    </div>
+  );
 }
 ```
 
-## Benefits
+---
 
-1. **Consistency**: All colors are centralized and consistent
-2. **Maintainability**: Easy to update colors across the entire site
-3. **Accessibility**: Proper contrast ratios for both themes
-4. **User Experience**: Smooth theme transitions and preference persistence
-5. **Developer Experience**: Clear variable names and good documentation
+## 💅 Using Theme Variables in CSS
 
-## Browser Support
+Every key in `theme.js` is exposed as a CSS Custom Property. 
 
-The theme system uses CSS custom properties (CSS variables) which are supported in:
+### Automatically Converted Variables:
+```css
+.card {
+  /* CamelCase mapped to kebab-case */
+  background: var(--background-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s ease;
+}
 
-- Chrome 49+
-- Firefox 31+
-- Safari 9.1+
-- Edge 16+
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+  background: var(--background-glass-hover);
+}
+```
 
-## Future Enhancements
+### Semantic Shortcuts:
+```css
+.link {
+  color: var(--color-link);
+}
 
-Possible future improvements:
+.glass-panel {
+  background: var(--color-surface-glass);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--color-shadow);
+  backdrop-filter: var(--backdrop-filter);
+}
+```
 
-1. **More Themes**: Add additional theme variants (e.g., high contrast, colorful)
-2. **System Theme Detection**: Automatically detect user's OS theme preference
-3. **Component-Specific Themes**: Different themes for specific components
-4. **Theme Customization**: Allow users to create custom themes
-5. **Theme Preview**: Preview themes before applying them
+### Scoping with `data-theme`:
+```css
+/* Custom overrides per theme */
+[data-theme="dark"] .special-banner {
+  filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.4));
+}
 
-## Troubleshooting
+[data-theme="light"] .special-banner {
+  filter: drop-shadow(0 0 12px rgba(37, 99, 235, 0.2));
+}
+```
 
-### Theme Not Applying
+---
 
-1. Check if ThemeProvider wraps your app
-2. Verify theme initialization in main.jsx
-3. Check browser console for errors
+## 🛠 Adding New Theme Tokens
 
-### CSS Variables Not Working
+To add a new color or style variable:
 
-1. Ensure you're using the correct variable names
-2. Check if the variable exists in the theme definition
-3. Verify CSS custom property syntax: `var(--variable-name)`
+1. Open [`src/theme/theme.js`](theme.js).
+2. Add the variable to both `dark` and `light` objects in `themeVariants`:
+   ```javascript
+   const themeVariants = {
+     dark: {
+       badgeBackground: "rgba(99, 102, 241, 0.2)",
+       // ... existing variables
+     },
+     light: {
+       badgeBackground: "rgba(37, 99, 235, 0.15)",
+       // ... existing variables
+     },
+   };
+   ```
+3. Use it in any stylesheet:
+   ```css
+   .badge {
+     background-color: var(--badge-background);
+   }
+   ```
+
+---
+
+## 🔍 Troubleshooting
+
+| Issue | Solution |
+| :--- | :--- |
+| **Theme variables not showing on page load** | Ensure `initializeTheme()` is called in `main.jsx` before `createRoot()`. |
+| **CSS variable reads as empty or undefined** | Ensure you are using the kebab-case formatted name (e.g., `textPrimary` becomes `--text-primary`). |
+| **Theme does not persist after refresh** | Check if private browsing blocks `localStorage`. The application uses `safeStorageSet` to gracefully fallback when storage is inaccessible. |
+| **Component doesn't update on theme switch** | Verify that `ThemeProvider` wraps your application in `App.jsx`. |
