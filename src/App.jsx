@@ -1,23 +1,26 @@
 import "./App.css";
 import Navbar from "./components/Navbar.jsx";
 
+import { lazy, Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
 import Journey from "./sections/Journey.jsx";
-
-import About from "./sections/About.jsx";
-import Skills from "./sections/Skills.jsx";
-import Projects from "./sections/Projects.jsx";
-import Languages from "./components/Languages.jsx";
 import Footer from "./components/Footer.jsx";
 import CentralizedBackground from "./components/CentralizedBackground.jsx";
 import { ThemeProvider } from "./theme/ThemeProvider.jsx";
 import portfolioData from "./data/portfolioData.js";
 
+const Skills = lazy(() => import("./sections/Skills.jsx"));
+const Projects = lazy(() => import("./sections/Projects.jsx"));
+const About = lazy(() => import("./sections/About.jsx"));
+const Languages = lazy(() => import("./components/Languages.jsx"));
+const ProjectArchive = lazy(() => import("./sections/ProjectArchive.jsx"));
+
 const sections = [
-	{ id: "journey", Component: Journey, dataKey: "journey" },
-	{ id: "skills", Component: Skills, dataKey: "skills" },
-	{ id: "projects", Component: Projects, dataKey: "projects" },
-	{ id: "about", Component: About, dataKey: "about" },
-	{ id: "languages", Component: Languages, dataKey: "languages" },
+	{ id: "journey", Component: Journey, dataKey: "journey", isLazy: false },
+	{ id: "skills", Component: Skills, dataKey: "skills", isLazy: true },
+	{ id: "projects", Component: Projects, dataKey: "projects", isLazy: true },
+	{ id: "about", Component: About, dataKey: "about", isLazy: true },
+	{ id: "languages", Component: Languages, dataKey: "languages", isLazy: true },
 ];
 
 const hasContent = (value) => {
@@ -32,20 +35,25 @@ const hasContent = (value) => {
 	});
 };
 
-import { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
-
-const ProjectArchive = lazy(() => import("./sections/ProjectArchive.jsx"));
+const SectionFallback = () => (
+	<div style={{ minHeight: "200px" }} aria-hidden="true" />
+);
 
 const Home = () => (
 	<>
-		{sections.filter(({ dataKey }) => hasContent(portfolioData[dataKey])).map(({ id, Component }) => (
+		{sections.filter(({ dataKey }) => hasContent(portfolioData[dataKey])).map(({ id, Component, isLazy }) => (
 			<section
 				key={id}
 				id={id}
 				className="portfolio-section"
 			>
-				<Component />
+				{isLazy ? (
+					<Suspense fallback={<SectionFallback />}>
+						<Component />
+					</Suspense>
+				) : (
+					<Component />
+				)}
 			</section>
 		))}
 	</>
@@ -63,17 +71,19 @@ function App() {
 			<CentralizedBackground />
 			<div className="app-container">
 				<Navbar />
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route
-						path="/projects"
-						element={
-							<Suspense fallback={<ArchiveLoadingFallback />}>
-								<ProjectArchive />
-							</Suspense>
-						}
-					/>
-				</Routes>
+				<main id="main-content" className="app-main">
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route
+							path="/projects"
+							element={
+								<Suspense fallback={<ArchiveLoadingFallback />}>
+									<ProjectArchive />
+								</Suspense>
+							}
+						/>
+					</Routes>
+				</main>
 			</div>
 			<Footer />
 		</ThemeProvider>

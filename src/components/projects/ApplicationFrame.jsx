@@ -46,6 +46,7 @@ const ApplicationFrame = ({ project, tilt = { rotateX: 1, rotateY: -3 } }) => {
 							alt={`${frameTitle} preview screenshot`}
 							className="ps-screen__img"
 							loading="lazy"
+							decoding="async"
 						/>
 						{/* Subtle Inner Vignette & Edge Shadow Gradient */}
 						<div className="ps-screen__vignette" />

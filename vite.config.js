@@ -11,7 +11,6 @@ export default defineConfig({
 			"X-Frame-Options": "DENY",
 			"Referrer-Policy": "strict-origin-when-cross-origin",
 			"Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
-			"Cross-Origin-Opener-Policy": "same-origin",
 		},
 	},
 	preview: {
@@ -20,7 +19,6 @@ export default defineConfig({
 			"X-Frame-Options": "DENY",
 			"Referrer-Policy": "strict-origin-when-cross-origin",
 			"Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
-			"Cross-Origin-Opener-Policy": "same-origin",
 		},
 	},
 	build: {
@@ -28,10 +26,21 @@ export default defineConfig({
 		cssCodeSplit: true,
 		rollupOptions: {
 			output: {
-				manualChunks: {
-					"vendor-react": ["react", "react-dom", "react-router-dom"],
-					"vendor-motion": ["framer-motion"],
-					"vendor-icons": ["react-icons"],
+				manualChunks(id) {
+					if (id.includes("node_modules")) {
+						if (id.includes("react-router") || id.includes("react-dom") || id.includes("react/")) {
+							return "vendor-react";
+						}
+						if (id.includes("framer-motion")) {
+							return "vendor-motion";
+						}
+						if (id.includes("react-icons")) {
+							return "vendor-icons";
+						}
+					}
+					if (id.includes("TechnologyIcons")) {
+						return "tech-icons";
+					}
 				},
 			},
 		},

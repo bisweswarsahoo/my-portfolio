@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { FaGraduationCap, FaCode } from "react-icons/fa";
 import { FaRotateRight } from "react-icons/fa6";
 import { BsRobot } from "react-icons/bs";
-import portraitImage from "../assets/Personal Portrait.png";
+import portraitImage from "../assets/Personal Portrait.webp";
 import AboutVisual from "../components/about/AboutVisual.jsx";
 import "../styles/About.css";
 import portfolioData from "../data/portfolioData.js";

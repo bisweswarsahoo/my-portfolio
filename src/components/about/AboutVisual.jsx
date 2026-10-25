@@ -426,6 +426,8 @@ const AboutVisual = ({ portrait }) => {
             draggable="false"
             loading="lazy"
             decoding="async"
+            width="250"
+            height="235"
           />
 
           {/* Smooth bottom fade-out to black so no harsh cut lines appear */}

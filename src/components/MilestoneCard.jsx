@@ -1,5 +1,5 @@
 import React from "react";
-import defaultMilestoneBg from "../assets/Futuristic AI Developer with Holographic UI.png";
+import defaultMilestoneBg from "../assets/futuristic-milestone-bg.webp";
 import {
 	LuTrophy,
 	LuGraduationCap,
@@ -67,11 +67,18 @@ const MilestoneCard = ({
 			aria-label={`${title} at ${organization || "portfolio"}`}
 		>
 			{/* 1. Base Layer: Cinematic Background Image */}
-			<div
-				className="journey-card__bg-image"
-				style={cardBackground ? { backgroundImage: `url("${cardBackground}")` } : undefined}
-				aria-hidden="true"
-			/>
+			<div className="journey-card__bg-image" aria-hidden="true">
+				{cardBackground && (
+					<img
+						src={cardBackground}
+						alt=""
+						className="journey-card__bg-img-elem"
+						loading={isActive ? "eager" : "lazy"}
+						fetchpriority={isActive ? "high" : "low"}
+						decoding="async"
+					/>
+				)}
+			</div>
 
 			{/* 2. Directional Gradient Blending & Atmospheric Tint Layer */}
 			<div className="journey-card__bg-overlay" aria-hidden="true" />
@@ -92,6 +99,9 @@ const MilestoneCard = ({
 									alt={organization || title || "logo"}
 									className="journey-card__logo"
 									loading="lazy"
+									decoding="async"
+									width="26"
+									height="26"
 								/>
 							)}
 							{partnerLogos && partnerLogos.map((pLogo, pIdx) => (
@@ -101,6 +111,9 @@ const MilestoneCard = ({
 									alt="partner logo"
 									className="journey-card__logo journey-card__logo--partner"
 									loading="lazy"
+									decoding="async"
+									width="26"
+									height="26"
 								/>
 							))}
 						</div>
@@ -113,110 +126,110 @@ const MilestoneCard = ({
 					)}
 				</div>
 
-			{/* Body: Title, Org, Duration / Badges */}
-			<div className="journey-card__body">
-				<h3 className="journey-card__title">{title}</h3>
+				{/* Body: Title, Org, Duration / Badges */}
+				<div className="journey-card__body">
+					<h3 className="journey-card__title">{title}</h3>
 
-				{organization && (
-					<p className="journey-card__org">
-						{organization}
-					</p>
-				)}
-
-				{descriptionText && (
-					<p className="journey-card__description">
-						{descriptionText}
-					</p>
-				)}
-
-				<div className="journey-card__meta-bar">
-					{location && (
-						<span className="journey-card__pill">
-							<LuMapPin className="journey-card__pill-icon" aria-hidden="true" />
-							{location}
-						</span>
+					{organization && (
+						<p className="journey-card__org">
+							{organization}
+						</p>
 					)}
 
-					{result && (
-						<span className="journey-card__pill journey-card__pill--result">
-							<LuAward className="journey-card__pill-icon journey-card__pill-icon--award" aria-hidden="true" />
-							{result}
-						</span>
+					{descriptionText && (
+						<p className="journey-card__description">
+							{descriptionText}
+						</p>
 					)}
 
-					{grade && (
-						<span className="journey-card__pill journey-card__pill--grade">
-							{grade}
-						</span>
-					)}
+					<div className="journey-card__meta-bar">
+						{location && (
+							<span className="journey-card__pill">
+								<LuMapPin className="journey-card__pill-icon" aria-hidden="true" />
+								{location}
+							</span>
+						)}
 
-					{eraBadge && (
-						<button
-							type="button"
-							className="journey-card__pill journey-card__pill--era"
-							onClick={(e) => {
-								e.stopPropagation();
-								onEraClick?.();
-							}}
-							title="View Undergraduate Degree Milestone"
-						>
-							<LuGraduationCap className="journey-card__pill-icon" aria-hidden="true" />
-							<span>{eraBadge}</span>
-						</button>
-					)}
+						{result && (
+							<span className="journey-card__pill journey-card__pill--result">
+								<LuAward className="journey-card__pill-icon journey-card__pill-icon--award" aria-hidden="true" />
+								{result}
+							</span>
+						)}
 
-					{eraAnchorBadge && (
-						<span className="journey-card__pill journey-card__pill--era-anchor">
-							<LuGraduationCap className="journey-card__pill-icon" aria-hidden="true" />
-							<span>{eraAnchorBadge}</span>
-						</span>
-					)}
+						{grade && (
+							<span className="journey-card__pill journey-card__pill--grade">
+								{grade}
+							</span>
+						)}
 
-					{referenceBadge && (
-						<button
-							type="button"
-							className="journey-card__pill journey-card__pill--reference"
-							onClick={(e) => {
-								e.stopPropagation();
-								onReferenceClick?.();
-							}}
-							title="Jump to linked degree milestone"
-						>
-							<LuLink className="journey-card__pill-icon" aria-hidden="true" />
-							<span>{referenceBadge.label}</span>
-							<LuArrowRight className="journey-card__pill-arrow" aria-hidden="true" />
-						</button>
-					)}
+						{eraBadge && (
+							<button
+								type="button"
+								className="journey-card__pill journey-card__pill--era"
+								onClick={(e) => {
+									e.stopPropagation();
+									onEraClick?.();
+								}}
+								title="View Undergraduate Degree Milestone"
+							>
+								<LuGraduationCap className="journey-card__pill-icon" aria-hidden="true" />
+								<span>{eraBadge}</span>
+							</button>
+						)}
+
+						{eraAnchorBadge && (
+							<span className="journey-card__pill journey-card__pill--era-anchor">
+								<LuGraduationCap className="journey-card__pill-icon" aria-hidden="true" />
+								<span>{eraAnchorBadge}</span>
+							</span>
+						)}
+
+						{referenceBadge && (
+							<button
+								type="button"
+								className="journey-card__pill journey-card__pill--reference"
+								onClick={(e) => {
+									e.stopPropagation();
+									onReferenceClick?.();
+								}}
+								title="Jump to linked degree milestone"
+							>
+								<LuLink className="journey-card__pill-icon" aria-hidden="true" />
+								<span>{referenceBadge.label}</span>
+								<LuArrowRight className="journey-card__pill-arrow" aria-hidden="true" />
+							</button>
+						)}
+					</div>
 				</div>
-			</div>
 
-			{/* Footer: Tech tags and external proof links */}
-			{(tags.length > 0 || proofUrl) && (
-				<div className="journey-card__footer">
-					{tags.length > 0 && (
-						<div className="journey-card__tags">
-							{tags.map((tag, idx) => (
-								<span key={idx} className="journey-card__tag">
-									#{tag}
-								</span>
-							))}
-						</div>
-					)}
+				{/* Footer: Tech tags and external proof links */}
+				{(tags.length > 0 || proofUrl) && (
+					<div className="journey-card__footer">
+						{tags.length > 0 && (
+							<div className="journey-card__tags">
+								{tags.map((tag, idx) => (
+									<span key={idx} className="journey-card__tag">
+										#{tag}
+									</span>
+								))}
+							</div>
+						)}
 
-					{proofUrl && (
-						<a
-							href={proofUrl}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="journey-card__link"
-							aria-label={`Visit / verify milestone: ${title}`}
-						>
-							<span>{type === "founder" || categoryLabel?.toLowerCase().includes("founder") || categoryLabel?.toLowerCase().includes("studio") ? "Visit Studio Website" : "Verify / View Post"}</span>
-							<LuExternalLink className="journey-card__link-icon" aria-hidden="true" />
-						</a>
-					)}
-				</div>
-			)}
+						{proofUrl && (
+							<a
+								href={proofUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="journey-card__link"
+								aria-label={`Visit / verify milestone: ${title}`}
+							>
+								<span>{type === "founder" || categoryLabel?.toLowerCase().includes("founder") || categoryLabel?.toLowerCase().includes("studio") ? "Visit Studio Website" : "Verify / View Post"}</span>
+								<LuExternalLink className="journey-card__link-icon" aria-hidden="true" />
+							</a>
+						)}
+					</div>
+				)}
 			</div>
 		</div>
 	);

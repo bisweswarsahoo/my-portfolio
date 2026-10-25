@@ -73,20 +73,20 @@ import {
 	ManusSvg
 } from "../components/tech/TechnologyIcons";
 
-import jabszLogo from "../assets/jabsz-logo.png";
+import jabszLogo from "../assets/jabsz-logo.webp";
 import jabszBg from "../assets/jabsz-bg.webp";
-import orivaneLogo from "../assets/orivane-studios.png";
-import amityLogo from "../assets/amity-university-logo.png";
-import amityNoidaBg from "../assets/amity_noida_bg.jpg";
-import adyantLogo from "../assets/adyant-logo.png";
-import adyantCampusBg from "../assets/adyant-campus-aerial-bg.jpeg";
-import schoolLogo from "../assets/sri-aurobindo-integral-education-logo.png";
-import ietLogo from "../assets/IET_on_campus.png";
-import gdgLogo from "../assets/gdg-logo.png";
-import ieeeLogo from "../assets/IEEE-logo.png";
-import vrgdLogo from "../assets/VRGD-logo.png";
-import orivaneBg from "../assets/Orivane_Studios_BG.png";
-import schoolBG from "../assets/sri-aurobindo-integral-education-bg.png"
+import orivaneLogo from "../assets/orivane-studios.webp";
+import amityLogo from "../assets/amity-university-logo.webp";
+import amityNoidaBg from "../assets/amity_noida_bg.webp";
+import adyantLogo from "../assets/adyant-logo.webp";
+import adyantCampusBg from "../assets/adyant-campus-aerial-bg.webp";
+import schoolLogo from "../assets/sri-aurobindo-integral-education-logo.webp";
+import ietLogo from "../assets/IET_on_campus.webp";
+import gdgLogo from "../assets/gdg-logo.webp";
+import ieeeLogo from "../assets/IEEE-logo.webp";
+import vrgdLogo from "../assets/VRGD-logo.webp";
+import orivaneBg from "../assets/Orivane_Studios_BG.webp";
+import schoolBG from "../assets/sri-aurobindo-integral-education-bg.webp";
 
 const skill = (name, icon, color = "currentColor", desc = "") => ({ name, icon, color, desc });
 

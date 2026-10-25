@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
 	LuHouse,
 	LuMilestone,
@@ -9,6 +9,7 @@ import {
 import "../styles/Navbar.css";
 import ThemeToggle from "../theme/ThemeToggle.jsx";
 import portfolioData from "../data/portfolioData.js";
+import localPortrait from "../assets/Personal Portrait.webp";
 
 const menuItems = [
 	{ name: "Home", id: "home" },
@@ -32,14 +33,29 @@ const Navbar = () => {
 	const [isVisible, setIsVisible] = useState(true);
 	const lastScrollY = useRef(0);
 	const menuOpenRef = useRef(menuOpen);
+	const sectionOffsetsRef = useRef([]);
+
+	const updateSectionOffsets = useCallback(() => {
+		const offsets = [];
+		for (const item of menuItems) {
+			if (item.id === "home") continue;
+			const section = document.getElementById(item.id);
+			if (section) {
+				offsets.push({ id: item.id, top: section.offsetTop });
+			}
+		}
+		sectionOffsetsRef.current = offsets;
+	}, []);
 
 	useEffect(() => {
 		menuOpenRef.current = menuOpen;
 	}, [menuOpen]);
 
 	useEffect(() => {
-		let ticking = false;
+		updateSectionOffsets();
+		window.addEventListener("resize", updateSectionOffsets, { passive: true });
 
+		let ticking = false;
 		const handleScroll = () => {
 			if (ticking) return;
 			ticking = true;
@@ -47,34 +63,26 @@ const Navbar = () => {
 			requestAnimationFrame(() => {
 				const currentScrollY = window.scrollY;
 
-				// Active section tracking:
-				// If near top (scrollY < 300), active is "home"
+				// Active section tracking from cached offsets
 				let currentSection = "home";
 				const scrollPos = currentScrollY + 220;
 
-				for (const item of menuItems) {
-					if (item.id === "home") continue;
-					const section = document.getElementById(item.id);
-					if (section && section.offsetTop <= scrollPos) {
-						currentSection = item.id;
+				for (const sec of sectionOffsetsRef.current) {
+					if (sec.top <= scrollPos) {
+						currentSection = sec.id;
 					}
 				}
 
 				setActiveSection((prev) => (prev !== currentSection ? currentSection : prev));
 
-				// Scroll direction behavior:
-				// - Near top (< 45px): always show
-				// - Scrolling down: hide (if mobile menu not open)
-				// - Scrolling up: reappear!
+				// Scroll direction behavior
 				if (currentScrollY < 45) {
 					setIsVisible(true);
 				} else if (currentScrollY > lastScrollY.current + 14) {
-					// Scrolling DOWN
 					if (!menuOpenRef.current) {
 						setIsVisible(false);
 					}
 				} else if (currentScrollY < lastScrollY.current - 14) {
-					// Scrolling UP -> appear immediately!
 					setIsVisible(true);
 				}
 
@@ -88,8 +96,9 @@ const Navbar = () => {
 
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
+			window.removeEventListener("resize", updateSectionOffsets);
 		};
-	}, []);
+	}, [updateSectionOffsets]);
 
 	const scrollToSection = (id) => {
 		setMenuOpen(false);
@@ -128,8 +137,12 @@ const Navbar = () => {
 				>
 					<img
 						className="navbar-profile-img"
-						src={portfolioData.profileImage}
+						src={localPortrait}
 						alt={`${portfolioData.name} profile`}
+						width="38"
+						height="38"
+						loading="eager"
+						decoding="async"
 					/>
 					<div className="navbar-profile-info">
 						<span className="navbar-profile-name">{portfolioData.name}</span>
@@ -144,10 +157,7 @@ const Navbar = () => {
 					</div>
 				</div>
 
-				<label
-					className="hamburger"
-					aria-label="Open menu"
-				>
+				<label className="hamburger">
 					<input
 						type="checkbox"
 						checked={menuOpen}

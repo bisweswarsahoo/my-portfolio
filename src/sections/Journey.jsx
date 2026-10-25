@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import portfolioData from "../data/portfolioData.js";
 import MilestoneCard from "../components/MilestoneCard.jsx";
-import jabszlogo from "../assets/jabsz-logo.png";
-import orivanelogo from "../assets/orivane-studios.png";
-import amitylogo from "../assets/amity-university-logo.png";
-import adyantlogo from "../assets/adyant-logo.png";
-import schoollogo from "../assets/sri-aurobindo-integral-education-logo.png";
+import jabszlogo from "../assets/jabsz-logo.webp";
+import orivanelogo from "../assets/orivane-studios.webp";
+import amitylogo from "../assets/amity-university-logo.webp";
+import adyantlogo from "../assets/adyant-logo.webp";
+import schoollogo from "../assets/sri-aurobindo-integral-education-logo.webp";
 import {
 	LuChevronLeft,
 	LuChevronRight,
@@ -304,49 +304,65 @@ const Journey = () => {
 	const totalMilestones = milestones.length;
 
 	const progressTrackRef = useRef(null);
+	const colMetricsRef = useRef({ centers: [], lastCenterScroll: 1, maxScroll: 0 });
 
-	// 2. Measure scroll position, progress, and EXACTLY CENTERED active milestone
+	// Recalculate column centers on mount and window resize (avoids forced reflows on scroll)
+	const recalculateColMetrics = useCallback(() => {
+		const track = trackRef.current;
+		if (!track) return;
+		const { scrollWidth, clientWidth } = track;
+		const cols = track.querySelectorAll(".journey-milestone-col");
+		if (cols.length === 0) return;
+
+		const centers = [];
+		cols.forEach((col) => {
+			centers.push(col.offsetLeft + col.offsetWidth / 2);
+		});
+
+		const lastColCenter = centers[centers.length - 1];
+		const lastCenterScroll = Math.max(lastColCenter - clientWidth / 2, 1);
+		const maxScroll = scrollWidth - clientWidth;
+
+		colMetricsRef.current = { centers, lastCenterScroll, maxScroll };
+	}, []);
+
+	// Measure scroll position & active milestone without reading layout properties
 	const updateScrollState = useCallback(() => {
 		const track = trackRef.current;
 		if (!track) return;
 
-		const { scrollLeft, scrollWidth, clientWidth } = track;
-		const maxScroll = scrollWidth - clientWidth;
-		const cols = track.querySelectorAll(".journey-milestone-col");
-
-		if (cols.length > 0) {
-			const lastIdx = cols.length - 1;
-			const lastCol = cols[lastIdx];
-			const lastColCenter = lastCol.offsetLeft + lastCol.offsetWidth / 2;
-			const lastCenterScroll = Math.max(lastColCenter - clientWidth / 2, 1);
-
-			// Progress is strictly 0 at scrollLeft = 0, directly anchored to Pip 0
-			const progress = Math.min(Math.max(scrollLeft / lastCenterScroll, 0), 1);
-			setScrollProgress(progress);
-
-			const viewportCenter = scrollLeft + clientWidth / 2;
-			let closestIdx = 0;
-			let minDiff = Infinity;
-
-			cols.forEach((col, idx) => {
-				const colCenter = col.offsetLeft + col.offsetWidth / 2;
-				const diff = Math.abs(colCenter - viewportCenter);
-				if (diff < minDiff) {
-					minDiff = diff;
-					closestIdx = idx;
-				}
-			});
-
-			setActiveIndex(closestIdx);
-			setCanScrollLeft(scrollLeft > 6);
-			setCanScrollRight(scrollLeft < maxScroll - 6);
+		const { scrollLeft, clientWidth } = track;
+		if (colMetricsRef.current.centers.length === 0) {
+			recalculateColMetrics();
 		}
-	}, []);
 
-	// 3. Attach scroll listener
+		const { centers, lastCenterScroll, maxScroll } = colMetricsRef.current;
+		const progress = Math.min(Math.max(scrollLeft / (lastCenterScroll || 1), 0), 1);
+		setScrollProgress(progress);
+
+		const viewportCenter = scrollLeft + clientWidth / 2;
+		let closestIdx = 0;
+		let minDiff = Infinity;
+
+		centers.forEach((colCenter, idx) => {
+			const diff = Math.abs(colCenter - viewportCenter);
+			if (diff < minDiff) {
+				minDiff = diff;
+				closestIdx = idx;
+			}
+		});
+
+		setActiveIndex(closestIdx);
+		setCanScrollLeft(scrollLeft > 6);
+		setCanScrollRight(scrollLeft < (maxScroll || 0) - 6);
+	}, [recalculateColMetrics]);
+
+	// Attach scroll & resize listeners
 	useEffect(() => {
 		const track = trackRef.current;
 		if (!track) return;
+
+		recalculateColMetrics();
 
 		let rafId = null;
 		const onScroll = () => {
@@ -354,14 +370,21 @@ const Journey = () => {
 			rafId = requestAnimationFrame(updateScrollState);
 		};
 
+		const onResize = () => {
+			recalculateColMetrics();
+			updateScrollState();
+		};
+
 		track.addEventListener("scroll", onScroll, { passive: true });
+		window.addEventListener("resize", onResize, { passive: true });
 		updateScrollState();
 
 		return () => {
 			if (rafId) cancelAnimationFrame(rafId);
 			track.removeEventListener("scroll", onScroll);
+			window.removeEventListener("resize", onResize);
 		};
-	}, [updateScrollState]);
+	}, [recalculateColMetrics, updateScrollState]);
 
 	// 4. Wheel handler: convert vertical wheel movement into horizontal movement only while active
 	useEffect(() => {
